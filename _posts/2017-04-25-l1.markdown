@@ -1,7 +1,9 @@
 ---
 layout: post
-title: Lecture #1: Introduction and Consistent Hashing
+title: Lecture 1: Introduction and Consistent Hashing
 ---
+
+$$\[ab+bc=\frac{1}{2}\]$$
 
 This is *italic*
 
