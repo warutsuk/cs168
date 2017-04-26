@@ -16,14 +16,14 @@ first let's discuss a representative technical topic: *consistent
   CS161) and
   adapts them to some very real-world applications.
 
-* The topic is ``modern,'' in the sense that it is motivated by
+* The topic is "modern," in the sense that it is motivated by
   issues in present-day systems that were not present in the applications
   of yore --- consistent hashing is not in your parents' algorithms
   textbook, because   back then it wasn't needed.  The original idea
   isn't that new anymore (from 1997), but it has been repurposed for
   new technologies several times since.
 
-* Consistent hashing is a ``tool'' in the sense that it is a
+* Consistent hashing is a "tool" in the sense that it is a
   non-obvious idea but, once you know it, it's general and flexible
   enough to potentially prove useful for other problems.
 In this course, we'll be looking for the following trifecta:
