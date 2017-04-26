@@ -3,11 +3,9 @@ layout: post
 title: Lecture 1 - Introduction and Consistent Hashing
 ---
 
-## Consistent Hashing ##
+### Consistent Hashing ###
 
-### Meta-Discussion ###
-
-# ab #
+# Meta-Discussion #
 
 We'll talk about the course in general in Section~\ref{s:about}, but
 first let's discuss a representative technical topic: *consistent
