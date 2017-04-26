@@ -7,9 +7,11 @@ title: Lecture 1 - Introduction and Consistent Hashing
 
 ### Meta-Discussion ###
 
+# ab #
+
 We'll talk about the course in general in Section~\ref{s:about}, but
-first let's discuss a representative technical topic: {\em consistent
-  hashing}.  This topic is representative in the following respects:
+first let's discuss a representative technical topic: *consistent
+  hashing*.  This topic is representative in the following respects:
 
 * As you could guess by the word ``hashing,'' the topic builds on
   central algorithmic ideas that you've already learned (e.g., in
