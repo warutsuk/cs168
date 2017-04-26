@@ -3,9 +3,9 @@ layout: post
 title: Lecture 1 - Introduction and Consistent Hashing
 ---
 
-# Consistent Hashing #
+## Consistent Hashing ##
 
-## Meta-Discussion ##
+# Meta-Discussion #
 
 We'll talk about the course in general in Section~\ref{s:about}, but
 first let's discuss a representative technical topic: {\em consistent
@@ -48,7 +48,7 @@ In this course, we'll be looking for the following trifecta:
   alternative to a database where all the data resides in main memory
   across multiple machines,  rather than on disk.
 
-## Web Caching ##
+# Web Caching #
 
 This is *italic*
 
