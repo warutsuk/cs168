@@ -7,7 +7,7 @@ title: Lecture 1 - Introduction and Consistent Hashing
 
 ### Meta-Discussion ###
 
-We'll talk about the course in general in Section~\ref{s:about}, but
+We'll talk about the course in general in Section \ref{s:about}, but
 first let's discuss a representative technical topic: *consistent
   hashing*.  This topic is representative in the following respects:
 
@@ -49,6 +49,7 @@ In this course, we'll be looking for the following trifecta:
   across multiple machines,  rather than on disk.
 
 ### Web Caching ###
+\label{s:about}
 
 This is *italic*
 
