@@ -3,7 +3,9 @@ layout: post
 title: Lecture 1 - Introduction and Consistent Hashing
 ---
 
-### O ###
+### Consistent Hashing ###
+
+## Meta Discussion ##
 
 This is *italic*
 
