@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Lecture 1
+title: Lecture 1 - Introduction and Consistent Hashing
 ---
 
 This is *italic*
