@@ -21,7 +21,7 @@ We'll talk about the course in general in [About CS168](#about-cs168), but first
 
 ### Web Caching ###
 
-The original motivation for consistent hashing (in 1997) was Web caching.  You're familiar with the concept and benefits of caching.  In the context of the Web, imagine a browser requesting a URL, like \amazon.  Of course, one could request the page from the appropriate Web server.  But if the page is being requested over and over again, it's wasteful to repeatedly download it from the server.  An obvious idea is to use a Web cache, which stores a local copy of recently visited pages.  When a URL is requested, one can first check the local cache for the page.  If the page is in the cache, one can send it directly to the browser --- no need to contact the
+The original motivation for consistent hashing (in 1997) was Web caching.  You're familiar with the concept and benefits of caching.  In the context of the Web, imagine a browser requesting a URL, like [amazon.com](http://www.amazon.com).  Of course, one could request the page from the appropriate Web server.  But if the page is being requested over and over again, it's wasteful to repeatedly download it from the server.  An obvious idea is to use a Web cache, which stores a local copy of recently visited pages.  When a URL is requested, one can first check the local cache for the page.  If the page is in the cache, one can send it directly to the browser --- no need to contact the
 original server.  If the page is not in the cache, then the page is downloaded from a suitable server as before, and the result is both
 sent to the browser and also stored in the local cache for future re-use.
 
