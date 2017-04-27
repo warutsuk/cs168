@@ -7,7 +7,7 @@ title: Lecture 1 - Introduction and Consistent Hashing
 
 ### Meta-Discussion ###
 
-We'll talk about the course in general in Section \ref{s:about}, but first let's discuss a representative technical topic: *consistent  hashing*.  This topic is representative in the following respects:
+We'll talk about the course in general in the section [About CS168](#about-cs168), but first let's discuss a representative technical topic: *consistent  hashing*.  This topic is representative in the following respects:
 
 * As you could guess by the word "hashing," the topic builds on central algorithmic ideas that you've already learned (e.g., in CS161) and adapts them to some very real-world applications.
 
