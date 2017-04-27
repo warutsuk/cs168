@@ -87,9 +87,6 @@ Here comes ![fig2](../images/l1/array.svg)
 
 Here comes ![flower](flower.jpg)
 
-[fig1]: (../images/l1/array.pdf)
-{: height="36px" width="36px"}
-
 This approach to consistent hashing can also be visualized on a circle, with points on the circle corresponding to the possible hash values (Figure \ref{f:circle}(left)).  Caches and objects both hash to points on this circle; an object is stored on the cache server that is closest in the clockwise direction.  Thus $$n$$ carches partition the circle into $$n$$ segments, with each cache responsible for all objects in one of these segments.
 
 This simple idea leads to some nice properties. First, assuming reasonable hash functions, by symmetry, the expected load on each of the $$n$$ cache servers is exactly a $$\tfrac{1}{n}$$ fraction of the objects.  (There is non-trivial variance; below we explain how to reduce it via replication.) Second, and more importantly, suppose we add a new cache server $$s$$ --- which objects have to move?  *Only the objects stored at $$s$$.*  See Figure \ref{f:circle}(right). Combined, these two observations imply that, in expectation, adding the $$n$$th cache causes only a $$\tfrac{1}{n}$$ fraction of the objects to relocate. This is the best-case scenario if we want the load to be distributed evenly --- clearly the objects on the new cache have to move from where they were before.  By contrast, with the solution \eqref{eq:simple}, on average only a $$\tfrac{1}{n}$$ fraction of the objects *don't* move when the $$n$$th cache is added![^6]
