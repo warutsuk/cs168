@@ -161,6 +161,18 @@ The plan is to cover the following topics.  No worries if some of this doesn't m
 
 7. *Mathematical programming.* Many optimization and data analysis problems can be solved using linear, integer, or convex programming.  These days, there are powerful solvers at your disposal that can be used to attack such problems. We'll study the representative application of compressive sensing, which allows you to recover a sparse signal from amazingly few "linear measurements."
 
+## Course Goals and Themes ##
+
+1. Our ambition is for this to be the coolest computer science course you've ever taken.  Seriously!
+
+2. We also think of CS168 as a "capstone" course, meaning a course you take at the conclusion of your major, after which the seemingly disparate skills and ideas learned in previous courses can be recognized as a coherent and powerful whole. Even before taking CS168 your computer science toolbox is rich enough to tackle timely and challenging problems, with consistent hashing being a fine example.  After the course, your toolbox will be richer still.  Capstone courses in computer science are traditionally software engineering courses; in comparison, CS168 will have a much stronger algorithmic and conceptual bent.
+
+3. We focus on general-purpose ideas that are not overly wedded to  a particular application domain, and are therefore potentially useful to as many of you as possible, whatever your future trajectory (software engineer, data scientist, start-up founder, PhD student, etc.).
+
+4. If you forced us to pick the most prominent theme of the course, it would probably be *how to be smart with your data*.  This has several aspects: how to be smart about storing it (like in this lecture), about what to throw out and what to retain, about how to transform it, visualize it, analyze it, etc. After completing CS168, you will be an educated client of the modern tools for performing all of these tasks.[^11]
+
+[^11]: We often receive emails from students mere weeks after the end of the course, with stories about how they already applied the tools acquired in this course at their new job or summer internship!
+
 ---
 
 ### Footnotes ###
