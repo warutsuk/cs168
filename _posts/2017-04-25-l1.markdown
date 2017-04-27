@@ -115,7 +115,7 @@ So how do we actually implement the standard hash table operations Lookup and In
 An easy way to decrease this variance is to make $$k$$ "virtual copies" of each cache $$s$$, implemented by hashing its name with $$k$$ different hash functions to get $$h_1(s),\ldots,h_k(s)$$.  (More on using multiple hash functions next lecture.)  For example, with
 cache servers $$\{0,1,2\}$$ and $$k=4$$, we choose 12 points on the circle --- 4 labeled "0", 4 labeled "1", and 4 labeled "2". (See [Figure 4](#fig4).)  Objects are assigned as before --- from $$h(x)$$, we scan rightward/clockwise until we encounter one of the hash values of some cache $$s$$, and $$s$$ is responsible for storing $$x$$. By symmetry, each cache still expects to get a $$\tfrac{1}{n}$$ fraction of the objects. This replication increases the number of keys stored in the balanced binary search by a factor of $$k$$, but it reduces the variance in load across cache servers significantly.  Intuitively, some copies of a cache will get more objects than expected (more than a $$\tfrac{1}{kn}$$ fraction), but this will be largely canceled out by other copies that get fewer objects than expected. Choosing $$k \approx \log_2 n$$ is large enough to obtain reasonably balanced loads. We'll teach you some methods for reasoning mathematically about such replication vs. variance trade-offs later in the course.
 
-![replication](/cs168/images/l1/replication.jpg){:height="80%" width="80%" style="display:block;margin:auto;"}
+![replication](/cs168/images/l1/replication.jpg){:height="50%" width="50%" style="display:block;margin:auto;"}
 {: #fig4}
 
 *Figure 4: Decreasing the variance by assigning each cache server multiple hash values.*
