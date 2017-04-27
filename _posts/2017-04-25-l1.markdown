@@ -39,6 +39,10 @@ Now suppose a browser requests [amazon.com](http://www.amazon.com) and you want 
 
 ### A Simple Solution Using Hashing ###
 
+[array]: (/cs168/images/l1/array.jpg)
+
+Here is a referenced ![array]
+
 Formally, we want a mapping from URLs to caches. The first thought of a well-trained computer scientist might be to use a hash function for this purpose.[^1]  Recall that a *hash function* maps elements of a (usually super-big) universe $$U$$, like URLs, to "buckets," such as 32-bit values (Figure~\ref{f:hash}). A "good" hash function $$h$$ satisfies two properties:
 
 [^1]: We'll assume that you've seen hashing before, probably multiple times.  See the course site for review videos on the topic.
@@ -82,8 +86,6 @@ To understand which objects are assigned to which caches, consider the array sho
 values.  (This array might be very big and it exists only in our minds; we'll discuss the actual implementation shortly.) Imagine that we've already hashed all the cache server names and made a note of them in the corresponding buckets. Given an object $$x$$ that hashes to the bucket $$h(x)$$, we scan buckets to the right of $$h(x)$$ until we find a bucket $$h(s)$$ to which the name of some cache $$s$$ hashes.  (We wrap around the array, if need be.) We then designate $$s$$ as the cache responsible for the object $$x$$.
 
 Here comes ![fig1](/cs168/images/l1/array.jpg)
-
-Here comes ![fig2](/cs168/images/l1/array.svg)
 
 This approach to consistent hashing can also be visualized on a circle, with points on the circle corresponding to the possible hash values (Figure \ref{f:circle}(left)).  Caches and objects both hash to points on this circle; an object is stored on the cache server that is closest in the clockwise direction.  Thus $$n$$ carches partition the circle into $$n$$ segments, with each cache responsible for all objects in one of these segments.
 
