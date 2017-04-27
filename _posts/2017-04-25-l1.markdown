@@ -129,5 +129,17 @@ Virtual copies are also useful for dealing with heterogeneous caches that have d
   and consistent hashing is used to keep track of what's where.
 
    This idea is now widely copied in modern lightweight alternatives to traditional databases (the latter of which tend to reside on disk).  Such alternatives generally support few operations (e.g., no secondary keys) and relax traditional consistency requirements in exchange for speed.  As you can imagine, this is a big win for lots of modern Internet companies.
+   
+**About CS168**
+
+For the nuts and bolts of coursework, grading, etc., see the course Web site.  Read on for an overview of the course and our overarching goals and philosophy.
+
+***Intended Audience***
+
+We welcome all comers --- there's a zillion courses you could be taking, and we'll be happy and flattered if you decide to take this one.
+
+That said, to prepare a coherent lecture, it's helpful to have a target audience in mind.  We view the canonical student in the class
+as a senior-year computer science major. As you can see in this lecture, we assume a certain degree of "computer science maturity," taking for granted that you know and care about concepts like caching, hashing, balanced search trees, and so on.  We also assume sufficient programming maturity to translate the high-level descriptions given in lecture to working implementations. If you didn't have any trouble understanding this lecture, you should be fine.
+
 
 
