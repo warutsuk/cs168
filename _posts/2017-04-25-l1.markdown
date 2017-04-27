@@ -59,7 +59,7 @@ caches, named $$\{0,1,2,\ldots,n-1\}$$.  Then we can just store the Web page wit
 
 $$
 \begin{equation}\label{eq:simple}
-h(x) \bmod n.
+h(x) \bmod n. \tag{1}
 \end{equation}
 $$
 
