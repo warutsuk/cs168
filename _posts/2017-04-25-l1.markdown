@@ -147,9 +147,9 @@ solve the problem of mapping URLs to caches.  Say there are $$n$$
 caches, named $$\{0,1,2,\ldots,n-1\}$$.  Then we can just store the Web
 page with URL $$x$$ at the cache server named
 $$
-\begin{displaymath}
+\begin{equation}\label{eq:simple}
 h(x) \bmod n.
-\end{displaymath}
+\end{equation}
 $$
 Note that $$h(x)$$ is probably something like a 32-bit value,
 representing an integer that is way way bigger than $$n$$ --- this is
