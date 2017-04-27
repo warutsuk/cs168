@@ -159,6 +159,7 @@ with the additional property that almost all objects stay assigned to
 the same cache even as the number $$n$$ of caches
 changes.  We next give the most popular implementation of this
 functionality \cite{K+97}.[^5]
+
 [^5]: You should never conflate two fundamentally different things: (i) what an algorithm or data structure is responsible for doing (i.e., its   specification/API); and (ii) the implementation (i.e., how the desired functionality is actually achieved). There can of course be multiple implementations with exactly the same functionality. For example, the functionality of consistent hashing can also be achieved by other implementations \cite{TR98,LV14}.}
 
 The key idea is: in addition to hashing the names of all objects (URLs) $$x$$, like before, *we also hash the names of all the cache servers $$s$$*.
