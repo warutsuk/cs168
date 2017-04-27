@@ -7,46 +7,17 @@ title: Lecture 1 - Introduction and Consistent Hashing
 
 ### Meta-Discussion ###
 
-We'll talk about the course in general in Section \ref{s:about}, but
-first let's discuss a representative technical topic: *consistent
-  hashing*.  This topic is representative in the following respects:
+We'll talk about the course in general in Section \ref{s:about}, but first let's discuss a representative technical topic: *consistent  hashing*.  This topic is representative in the following respects:
 
-* As you could guess by the word "hashing," the topic builds on
-  central algorithmic ideas that you've already learned (e.g., in
-  CS161) and
-  adapts them to some very real-world applications.
+* As you could guess by the word "hashing," the topic builds on central algorithmic ideas that you've already learned (e.g., in CS161) and adapts them to some very real-world applications.
 
-* The topic is "modern," in the sense that it is motivated by
-  issues in present-day systems that were not present in the applications
-  of yore --- consistent hashing is not in your parents' algorithms
-  textbook, because   back then it wasn't needed.  The original idea
-  isn't that new anymore (from 1997), but it has been repurposed for
-  new technologies several times since.
+* The topic is "modern," in the sense that it is motivated by issues in present-day systems that were not present in the applications
+  of yore --- consistent hashing is not in your parents' algorithms textbook, because   back then it wasn't needed.  The original idea
+  isn't that new anymore (from 1997), but it has been repurposed for new technologies several times since.
 
-* Consistent hashing is a "tool" in the sense that it is a
-  non-obvious idea but, once you know it, it's general and flexible
-  enough to potentially prove useful for other problems.
-In this course, we'll be looking for the following trifecta:
-(i) ideas that are
-  *non-obvious*, even to the well-trained computer scientist, so
-  that we're not wasting your time; (ii) *conceptually simple*
-  --- realistically, these are the only ideas that you might remember
-  a year or more from now, when you're a start-up founder, senior
-  software engineer, or PhD student (iii) *fundamental*,
-  meaning that there is some chance that the idea will prove useful to you in
-  the future.
+* Consistent hashing is a "tool" in the sense that it is a non-obvious idea but, once you know it, it's general and flexible enough to potentially prove useful for other problems.n this course, we'll be looking for the following trifecta: (i) ideas that are *non-obvious*, even to the well-trained computer scientist, so that we're not wasting your time; (ii) *conceptually simple* --- realistically, these are the only ideas that you might remember a year or more from now, when you're a start-up founder, senior  software engineer, or PhD student (iii) *fundamental*, meaning that there is some chance that the idea will prove useful to you in the future.
 
-* The idea has real applications.  Consistent hashing gave
-  birth to Akamai, which to this day is a major player in the Internet
-  (market cap $$\approx$$ \$10B), managing the Web presence of tons of
-  major companies.  More recently, consistent hashing has been
-  repurposed to solve basic problems in peer-to-peer networks
-  (initially in~\cite{chord}),
-  including parts of BitTorrent.  These days, all the cool kids are
-  using consistent hashing for distributed storage --- made popular by
-  Amazon's Dynamo~\cite{amazon}, the idea is to have a lightweight
-  alternative to a database where all the data resides in main memory
-  across multiple machines,  rather than on disk.
+* The idea has real applications.  Consistent hashing gave birth to Akamai, which to this day is a major player in the Internet (market cap $$\approx$$ \$10B), managing the Web presence of tons of major companies.  More recently, consistent hashing has been repurposed to solve basic problems in peer-to-peer networks (initially in~\cite{chord}), including parts of BitTorrent.  These days, all the cool kids are using consistent hashing for distributed storage --- made popular by Amazon's Dynamo~\cite{amazon}, the idea is to have a lightweight alternative to a database where all the data resides in main memory across multiple machines,  rather than on disk.
 
 ### Web Caching ###
 
@@ -178,5 +149,30 @@ $$h(x) \bmod 100$$ and $$h(x) \bmod
 where $$n$$ is constantly changing.[^4]
 
 [^4]: These relocations should remind you of the "rehash" operation in most hash table implementations.  Recall that as the load factor (\# of elements/\# buckets) of a hash table increases, the search time degrades.  So when the load factor gets too big one usually increases the number of buckets (by 2x, say), which requires rehashing all of the elements.  This is an expensive operation, traditionally justified by arguing it will be invoked infrequently.  In the Web caching context, the number of buckets is changing all the time, rather than infrequently.  Also, rehashing an object now involves moving data between machines across a network, which is much more expensive than rehashing elements of a hash table stored on a single machine.
+
+### Consistent Hashing ###
+
+Our criticism of the solution \eqref{eq:simple} for mapping URLs to
+caches motivates the goal of *onsistent hashing*: we want hash
+table-type functionality (we can store stuff and retrieve it later)
+with the additional property that almost all objects stay assigned to
+the same cache even as the number $$n$$ of caches
+changes.  We next give the most popular implementation of this
+functionality \cite{K+97}.[^5]
+[^5]: You should never conflate two fundamentally different things: (i) what an algorithm or data structure is responsible for doing (i.e., its   specification/API); and (ii) the implementation (i.e., how the desired functionality is actually achieved). There can of course be multiple implementations with exactly the same functionality. For example, the functionality of consistent hashing can also be achieved by other implementations \cite{TR98,LV14}.}
+
+The key idea is: in addition to hashing the names of all objects (URLs) $$x$$, like before, *we also hash the names of all the cache servers $$s$$*.
+The object and cache names need to be hashed to the same range, such as 32-bit values.
+
+To understand which objects are assigned to which caches, consider the array shown in Figure \ref{f:array}, indexed by the possible hash
+values.  (This array might be very big and it exists only in our minds; we'll discuss the actual implementation shortly.) Imagine that we've already hashed all the cache server names and made a note of them in the corresponding buckets. Given an object $$x$$ that hashes to the bucket $$h(x)$$, we scan buckets to the right of $$h(x)$$ until we find a bucket $$h(s)$$ to which the name of some cache $$s$$ hashes.  (We wrap around the array, if need be.) We then designate $$s$$ as the cache responsible for the object $$x$$.
+
+This approach to consistent hashing can also be visualized on a
+circle, with points on the circle corresponding to the possible hash
+values (Figure \ref{f:circle}(left)).  Caches and objects both hash to
+points on this circle; an object is stored on the cache server that is closest in the
+clockwise direction.  Thus $$n$$ carches partition the circle into $$n$$
+segments, with each cache responsible for all objects in one of these
+segments.
 
 
