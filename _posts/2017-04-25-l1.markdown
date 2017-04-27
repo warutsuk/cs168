@@ -61,10 +61,11 @@ $$
 h(x) \bmod n.
 \end{equation}
 $$
+{: #eq1}
 
 Note that $$h(x)$$ is probably something like a 32-bit value, representing an integer that is way way bigger than $$n$$ --- this is the reason we apply the "$$\bmod n$$" operation to recover the name of one of the caches.
 
-The solution \eqref{eq:simple} of mapping URLs to caches is an excellent first cut, and it works great in many cases.  To motivate why we might need a different solution, suppose the number $$n$$ of caches is not static, but rather is changing over time.  For example, in Akamai's early days, they were focused on adding as many caches as possible all over the Internet, so $$n$$ was constantly increasing.  Web caches can also fail or lose connection to the network, which causes $$n$$ to decrease.  In a peer-to-peer context (see Section~\ref{ss:history}), $n$ corresponds to the number of nodes of the network, which is constantly changing as nodes join and depart.
+The solution [(1)](#eq1) of mapping URLs to caches is an excellent first cut, and it works great in many cases.  To motivate why we might need a different solution, suppose the number $$n$$ of caches is not static, but rather is changing over time.  For example, in Akamai's early days, they were focused on adding as many caches as possible all over the Internet, so $$n$$ was constantly increasing.  Web caches can also fail or lose connection to the network, which causes $$n$$ to decrease.  In a peer-to-peer context (see Section~\ref{ss:history}), $n$ corresponds to the number of nodes of the network, which is constantly changing as nodes join and depart.
 
 Suppose we add a new cache and thereby bump up $$n$$ from 100 to 101. For an object $$x$$, it is very unlikely that $$h(x) \bmod 100$$ and $$h(x) \bmod 101$$ are the same number,  Thus, *changing $$n$$ forces almost all objects to relocate*.  This is a disaster for applications where $$n$$ is constantly changing.[^4]
 
