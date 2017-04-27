@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Lecture 1 : Introduction and Consistent Hashing b"
+title: "Lecture 1 : Introduction and Consistent Hashing c"
 ---
 
 ## Consistent Hashing ##
