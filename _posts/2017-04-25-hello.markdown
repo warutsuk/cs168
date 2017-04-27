@@ -1,0 +1,31 @@
+---
+layout: post
+title: hello
+---
+
+This is *italic*
+
+This is an equation:
+$$x_{1,2}=\frac{3}{b}$$
+
+This is **bold**
+
+This is `code`
+
+> This is blockquoted
+
+```
+Code in a block.
+```
+
+[This is Google](http://www.google.com)
+
+* This is a list.
+* Another item.
+
+1. This is another list.
+2. Yay
+3. Yay3
+    * This is inside
+
+A CNN consists of a number of convolutional and subsampling layers optionally followed by fully connected layers.  The input to a convolutional layer is a $$m \text{ x } m \text{ x } r$$ image where $$m$$ is the height and width of the image and $$r$$ is the number of channels, e.g. an RGB image has $$r=3$$.
