@@ -21,102 +21,40 @@ We'll talk about the course in general in Section \ref{s:about}, but first let's
 
 ### Web Caching ###
 
-The original motivation for consistent hashing (in 1997) was Web
-caching.  You're familiar with the concept and benefits of
-caching.  In the context of the Web, imagine a browser
-requesting a URL, like \amazon.  Of course, one could request the page
-from the appropriate Web server.  But if the page is being requested
-over and over again, it's wasteful to repeatedly download it from the
-server.  An obvious idea is to use a Web cache, which stores a local copy
-of recently visited pages.  When a URL is requested, one can first
-check the local cache for the page.  If the page is in the cache, one
-can send it directly to the browser --- no need to contact the
-original server.  If the page is not in the cache, then the page is
-downloaded from a suitable server as before, and the result is both
-sent to the browser and also stored in the local cache for future
-re-use.
+The original motivation for consistent hashing (in 1997) was Web caching.  You're familiar with the concept and benefits of caching.  In the context of the Web, imagine a browser requesting a URL, like \amazon.  Of course, one could request the page from the appropriate Web server.  But if the page is being requested over and over again, it's wasteful to repeatedly download it from the server.  An obvious idea is to use a Web cache, which stores a local copy of recently visited pages.  When a URL is requested, one can first check the local cache for the page.  If the page is in the cache, one can send it directly to the browser --- no need to contact the
+original server.  If the page is not in the cache, then the page is downloaded from a suitable server as before, and the result is both
+sent to the browser and also stored in the local cache for future re-use.
 
-*Caching is good*.
-The most obvious benefit is that the end
-user experiences a much faster response time.  But caches also improve
-the Internet as a whole: fewer requests to far away servers means less
-network traffic, less congestion in the queues at network switches and
-Web servers, fewer dropped packets, etc.
+*Caching is good*. The most obvious benefit is that the end user experiences a much faster response time.  But caches also improve the Internet as a whole: fewer requests to far away servers means less network traffic, less congestion in the queues at network switches and Web servers, fewer dropped packets, etc.
 
-So clearly we want Web caches.  Where should they go?  A first idea is
-to give each end user their own cache, maintained on their own machine
-or device.  So if you request [amazon.com](http://www.amazon.com), and you also requested it in the
-recent past, then the page can be served from your local cache.  If not,
-you incur a cache miss, and the page is downloaded and stored in your
-local cache.
+So clearly we want Web caches.  Where should they go?  A first idea is to give each end user their own cache, maintained on their own machine or device.  So if you request [amazon.com](http://www.amazon.com), and you also requested it in the recent past, then the page can be served from your local cache.  If not, you incur a cache miss, and the page is downloaded and stored in your local cache.
 
-However, we could take the benefit of caching to the next level if we
-could implement a Web cache that is *shared by many users*, for
-example, all users of Stanford's network.  For
-example, if you haven't accessed [amazon.com](http://www.amazon.com) recently but someone
-"nearby" has (e.g., someone else in the Stanford network), wouldn't
-it be cool if you could just use their local copy?  The benefits should
-be clear: by aggregating the recent page requests of a large number of
-users, these users will enjoy many more cache hits and consequently
-less latency.
-Akamai's goal was to take the daydream of a single logical Web cache
-shared by tons of users and turn it into a viable technology.
+However, we could take the benefit of caching to the next level if we could implement a Web cache that is *shared by many users*, for
+example, all users of Stanford's network.  For example, if you haven't accessed [amazon.com](http://www.amazon.com) recently but someone
+"nearby" has (e.g., someone else in the Stanford network), wouldn't it be cool if you could just use their local copy?  The benefits should be clear: by aggregating the recent page requests of a large number of users, these users will enjoy many more cache hits and consequently less latency. Akamai's goal was to take the daydream of a single logical Web cache shared by tons of users and turn it into a viable technology.
 
-Why isn't this an easy problem?  We focus on one of several
-obstacles.  Namely, remembering the recently accessed Web pages of a
-large number of users might take a lot of storage.  Unless we want to
-resort to a big, slow, and special-purpose machine for this purpose,
-this means that the aggregated cache might not fit on a single machine.
-Thus, implementing a shared cache at a large scale requires 
-  *spreading the cache over multiple machines*.
+Why isn't this an easy problem?  We focus on one of several obstacles.  Namely, remembering the recently accessed Web pages of a large number of users might take a lot of storage.  Unless we want to resort to a big, slow, and special-purpose machine for this purpose, this means that the aggregated cache might not fit on a single machine. Thus, implementing a shared cache at a large scale requires   *spreading the cache over multiple machines*.
 
-Now suppose a browser requests [amazon.com](http://www.amazon.com) and you want to know if the Web
-page has been cached locally.  Suppose the shared cache is spread over
-100 machines.  Where should you look for a cached copy of the Web
-page?  You could poll all 100 caches for a copy, but that feels pretty
-dumb.  And with lots of users and caches, this solution
-crosses the line from
-dumb to infeasible.  Wouldn't it be nice if, instead, given a URL
-(like [amazon.com](http://www.amazon.com)) we magically knew which cache (like \#23) we should
-look to for a copy?
+Now suppose a browser requests [amazon.com](http://www.amazon.com) and you want to know if the Web page has been cached locally. Suppose the shared cache is spread over 100 machines.  Where should you look for a cached copy of the Web page?  You could poll all 100 caches for a copy, but that feels pretty dumb.  And with lots of users and caches, this solution crosses the line from dumb to infeasible.  Wouldn't it be nice if, instead, given a URL (like [amazon.com](http://www.amazon.com)) we magically knew which cache (like \#23) we should look to for a copy?
 
 ### A Simple Solution Using Hashing ###
 
-Formally, we want a mapping from URLs to caches.
-The first thought of a well-trained computer scientist might be to
-use a hash function for this purpose.[^1]  Recall that a *hash
-  function* maps elements of a (usually super-big) universe $$U$$, like
-URLs, to "buckets," such as 32-bit values (Figure~\ref{f:hash}).
-A "good" hash function $$h$$ satisfies two properties:
+Formally, we want a mapping from URLs to caches. The first thought of a well-trained computer scientist might be to use a hash function for this purpose.[^1]  Recall that a *hash function* maps elements of a (usually super-big) universe $$U$$, like URLs, to "buckets," such as 32-bit values (Figure~\ref{f:hash}). A "good" hash function $$h$$ satisfies two properties:
 
 [^1]: We'll assume that you've seen hashing before, probably multiple times.  See the course site for review videos on the topic.
 
-* It is easy to remember and evaluate.  Ideally, computing the function
-  involves just a few arithmetic operations, and maybe a "mod"
-  operation.
+* It is easy to remember and evaluate.  Ideally, computing the function involves just a few arithmetic operations, and maybe a "mod"  operation.
 
-* For all practical purposes, $$h$$ behaves like a totally random
-  function, spreading data out evenly and without noticeable
-  correlation across the possible buckets.
+* For all practical purposes, $$h$$ behaves like a totally random function, spreading data out evenly and without noticeable correlation across the possible buckets.
 
-Designing good hash functions is not easy --- hopefully you won't need
-to do it yourself --- but you can regard it as a solved problem.
-A common approach in practice is to use a well-known and well-crafted
-hash function like MD5[^2] --- 
-it's overwhelmingly likely that this function will "behave randomly"
-for whatever data set you're working with.  Theoretical guarantees are
-possible only for *families* of hash functions,[^3] which
-motivates picking a hash function at random from a "universal"
-family (see CS161 for details).
+Designing good hash functions is not easy --- hopefully you won't need to do it yourself --- but you can regard it as a solved problem. A common approach in practice is to use a well-known and well-crafted hash function like MD5[^2] --- it's overwhelmingly likely that this function will "behave randomly" for whatever data set you're working with.  Theoretical guarantees are possible only for *families* of hash functions,[^3] which motivates picking a hash function at random from a "universal" family (see CS161 for details).
 
 [^2]: This is built in to most programming languages, or you can just copy the code for it from the Web. Or you might want to use something faster and more lightweight (but still well tested), like from the FarmHash family.
   
 [^3]: Assuming that  the number of buckets $$n$$ is significantly smaller than the universe size $$U$$, every fixed hash function has a large pathological data set $$S \subseteq U$$ for   it, with all elements of $$S$$ colliding and hashing to the same bucket.  (Hint: Pigeonhole Principle.)
 
-Taking the existence of a good hash function $$h$$ for granted, we can
-solve the problem of mapping URLs to caches.  Say there are $$n$$
-caches, named $$\{0,1,2,\ldots,n-1\}$$.  Then we can just store the Web
-page with URL $$x$$ at the cache server named
+Taking the existence of a good hash function $$h$$ for granted, we can solve the problem of mapping URLs to caches.  Say there are $$n$$
+caches, named $$\{0,1,2,\ldots,n-1\}$$.  Then we can just store the Web page with URL $$x$$ at the cache server named
 
 $$
 \begin{equation}\label{eq:simple}
@@ -124,41 +62,17 @@ h(x) \bmod n.
 \end{equation}
 $$
 
-Note that $$h(x)$$ is probably something like a 32-bit value,
-representing an integer that is way way bigger than $$n$$ --- this is
-the reason we apply the "$$\bmod n$$" operation to recover the name of
-one of the caches.
+Note that $$h(x)$$ is probably something like a 32-bit value, representing an integer that is way way bigger than $$n$$ --- this is the reason we apply the "$$\bmod n$$" operation to recover the name of one of the caches.
 
-The solution \eqref{eq:simple} of mapping URLs to caches is an
-excellent first cut, and it works great in many cases.  To motivate
-why we might need a different solution, suppose the number $$n$$ of
-caches is not static, but rather is changing over time.  For example,
-in Akamai's early days, they were focused on adding as many caches
-as possible all over the Internet, so $$n$$ was constantly
-increasing.  Web caches can also fail or lose connection to the network,
-which causes $$n$$ to decrease.  In a peer-to-peer context (see
-Section~\ref{ss:history}), $n$ corresponds to the number of nodes of the
-network, which is constantly changing as nodes join and depart.
+The solution \eqref{eq:simple} of mapping URLs to caches is an excellent first cut, and it works great in many cases.  To motivate why we might need a different solution, suppose the number $$n$$ of caches is not static, but rather is changing over time.  For example, in Akamai's early days, they were focused on adding as many caches as possible all over the Internet, so $$n$$ was constantly increasing.  Web caches can also fail or lose connection to the network, which causes $$n$$ to decrease.  In a peer-to-peer context (see Section~\ref{ss:history}), $n$ corresponds to the number of nodes of the network, which is constantly changing as nodes join and depart.
 
-Suppose we add a new cache and thereby
-bump up $$n$$ from 100 to 101.
-For an object $$x$$, it is very unlikely that
-$$h(x) \bmod 100$$ and $$h(x) \bmod
-101$$ are the same number,  Thus, *changing $$n$$ forces almost all
-  objects to relocate*.  This is a disaster for applications
-where $$n$$ is constantly changing.[^4]
+Suppose we add a new cache and thereby bump up $$n$$ from 100 to 101. For an object $$x$$, it is very unlikely that $$h(x) \bmod 100$$ and $$h(x) \bmod 101$$ are the same number,  Thus, *changing $$n$$ forces almost all objects to relocate*.  This is a disaster for applications where $$n$$ is constantly changing.[^4]
 
 [^4]: These relocations should remind you of the "rehash" operation in most hash table implementations.  Recall that as the load factor (\# of elements/\# buckets) of a hash table increases, the search time degrades.  So when the load factor gets too big one usually increases the number of buckets (by 2x, say), which requires rehashing all of the elements.  This is an expensive operation, traditionally justified by arguing it will be invoked infrequently.  In the Web caching context, the number of buckets is changing all the time, rather than infrequently.  Also, rehashing an object now involves moving data between machines across a network, which is much more expensive than rehashing elements of a hash table stored on a single machine.
 
 ### Consistent Hashing ###
 
-Our criticism of the solution \eqref{eq:simple} for mapping URLs to
-caches motivates the goal of *onsistent hashing*: we want hash
-table-type functionality (we can store stuff and retrieve it later)
-with the additional property that almost all objects stay assigned to
-the same cache even as the number $$n$$ of caches
-changes.  We next give the most popular implementation of this
-functionality \cite{K+97}.[^5]
+Our criticism of the solution \eqref{eq:simple} for mapping URLs to caches motivates the goal of *onsistent hashing*: we want hash table-type functionality (we can store stuff and retrieve it later) with the additional property that almost all objects stay assigned to the same cache even as the number $$n$$ of caches changes.  We next give the most popular implementation of this functionality \cite{K+97}.[^5]
 
 [^5]: You should never conflate two fundamentally different things: (i) what an algorithm or data structure is responsible for doing (i.e., its   specification/API); and (ii) the implementation (i.e., how the desired functionality is actually achieved). There can of course be multiple implementations with exactly the same functionality. For example, the functionality of consistent hashing can also be achieved by other implementations \cite{TR98,LV14}.}
 
