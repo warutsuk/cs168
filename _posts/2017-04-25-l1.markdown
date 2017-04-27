@@ -83,6 +83,8 @@ values.  (This array might be very big and it exists only in our minds; we'll di
 
 Here comes ![fig1](../images/l1/array.pdf)
 
+Here comes ![fig2](../images/l1/array.svg)
+
 [fig1]: (../images/l1/array.pdf)
 {: height="36px" width="36px"}
 
