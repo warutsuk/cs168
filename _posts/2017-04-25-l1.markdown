@@ -39,7 +39,7 @@ Now suppose a browser requests [amazon.com](http://www.amazon.com) and you want 
 
 ### A Simple Solution Using Hashing ###
 
-[array]: (/cs168/images/l1/array.jpg)
+[array]: /cs168/images/l1/array.jpg
 
 Here is a referenced ![array]
 
