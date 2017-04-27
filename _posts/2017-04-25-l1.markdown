@@ -41,8 +41,9 @@ Now suppose a browser requests [amazon.com](http://www.amazon.com) and you want 
 
 ![array](/cs168/images/l1/hash.jpg){:height="20%" width="20%" style="display:block;margin:auto;"}
 *Figure 1: A hash function maps elements from a (generally large) universe $$U$$ to a list of "buckets," such as 32-bit values.*
+{: #fig1}
 
-Formally, we want a mapping from URLs to caches. The first thought of a well-trained computer scientist might be to use a hash function for this purpose.[^1]  Recall that a *hash function* maps elements of a (usually super-big) universe $$U$$, like URLs, to "buckets," such as 32-bit values (Figure~\ref{f:hash}). A "good" hash function $$h$$ satisfies two properties:
+Formally, we want a mapping from URLs to caches. The first thought of a well-trained computer scientist might be to use a hash function for this purpose.[^1]  Recall that a *hash function* maps elements of a (usually super-big) universe $$U$$, like URLs, to "buckets," such as 32-bit values ([Figure 1](#fig1)). A "good" hash function $$h$$ satisfies two properties:
 
 [^1]: We'll assume that you've seen hashing before, probably multiple times.  See the course site for review videos on the topic.
 
