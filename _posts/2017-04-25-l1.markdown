@@ -113,10 +113,10 @@ look to for a copy?
 
 Formally, we want a mapping from URLs to caches.
 The first thought of a well-trained computer scientist might be to
-use a hash function for this purpose.[^1]  Recall that a {\em hash
-  function} maps elements of a (usually super-big) universe $U$, like
+use a hash function for this purpose.[^1]  Recall that a *hash
+  function* maps elements of a (usually super-big) universe $$U$$, like
 URLs, to ``buckets,'' such as 32-bit values (Figure~\ref{f:hash}).
-A ``good'' hash function $h$ satisfies two properties:
+A ``good'' hash function $$h$$ satisfies two properties:
 
 [^1]: We'll assume that you've seen hashing before, probably multiple times.  See the course site for review videos on the topic.
 
@@ -135,36 +135,11 @@ hash function like MD5[^2] ---
 it's overwhelmingly likely that this function will "behave randomly"
 for whatever data set you're working with.  Theoretical guarantees are
 possible only for *families* of hash functions,[^3] which
-motivates picking a hash function at random from a `"universal"
+motivates picking a hash function at random from a "universal"
 family (see CS161 for details).
 
 [^2]: This is built in to most programming languages, or you can just copy the code for it from the Web. Or you might want to use something faster and more lightweight (but still well tested), like from the FarmHash family.
   
-[^3]: Assuming that  the number of buckets $$n$$ is significantly smaller than the universe size $$U$$, every fixed hash function has a large pathological data set $$S \sse U$$ for   it, with all elements of $$S$$ colliding and hashing to the same bucket.  (Hint: Pigeonhole Principle.)
-
-This is *italic*
-
-This is an equation:
-$$x_{1,2}=\frac{3}{b}$$
-
-This is **bold**
-
-This is `code`
-
-> This is blockquoted
-
-```
-Code in a block.
-```
-
-[This is Google](http://www.google.com)
-
-* This is a list.
-* Another item.
-
-1. This is another list.
-2. Yay
-3. Yay3
-    * This is inside
+[^3]: Assuming that  the number of buckets $$n$$ is significantly smaller than the universe size $$U$$, every fixed hash function has a large pathological data set $$S \subseteq U$$ for   it, with all elements of $$S$$ colliding and hashing to the same bucket.  (Hint: Pigeonhole Principle.)
 
 A CNN consists of a number of convolutional and subsampling layers optionally followed by fully connected layers.  The input to a convolutional layer is a $$m \text{ x } m \text{ x } r$$ image where $$m$$ is the height and width of the image and $$r$$ is the number of channels, e.g. an RGB image has $$r=3$$.
