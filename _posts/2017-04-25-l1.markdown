@@ -106,7 +106,7 @@ page?  You could poll all 100 caches for a copy, but that feels pretty
 dumb.  And with lots of users and caches, this solution
 crosses the line from
 dumb to infeasible.  Wouldn't it be nice if, instead, given a URL
-(like [amazon.com](http://www.amazon.com)) we magically knew which cache (like 23) we should
+(like [amazon.com](http://www.amazon.com)) we magically knew which cache (like \#23) we should
 look to for a copy?
 
 
