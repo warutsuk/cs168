@@ -64,7 +64,7 @@ $$
 
 Note that $$h(x)$$ is probably something like a 32-bit value, representing an integer that is way way bigger than $$n$$ --- this is the reason we apply the "$$\bmod n$$" operation to recover the name of one of the caches.
 
-The solution \eqref{eq:simple} of mapping URLs to caches is an excellent first cut, and it works great in many cases.  To motivate why we might need a different solution, suppose the number $$n$$ of caches is not static, but rather is changing over time.  For example, in Akamai's early days, they were focused on adding as many caches as possible all over the Internet, so $$n$$ was constantly increasing.  Web caches can also fail or lose connection to the network, which causes $$n$$ to decrease.  In a peer-to-peer context (see [Some History](#some-history)), $$n$$ corresponds to the number of nodes of the network, which is constantly changing as nodes join and depart.
+The solution \eqref{eq:simple} of mapping URLs to caches is an excellent first cut, and it works great in many cases.  To motivate why we might need a different solution, suppose the number $$n$$ of caches is not static, but rather is changing over time.  For example, in Akamai's early days, they were focused on adding as many caches as possible all over the Internet, so $$n$$ was constantly increasing.  Web caches can also fail or lose connection to the network, which causes $$n$$ to decrease.  In a peer-to-peer context (see [Some History (1997-2015)](#some-history)), $$n$$ corresponds to the number of nodes of the network, which is constantly changing as nodes join and depart.
 
 Suppose we add a new cache and thereby bump up $$n$$ from 100 to 101. For an object $$x$$, it is very unlikely that $$h(x) \bmod 100$$ and $$h(x) \bmod 101$$ are the same number,  Thus, *changing $$n$$ forces almost all objects to relocate*.  This is a disaster for applications where $$n$$ is constantly changing.[^4]
 
@@ -102,7 +102,7 @@ cache servers $$\{0,1,2\}$$ and $$k=4$$, we choose 12 points on the circle --- 4
 
 Virtual copies are also useful for dealing with heterogeneous caches that have different capacities.  The sensible approach is to make the number of virtual copies of a cache server proportional to the server's capacity; for example, if one cache is twice as big as another, it should have twice as many virtual copies.
 
-### Some History (1997--2015) ###
+### Some History (1997--2015) ### {#some-history}
 
 1. 1997: The implementation of consistent hashing given in this lecture first appeared in a research paper in STOC  ("Symposium on the
   Theory of Computing") [\[2\]](#ref2) --- this is one of the main conferences in theoretical computer science.[^10] Ironically, the paper had previously been rejected from a theoretical computer science conference because at least one reviewer felt that  "it had no hope of being practical."
