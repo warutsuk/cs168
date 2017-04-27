@@ -17,7 +17,7 @@ We'll talk about the course in general in the section [About CS168](#about-cs168
 
 * Consistent hashing is a "tool" in the sense that it is a non-obvious idea but, once you know it, it's general and flexible enough to potentially prove useful for other problems.n this course, we'll be looking for the following trifecta: (i) ideas that are *non-obvious*, even to the well-trained computer scientist, so that we're not wasting your time; (ii) *conceptually simple* --- realistically, these are the only ideas that you might remember a year or more from now, when you're a start-up founder, senior  software engineer, or PhD student (iii) *fundamental*, meaning that there is some chance that the idea will prove useful to you in the future.
 
-* The idea has real applications.  Consistent hashing gave birth to Akamai, which to this day is a major player in the Internet (market cap $$\approx$$ \$10B), managing the Web presence of tons of major companies.  More recently, consistent hashing has been repurposed to solve basic problems in peer-to-peer networks (initially in [\[4\]](#ref4)), including parts of BitTorrent.  These days, all the cool kids are using consistent hashing for distributed storage --- made popular by Amazon's Dynamo~\cite{amazon}, the idea is to have a lightweight alternative to a database where all the data resides in main memory across multiple machines,  rather than on disk.
+* The idea has real applications.  Consistent hashing gave birth to Akamai, which to this day is a major player in the Internet (market cap $$\approx$$ \$10B), managing the Web presence of tons of major companies.  More recently, consistent hashing has been repurposed to solve basic problems in peer-to-peer networks (initially in [\[4\]](#ref4)), including parts of BitTorrent.  These days, all the cool kids are using consistent hashing for distributed storage --- made popular by Amazon's Dynamo [\[1\]](#ref1), the idea is to have a lightweight alternative to a database where all the data resides in main memory across multiple machines,  rather than on disk.
 
 ### Web Caching ###
 
@@ -180,16 +180,16 @@ The plan is to cover the following topics.  No worries if some of this doesn't m
    {: #ref1}
 
 2. D. Karger, E. Lehman, T. Leighton, R. Panigrahy, M. Levine, and D. Lewin. Consistent hashing and random trees: Distributed caching protocols for relieving hot spots on the world wide web. In *Proceedings of the Twenty-ninth Annual ACM Symposium on Theory of Computing (STOC)*, pages 654–663, 1997.
-  {: #ref2}
+   {: #ref2}
 
 3. J. Lamping and E. Veach. A fast, minimal memory, consistent hash algorithm. arXiv:1406.2294, 2014.
-  {: #ref3}
+   {: #ref3}
 
 4. I. Stoica, R. Morris, D. Liben-Nowell, D. R. Karger, M. F. Kaashoek, F. Dabek, and H. Balakrishnan. Chord: A scalable peer-to-peer lookup protocol for internet applications. *IEEE/ACM Transactions on Networking*, 11(1):17–32, 2003.
-  {: #ref4}
+   {: #ref4}
 
 5. D. G. Thaler and C. V. Ravishankar. Using name-based mappings to increase hit rates. *IEEE/ACM Transactions on Networking*, 6(1):1–14, 1998.
-  {: #ref5}
+   {: #ref5}
 
 ### Footnotes ###
 
