@@ -81,7 +81,10 @@ The key idea is: in addition to hashing the names of all objects (URLs) $$x$$, l
 To understand which objects are assigned to which caches, consider the array shown in Figure \ref{f:array}, indexed by the possible hash
 values.  (This array might be very big and it exists only in our minds; we'll discuss the actual implementation shortly.) Imagine that we've already hashed all the cache server names and made a note of them in the corresponding buckets. Given an object $$x$$ that hashes to the bucket $$h(x)$$, we scan buckets to the right of $$h(x)$$ until we find a bucket $$h(s)$$ to which the name of some cache $$s$$ hashes.  (We wrap around the array, if need be.) We then designate $$s$$ as the cache responsible for the object $$x$$.
 
-[fig1]: ../images/l1/array.pdf
+Here comes ![fig1](../images/l1/array.pdf)
+
+[fig1]: (../images/l1/array.pdf)
+{: height="36px" width="36px"}
 
 This approach to consistent hashing can also be visualized on a circle, with points on the circle corresponding to the possible hash values (Figure \ref{f:circle}(left)).  Caches and objects both hash to points on this circle; an object is stored on the cache server that is closest in the clockwise direction.  Thus $$n$$ carches partition the circle into $$n$$ segments, with each cache responsible for all objects in one of these segments.
 
