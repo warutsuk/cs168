@@ -118,9 +118,7 @@ use a hash function for this purpose.[^1]  Recall that a {\em hash
 URLs, to ``buckets,'' such as 32-bit values (Figure~\ref{f:hash}).
 A ``good'' hash function $h$ satisfies two properties:
 
-[^1]: We'll assume that
-  you've seen hashing before, probably multiple times.  See the course
-  site for review videos on the topic.
+[^1]: We'll assume that you've seen hashing before, probably multiple times.  See the course site for review videos on the topic.
 
 * It is easy to remember and evaluate.  Ideally, computing the function
   involves just a few arithmetic operations, and maybe a "mod"
@@ -140,14 +138,9 @@ possible only for *families* of hash functions,[^3] which
 motivates picking a hash function at random from a `"universal"
 family (see CS161 for details).
 
-[^2]: This is built in to most programming
-  languages, or you can just copy the code for it from the Web.  Or you might want to use something faster and more lightweight (but still well tested), like from the FarmHash family.
+[^2]: This is built in to most programming languages, or you can just copy the code for it from the Web. Or you might want to use something faster and more lightweight (but still well tested), like from the FarmHash family.
   
-[^3]: Assuming
-that  the number of buckets $$n$$ is significantly smaller than the universe
-  size $$U$$, every fixed hash function has a large pathological data
-  set $$S \sse U$$ for   it, with all elements of $$S$$ colliding and
-  hashing to the   same bucket.  (Hint: Pigeonhole Principle.)
+[^3]: Assuming that  the number of buckets $$n$$ is significantly smaller than the universe size $$U$$, every fixed hash function has a large pathological data set $$S \sse U$$ for   it, with all elements of $$S$$ colliding and hashing to the same bucket.  (Hint: Pigeonhole Principle.)
 
 This is *italic*
 
