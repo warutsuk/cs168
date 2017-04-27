@@ -39,7 +39,7 @@ Now suppose a browser requests [amazon.com](http://www.amazon.com) and you want 
 
 ### A Simple Solution Using Hashing ###
 
-![array](/cs168/images/l1/array.jpg){:height="10%"}
+![array](/cs168/images/l1/array.jpg){:height="10%" :width="10%"}
 
 Formally, we want a mapping from URLs to caches. The first thought of a well-trained computer scientist might be to use a hash function for this purpose.[^1]  Recall that a *hash function* maps elements of a (usually super-big) universe $$U$$, like URLs, to "buckets," such as 32-bit values (Figure~\ref{f:hash}). A "good" hash function $$h$$ satisfies two properties:
 
