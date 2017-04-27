@@ -142,4 +142,37 @@ family (see CS161 for details).
   
 [^3]: Assuming that  the number of buckets $$n$$ is significantly smaller than the universe size $$U$$, every fixed hash function has a large pathological data set $$S \subseteq U$$ for   it, with all elements of $$S$$ colliding and hashing to the same bucket.  (Hint: Pigeonhole Principle.)
 
-A CNN consists of a number of convolutional and subsampling layers optionally followed by fully connected layers.  The input to a convolutional layer is a $$m \text{ x } m \text{ x } r$$ image where $$m$$ is the height and width of the image and $$r$$ is the number of channels, e.g. an RGB image has $$r=3$$.
+Taking the existence of a good hash function $$h$$ for granted, we can
+solve the problem of mapping URLs to caches.  Say there are $$n$$
+caches, named $$\{0,1,2,\ldots,n-1\}$$.  Then we can just store the Web
+page with URL $$x$$ at the cache server named
+$$\begin{equation}\label{eq:simple}
+h(x) \bmod n.
+\end{equation}$$
+Note that $$h(x)$$ is probably something like a 32-bit value,
+representing an integer that is way way bigger than $$n$$ --- this is
+the reason we apply the "$$\bmod n$$" operation to recover the name of
+one of the caches.
+
+The solution \eqref{eq:simple} of mapping URLs to caches is an
+excellent first cut, and it works great in many cases.  To motivate
+why we might need a different solution, suppose the number $$n$$ of
+caches is not static, but rather is changing over time.  For example,
+in Akamai's early days, they were focused on adding as many caches
+as possible all over the Internet, so $$n$$ was constantly
+increasing.  Web caches can also fail or lose connection to the network,
+which causes $$n$$ to decrease.  In a peer-to-peer context (see
+Section~\ref{ss:history}), $n$ corresponds to the number of nodes of the
+network, which is constantly changing as nodes join and depart.
+
+Suppose we add a new cache and thereby
+bump up $$n$$ from 100 to 101.
+For an object $$x$$, it is very unlikely that
+$$h(x) \bmod 100$$ and $$h(x) \bmod
+101$$ are the same number,  Thus, *changing $$n$$ forces almost all
+  objects to relocate*.  This is a disaster for applications
+where $$n$$ is constantly changing.[^4]
+
+[^4]: These relocations should remind you of the "rehash" operation in most hash table implementations.  Recall that as the load factor (\# of elements/\# buckets) of a hash table increases, the search time degrades.  So when the load factor gets too big one usually increases the number of buckets (by 2x, say), which requires rehashing all of the elements.  This is an expensive operation, traditionally justified by arguing it will be invoked infrequently.  In the Web caching context, the number of buckets is changing all the time, rather than infrequently.  Also, rehashing an object now involves moving data between machines across a network, which is much more expensive than rehashing elements of a hash table stored on a single machine.
+
+
