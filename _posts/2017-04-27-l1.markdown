@@ -3,9 +3,9 @@ layout: post
 title: "Lecture 1 : Introduction and Consistent Hashing"
 ---
 
-## Consistent Hashing ##
+## Consistent Hashing
 
-### Meta-Discussion ###
+### Meta-Discussion 1
 
 We'll talk about the course in general in [About CS168](#about-cs168), but first let's discuss a representative technical topic: *consistent  hashing*.  This topic is representative in the following respects:
 
