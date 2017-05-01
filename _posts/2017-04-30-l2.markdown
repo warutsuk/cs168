@@ -2,3 +2,21 @@
 layout: post
 title: "Lecture 2 : Approximate Heavy Hitters and the Count-Min Sketch"
 ---
+
+## The Heavy Hitters Problem
+
+### Finding the Majority Element
+
+Let's begin with a problem that many of you have seen before.
+It's a common question in technical interviews.  You're given as
+input an array $$A$$ of length $$n$$, with the promise that it has a *majority element* --- a value that is repeated in strictly more than
+$$n/2$$ of the array's entries.  Your task is to find the majority element.
+
+In algorithm design, the usual "holy grail" is a linear-time
+algorithm.  For this problem, your post-CS161 toolbox already contains
+a subroutine that gives a linear-time solution --- just compute the
+median of $$A$$.  (Note: it must be the majority element.)  So let's be
+more ambitious: can we compute the majority element with a single
+left-to-right pass through the array?
+If you haven't seen it before, here's the solution:
+
