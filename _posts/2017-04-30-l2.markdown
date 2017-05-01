@@ -123,11 +123,12 @@ space?[^3]
 ###  An Impossibility Result
 
 The following fact might surprise you.
-**Fact 1.1** \label{fact:hh}
-*There is *no* algorithm that solves the Heavy Hitters problems in one pass
-while using a sublinear amount of auxiliary space.*
 
-We next explain the intuition behind Fact \ref{fact:hh}.  We encourage
+**Fact 1.1** *There is* no *algorithm that solves the Heavy Hitters problems in one pass
+while using a sublinear amount of auxiliary space.*
+{: #fact1}
+
+We next explain the intuition behind [Fact 1.1](#fact1).  We encourage
 you to devise a formal proof, which follows the same lines as the
 intuition.
 
