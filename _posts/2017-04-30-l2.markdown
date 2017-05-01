@@ -170,31 +170,31 @@ find a relaxation of the problem that remains relevant for the
 motivating applications and also admits a good
 solution.[^6]
 
-[^6]: This impossibility result ([Fact 1.1](#fact1)) and our response to it (the $$\eps$$-HH problem) serve as reminders that the skilled  algorithm designer is respectful of but undaunted by impossibility results that limit what algorithms can do. For another example, recall your study in CS161 of methods for coping with $$NP$$-complete problems.
+[^6]: This impossibility result ([Fact 1.1](#fact1)) and our response to it (the $$\epsilon$$-HH problem) serve as reminders that the skilled  algorithm designer is respectful of but undaunted by impossibility results that limit what algorithms can do. For another example, recall your study in CS161 of methods for coping with $$NP$$-complete problems.
 
-In the *$$\eps$$-approximate heavy hitters ($$\eps$$-HH) problem}*,
-the input is an array $$A$$ of length $$n$$ and user-defined parameters $$k$$ and $$\eps$$. The responsibility of an algorithm is to output a list of values such that:
+In the *$$\epsilon$$-approximate heavy hitters ($$\epsilon$$-HH) problem}*,
+the input is an array $$A$$ of length $$n$$ and user-defined parameters $$k$$ and $$\epsilon$$. The responsibility of an algorithm is to output a list of values such that:
 \begin{enumerate}
 
 1. Every value that occurs at least $$\frac{n}{k}$$ times in
    $$A$$ is in the list.
 
-2. Every value in the list occurs at least $$\frac{n}{k} -\eps n$$
+2. Every value in the list occurs at least $$\frac{n}{k} -\epsilon n$$
    times in $$A$$.
 
 
-What prevents us from taking $$\eps = 0$$ and solving the exact version
+What prevents us from taking $$\epsilon = 0$$ and solving the exact version
 of the problem? We allow the space used by a solution to grow
-as $$\tfrac{1}{\eps}$$, so as $$\eps \downarrow 0$$ the space blows
+as $$\tfrac{1}{\epsilon}$$, so as $$\epsilon \downarrow 0$$ the space blows
 up (as is necessary, by [Fact 1.1](#fact1)).
 
-For example, suppose we take $$\eps = \tfrac{1}{2k}$$.  Then, the
+For example, suppose we take $$\epsilon = \tfrac{1}{2k}$$.  Then, the
 algorithm outputs every value with frequency count at least $$\tfrac{n}{k}$$,
 and only values with frequency count at least $$\tfrac{n}{2k}$$.  Thinking
 back to the motivating examples in Section~\ref{ss:hh}, such an
 approximate solution is essentially as useful as an exact solution.
-Space usage $$O(\tfrac{1}{\eps}) = O(k)$$ is also totally palatable;
-after all, the output of the heavy hitters or $$\eps$$-HH problem
+Space usage $$O(\tfrac{1}{\epsilon}) = O(k)$$ is also totally palatable;
+after all, the output of the heavy hitters or $$\epsilon$$-HH problem
 already might be as large as $$k$$ elements.
 
 
