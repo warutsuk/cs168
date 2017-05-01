@@ -15,7 +15,7 @@ About 10-15 seconds after you save the file, you should be able to see the post 
 
 1. I just replaced all `` ‘’ with normal quotation marks “”.
 2. I replaced all macros (like \prob, \expect) with the appropriate latex command (like \textbf{Pr}, \textbf{E}).
-
+3. I replaced the \% with %.
 -------------------- SYNTAX ------------------------
 
 Some characters (e.g., ( ) [ ]) will sometimes need to be escaped by putting a backslash in front when they appear in the text, though I'm not sure which characters and when. Try it yourself.
