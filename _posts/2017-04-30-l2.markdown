@@ -335,7 +335,7 @@ incremented.
 Since counters are never decremented, we certainly have
 $$
 \begin{equation}\label{eq:inc}
-\text{CMS\[$$i$$\]\[$$h_i(x)$$\]} \ge f_x, \tag{1}
+\text{CMS}[i][h_i(x)] \ge f_x, \tag{1}
 \end{equation}
 $$
 
@@ -359,7 +359,7 @@ so it's a no-brainer which estimate we should pay attention to.
 The *smallest* of the estimates is clearly the best estimate.
 Thus, the code for Count($$x$$) is simply:
 
-* return $$\min_{i=1}^{\ell} \text{CMS}\[i\]\[h_i(x)\]$$
+* return $$\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]$$
 
 
 The running time is again $$O(\ell)$$.
@@ -400,6 +400,15 @@ the bloom filter's property that it only suffers from false positives.
 
 
 ### Count-Min Sketch: Rigorous Error Analysis {#sec2-5}
+
+
+
+### Count-Min Sketch: Final Report Card
+
+
+### Solving the $$\epsilon$$-Heavy Hitters Problem
+
+## Lecture Take-Aways
 
 ### References
 B. H. Bloom. Space/time trade-offs in hash coding with allowable errors. Communications
