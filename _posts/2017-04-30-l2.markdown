@@ -503,8 +503,8 @@ Assuming that the hash functions $$h_i$$
 are independent,[^12] we have:
 
 $$
-\begin{equation}\label{eq:error_heur}
-\text{CMS}[i][h_i(x)] = f_x + \frac{1}{b} \sum_{y \neq x} f_y \le \tag{3}
+\begin{equation}\label{eq:error_heur2}
+\text{CMS}[i][h_i(x)] = f_x + \frac{1}{b} \sum_{y \neq x} f_y \le \tag{4}
 f_x + \frac{n}{b},
 \end{equation}
 $$
