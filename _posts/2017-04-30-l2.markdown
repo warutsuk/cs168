@@ -159,7 +159,7 @@ hard to make this idea precise using the Pigeonhole Principle.[^5]
 
 [^5]: Somewhat more detail: if you always use sublinear space to store the set $$S$$, then you need to reuse exactly the same memory contents for two different sets $$S_1$$ and $$S_2$$. Your membership query answers will be the same in both cases, and in one of these cases some of your answers will be wrong.
 
-###  The Approximate Heavy Hitters Problem
+###  The Approximate Heavy Hitters Problem {#sec1-4}
 
 What should we make of [Fact 1.1](#fact1)?  Should we go home with our
 tail between our legs?  Of course not --- the applications that
@@ -396,6 +396,139 @@ the bloom filter's property that it only suffers from false positives.
 
 
 ###  Count-Min Sketch: Heuristic Error Analysis
+The goal of this section
+is to analyze how much a count-min sketch overestimates
+frequency counts, as a function of the parameters $$b$$ and $$\ell$$.  Once
+we understand the relationship between the error and these parameters, we
+can set the parameters to guarantee simultaneously small space and
+low error.
+
+Fix an object $$x$$.  Let's first think about a single row $$i$$ of the
+count-min sketch; we'll worry about taking the minimum over rows
+later.  After a bunch of  Inc($$x$$) operations have been executed,
+what's the final value of CMS[$$i$$][$$h_i(x)$$], row
+$$i$$'s estimate for the frequency count of $$x$$?  
+
+If we're lucky and no other objects collide with $$x$$ in the $$i$$th row,
+then CMS[$$i$$][$$h_i(x)$$] is just the true frequency count $$f_x$$ of $$x$$.
+If we're
+unlucky and some object $$y$$ collides with $$x$$ in the $$i$$th row, then
+$$y$$ contributes its own frequency count $$f_y$$ to CMS[$$i$$][$$h_i(x)$$].  More
+generally, CMS[$$i$$][$$h_i(x)$$] is the sum of the contributions to this
+counter 
+by $$x$$ and all other objects that collide with it:
+
+$$
+\begin{equation}\label{eq:z_heur}
+\text{CMS}[i][h_i(x)] = f_x + \sum_{y \in S} f_y, \tag{2}
+\end{equation}
+$$
+
+where $$S = \{ y \neq x \,:\, h_i(y) = h_i(x) \}$$ denotes the objects that
+collide with $$x$$ in the $$i$$th row.
+In \eqref{eq:z_heur}, $$f_x$$ and the $$f_y$$'s are fixed constants
+(independent of the choice of $$h_i$$), while the set $$S$$ will be
+different for different choices of the hash function $$h_i$$.
+
+Recall that a good hash function spreads out a data set as well as if
+it were a random function.  With $$b$$ buckets and a good hash
+function $$h_i$$, we expect $$x$$ to collide with a roughly $$1/b$$
+fraction of the other elements $$y \neq
+x$$ under $$h_i$$.  
+Thus we expect
+
+$$
+\begin{equation}\label{eq:error_heur}
+\text{CMS}[i][h_i(x)]} = f_x + \frac{1}{b} \sum_{y \neq x} f_y \le \tag{3}
+f_x + \frac{n}{b},
+\end{equation}
+$$
+
+where in the inequality we use that the sum of the frequency
+counts is exactly the total number $$n$$ of increments (each increment
+adds 1 to exactly one frequency count).
+See also [Section 2.5](#sec2-5) for a formal
+(non-heuristic) derivation of \eqref{eq:error_heur}.
+
+We should be pleased with \eqref{eq:error_heur}.  Recall the
+definition of the $$\epsilonilon$$-approximate heavy hitters problem
+([Section 1.4](#sec1-4)): the goal is to identify objects with
+frequency count at least $$\tfrac{n}{k}$$, without being fooled by any
+objects with frequency count less than $$\tfrac{n}{k} -\epsilonilon n$$.  This
+means we just need to estimate the frequency count of an object up to
+additive one-sided error $$\epsilonilon n$$.  If we take the number of buckets
+$$b$$ in the count-min sketch to be equal to $$\tfrac{1}{\epsilon}$$,
+then \eqref{eq:error_heur} says the expected overestimate of a given
+object is at most $$\epsilon n$$.  Note that the value of $$b$$, and hence the
+number of counters used by the data structure, is completely
+independent of $$n$$!  If you think of $$\epsilon = .001$$ and $$n$$ as in the
+billions, then this is pretty great.
+
+So why aren't we done?  We'd like to say that, in addition to the
+expected overestimate of a frequency count being small, with
+very large probability the overestimate of a frequency count is small.
+(For a role model, recall that typical bloom filters guarantee a false
+positive probability of 1-2\%.)  This requires translating our
+bound on an expectation to a bound on a probability.  
+
+Next, we observe that \eqref{eq:error_heur} implies that the
+probability that a row's overestimate of $$x$$ is more than
+$$\tfrac{2n}{b}$$ is less than 50%.  (If not, the expected overestimate
+would be greater than $$\tfrac{1}{2} \cdot \tfrac{2n}{b} =
+\tfrac{n}{b}$$, contradicting \eqref{eq:error_heur}.)  This argument is a special case of
+"Markov's inequality;" see [Section 2.5](#sec2-5) for
+details.
+
+A possibly confusing point in this heuristic analysis is: in the
+observation above, what is the probability over, exactly?  I.e., where
+is the randomness?  There are two morally equivalent interpretations
+of the analysis in this section.  The first, which is carried out
+formally and in detail in [Section 2.5](#sec2-5), is to assume that
+the hash function $$h_i$$ is chosen uniformly at random from a universal
+family of hash functions (see CS161 for the definition).  The second
+is to assume that the hash function $$h_i$$ is fixed and that the data
+is random.  If $$h_i$$ is a well-crafted hash function, then your
+particular data set will almost always behave like random
+data.[^11]
+
+[^11]:In an implementation that chooses $$h_i$$ deterministically as a well-crafted hash function, the error analysis below does not actually hold for an arbitrary data set. (Recall that for every fixed hash function there is a pathological data set where everything collides.)  So instead we say that the analysis is "heuristic" in this case, meaning that while not literally true, we nevertheless expect reality to conform to its predictions (because we expect the data to be non-pathological). Whenever you do a heuristic analysis to predict the performance of an implementation, you should always measure the implementation's performance to double-check that it's working as expected.  (Of course, you should do this even when you've proved performance bounds rigorously --- there can always be unmodeled effects (cache performance, etc.) that cause reality to diverge from your theoretical predictions for it.)
+
+Remember that everything we've done so far is just for a single
+row $$i$$ of the hash table.
+The output of Count($$x$$) exceeds $$f_x$$ by
+more than $$\epsilon n$$ only if
+*every* row's estimate is too big.  
+Assuming that the hash functions $$h_i$$
+are independent,[^12] we have
+
+[^12]:Don't forget that probabilities factor only for independent events.  There are again two interpretations of this step: in the first, we assume that each $$h_i$$ is chosen independently and randomly from a universal family of hash functions; in the second, we assume that the $$h_i$$'s are sufficiently well crafted that they almost always behave as if they were independent on real data.
+
+
+$$
+\prob{\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
+ > f_x + \frac{2n}{b}}
+= \prod_{i=1}^{\ell} \prob{\text{CMS}[i][h_i(x)]
+ > f_x + \frac{2n}{b}}
+  \le \left( \frac{1}{2} \right)^{\ell}.
+$$
+
+To get an overestimate threshold of $$\epsilon n$$, we can set
+$$b=\tfrac{2}{\epsilon}$$ (so e.g., 200 when $$\epsilon = .01$$).
+To drive the error probability --- that is, the
+probability of an overestimate larger than this threshold --- down to
+the user-specified value $$\delta$$, we set
+
+$$
+\left( \frac{1}{2} \right)^{\ell} = \delta
+$$
+
+and solve to obtain $$\ell = \log_2 \tfrac{1}{\delta}$$.  (This is
+between 6 and 7 when $$\delta = .01$$.)  Thus the total number of
+counters required when $$\delta = \epsilon = .01$$ is barely over a thousand
+(no matter how long the array is!).  See [Section 2.6](#sec2-6)
+for a detailed recap of all of the count-min sketch's properties, and
+[Section 2.5](#sec2-5) for a rigorous and optimized version of the
+heuristic analysis in this section.
 
 
 
