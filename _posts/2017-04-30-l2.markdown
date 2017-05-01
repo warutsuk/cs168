@@ -504,10 +504,10 @@ are independent,[^12] we have:
 
 $$
 \begin{equation}
-\textbf{Pr}[\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
- > f_x + \frac{2n}{b}]
-= \prod_{i=1}^{\ell} \textbf{Pr}[\text{CMS}[i][h_i(x)]
- > f_x + \frac{2n}{b}]
+\textbf{Pr}\left[\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
+ > f_x + \frac{2n}{b}\right]
+= \prod_{i=1}^{\ell} \textbf{Pr}\left[\text{CMS}[i][h_i(x)]
+ > f_x + \frac{2n}{b}\right]
   \le \left(\frac{1}{2} \right)^{\ell}.
 \end{equation}
 $$
