@@ -78,21 +78,59 @@ none. The problem of computing the majority element corresponds to the heavy hit
 problem with $$k \approx 2-\delta$$ for a small value $$\delta > 0$$, and
 with the additional promise that a majority element exists.
 
-[^1]: A similar problem is the "top-$$k$$
-  problem," where the goal is to output the $$k$$ values that occur with
-  the highest frequencies.  The algorithmic ideas introduced in this
-  lecture are also relevant for the top-$$k$$ problem.
+[^1]: A similar problem is the "top-$$k$$ problem," where the goal is to output the $$k$$ values that occur with the highest frequencies.  The algorithmic ideas introduced in this lecture are also relevant for the top-$$k$$ problem.
 
 The heavy hitters problem has lots of applications, as you can
 imagine.  We'll be more specific later when we discuss a concrete
 solution, but here are some high-level examples: [^2]
 
-[^2]: You wouldn't expect
-there to be a majority element in any of these applications, but you
-might expect a non-empty set of heavy hitters when $$k$$ is 100, 1000,
-or 10000.
+[^2]: You wouldn't expect there to be a majority element in any of these applications, but you might expect a non-empty set of heavy hitters when $$k$$ is 100, 1000, or 10000.
 
+1. Computing popular products.  For example, $$A$$ could be all of
+  the page views of products on [amazon]{http://www.amazon.com} yesterday. The heavy
+  hitters are then the most frequently viewed products.
 
+2. Computing frequent search queries.  For example, $$A$$ could be
+  all of the searches on Google yesterday.  The heavy
+  hitters are then searches made most often.
+
+3. Identifying heavy TCP flows.  Here, $$A$$ is a list of data packets passing through a network switch, each annotated with a source-destination pair of IP addresses.  The heavy hitters are then the flows that are sending the most traffic.  This is useful for, among other things, identifying denial-of-service attacks.
+
+4. Identifying volatile stocks.  Here, $$A$$ is a list of stock
+  trades.
+
+It's easy to think of more.  Clearly, it would be nice to have a
+good algorithm for the heavy hitters problem at your disposal for data
+analysis.
+
+The problem is easy to solve efficiently if $$A$$ is readily available
+in main memory --- just sort the array and do a linear scan over the result,
+outputting a value if and only if it occurs (consecutively) at least
+$$n/k$$ times.
+After being spoiled by our slick solution for finding a majority element, we
+naturally want to do better.  Can we solve the heavy hitters problem
+with a single pass over the array?
+This question isn't posed quite
+correctly, since it allows us to cheat: we could make a single pass
+over the array, make a local copy of it in our working memory, and
+then apply the sorting-based solution to our local copy.  Thus what we
+mean is: can we solve the Heavy Hitters problem with a single pass
+over the array, using only a small amount of auxiliary
+space?[^3]
+
+[^3]: Rather than thinking of the array $$A$$ as an input fully specified in advance, we can alternatively think of the elements of
+  $$A$$ as a "data stream," which are fed to a "streaming
+  algorithm" one element at a time.  One-pass
+  algorithms that use small auxiliary space translate to streaming
+  algorithms that need only small working
+  memory.  One use case for streaming algorithms is
+  when data arrives at such a fast rate that explicitly storing it is
+  absurd.  For example, this  is often the reality in the motivating
+  example of data packets traveling through a network switch. A second use case is when, even though data can be stored in its
+  entirety and fully analyzed (perhaps as an overnight job), it's still
+useful to perform lightweight analysis on the arriving data in real
+time.  The first two applications (popular transactions or search
+queries) are examples of this.
 
 
 
