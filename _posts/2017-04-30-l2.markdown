@@ -506,11 +506,13 @@ are independent,[^12] we have
 
 
 $$
-\textbf{Pr}\left{\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
- > f_x + \frac{2n}{b}\right}
+\begin{equation}
+\textbf{Pr} [\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
+ > f_x + \frac{2n}{b}]
 = \prod_{i=1}^{\ell} \textbf{Pr}\left{\text{CMS}[i][h_i(x)]
  > f_x + \frac{2n}{b}\right}
   \le \left( \frac{1}{2} \right)^{\ell}.
+\end{equation}
 $$
 
 To get an overestimate threshold of $$\epsilon n$$, we can set
@@ -588,14 +590,14 @@ That is, the expectation of a sum is just the sum of the expectations,
 trivial to prove --- just expand the expectations and reverse the
 order of summation --- and insanely useful.
 
-[^13]:Note the analogous statement for products is false if the $$X_j$$'s are not independent.  For example, suppose $$X_1 \in \{0,1\}$$ is uniform while $$X_2 = 1-X_1$$.  Then $$\expect{X_1 \cdot X_2} = 0$$ while $$\expect{X_1} \cdot \expect{X_2} = \tfrac{1}{4}$$.
+[^13]:Note the analogous statement for products is false if the $$X_j$$'s are not independent.  For example, suppose $$X_1 \in \{0,1\}$$ is uniform while $$X_2 = 1-X_1$$.  Then $$E[X_1 \cdot X_2] = 0$$ while $$E[X_1] \cdot E[X_2] = \tfrac{1}{4}$$.
 
 
 To put the pieces together, we first rewrite \eqref{eq:z} as
 
 $$
 \begin{equation}\label{eq:z2}
-Z_i = f_x + \sum_{y \neq x} f_y\one_y, \tag{6}
+Z_i = f_x + \sum_{y \neq x} f_y\textbf{1}_y, \tag{6}
 \end{equation}
 $$
 
@@ -615,7 +617,7 @@ expectation to \eqref{eq:z2} to obtain
 
 $$
 \begin{equation}\label{eq:z3}
-E{Z_i} = f_x + \sum_{y \neq x} f_y \cdot E{\one_y}. \tag{7}
+E[Z_i] = f_x + \sum_{y \neq x} f_y \cdot E[\textbf{1}_y]. \tag{7}
 \end{equation}
 $$
 
@@ -624,9 +626,9 @@ expectations:
 
 $$
 \begin{equation}\label{eq:error}
-\expect{\one_y} =
-1 \cdot \underbrace{\textbf{Pr}{\one_y = 1}}_{=\textbf{Pr}{h_i(y)=h_i(x)}} +
-\underbrace{0 \cdot \prob{\one_y = 0}}_{=0} \tag{8}
+E[\textbf{1}_y] =
+1 \cdot \underbrace{\textbf{Pr}{\textbf{1}_y = 1}}_{=\textbf{Pr}{h_i(y)=h_i(x)}} +
+\underbrace{0 \cdot \textbf{Pr}[\textbf{1}_y = 0]}_{=0} \tag{8}
 = \textbf{Pr}{h_i(y)=h_i(x)} \stackrel{(\*)}{\le} \frac{1}{b}.
 \end{equation}
 $$
@@ -635,7 +637,7 @@ Combining \eqref{eq:z3} and \eqref{eq:error} gives
 
 $$
 \begin{equation}\label{eq:error2}
-\E{Z_i} \le f_x + \frac{1}{b} \sum_{y \neq x} f_y \tag{9}
+\E[Z_i] \le f_x + \frac{1}{b} \sum_{y \neq x} f_y \tag{9}
 \le f_x + \frac{n}{b}.
 \end{equation}
 $$
@@ -645,6 +647,7 @@ bound on an expectation to a bound on a probability.  A simple and
 standard way to do this is via *Markov's inequality*.
 
 **Proposition 2.2 (Markov's Inequality)** \label{prop:markov}
+{: #prop2-2}
 If $$X$$ is a nonnegative random variable and $$c > 1$$ is a constant,
 then
 $$
@@ -671,7 +674,7 @@ as the amount by which the $$i$$th row of the count-min sketch
 overestimates $$x$$'s frequency count $$f_x$$.  By \eqref{eq:error2},
 with $$b = \tfrac{e}{\epsilon}$$, the expected value of $$X$$ is at most
 $$\tfrac{\epsilon n}{e}$$.[^14] Since this overestimate is always nonnegative, we can apply Markov's
-inequality (Proposition \ref{prop:markov}) with $$\expect{X} =
+inequality ([Proposition 2.2](#prop2-2)) with $$E[X] =
 \tfrac{\epsilon n}{e}$$ and $$c = e$$ to obtain
 
 [^14]:Here $$e = 2.718\ldots$$, which gives slightly better constant factors than the choice of 2 in Section \ref{ss:error_heur}.
