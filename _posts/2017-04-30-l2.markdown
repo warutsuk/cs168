@@ -213,7 +213,7 @@ for a number of reasons.
 
 1. It has been implemented in real systems.  For example, AT{\&}T has
   used it in network switches to perform analyses on network traffic using
-  limited memory[\[4\]](#ref4).[^7] At Google, a precursor of the count-min sketch (called the "count
+  limited memory[\[4\]](#ref4). [^7] At Google, a precursor of the count-min sketch (called the "count
   sketch" [\[3\]](#ref3)) has been implemented on top of their MapReduce
   parallel processing infrastructure [\[8\]](#ref8).  One of the original
  motivations for this primitive was log analysis (e.g., of source code
