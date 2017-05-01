@@ -503,9 +503,12 @@ Assuming that the hash functions $$h_i$$
 are independent,[^12] we have:
 
 $$
-\begin{equation}\label{eq:error_heur2}
-\text{CMS}[i][h_i(x)] = f_x + \frac{1}{b} \sum_{y \neq x} f_y \le \tag{4}
-f_x + \frac{n}{b},
+\begin{equation}
+\textbf{Pr}{\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
+ > f_x + \frac{2n}{b}}
+= \prod_{i=1}^{\ell} \prob{\text{CMS}[i][h_i(x)]
+ > f_x + \frac{2n}{b}}
+  \le \left( \frac{1}{2} \right)^{\ell}.
 \end{equation}
 $$
 
