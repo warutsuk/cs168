@@ -2,7 +2,7 @@
 layout: post
 title: "Lecture 2 : Approximate Heavy Hitters and the Count-Min Sketch"
 ---
-\newcommand{\prob}[2][]{\text{\bf Pr}\ifthenelse{\not\equal{}{#1}}{_{#1}}{}\!\left[#2\right]}
+
 
 ## The Heavy Hitters Problem
 
@@ -601,11 +601,11 @@ Z_i = f_x + \sum_{y \neq x} f_y\textbf{1}_y, \tag{6}
 \end{equation}
 $$
 
-where $$\one_y$$ is the indicator random variable that indicates whether
+where $$\textbf{1}_y$$ is the indicator random variable that indicates whether
 or not $$y$$ collides with $$x$$ under $$h_i$$:
 
 $$
-\one_y = \left\{ \begin{array}{cl}
+\textbf{1}_y = \left\{ \begin{array}{cl}
 1 & \text{if} h_i(y) = h_i(x)\\
 0 & \text{otherwise.}
 \end{array}\right.
@@ -621,7 +621,7 @@ E[Z_i] = f_x + \sum_{y \neq x} f_y \cdot E[\textbf{1}_y]. \tag{7}
 \end{equation}
 $$
 
-As indicator random variables, the $$\one_y$$'s have very simple
+As indicator random variables, the $$\textbf{1}_y$$'s have very simple
 expectations:
 
 $$
