@@ -67,4 +67,39 @@ But so what?  It's a cute algorithm, but isn't this just a toy
 problem?  It is, but modest generalizations of the problem are quite
 close to problems that people really want to solve in practice.
 
+### The Heavy Hitters Problem
+
+In the *heavy hitters* problem, the input is an array $$A$$ of
+length $$n$$, and also a parameter $$k$$.  You should think of $$n$$ as very
+large (in the hundreds of millions, or billions), and $$k$$ as modest
+(10, 100, or 1000). The goal is to compute the values that occur in the array at
+least $$n/k$$ times.[^1] Note that there can be at most $$k$$ such values; and there might be
+none. The problem of computing the majority element corresponds to the heavy hitters
+problem with $$k \approx 2-\delta$$ for a small value $$\delta > 0$$, and
+with the additional promise that a majority element exists.
+
+[^1]: A similar problem is the "top-$$k$$
+  problem," where the goal is to output the $$k$$ values that occur with
+  the highest frequencies.  The algorithmic ideas introduced in this
+  lecture are also relevant for the top-$$k$$ problem.
+
+The heavy hitters problem has lots of applications, as you can
+imagine.  We'll be more specific later when we discuss a concrete
+solution, but here are some high-level examples: [^2]
+
+[^2]: You wouldn't expect
+there to be a majority element in any of these applications, but you
+might expect a non-empty set of heavy hitters when $$k$$ is 100, 1000,
+or 10000.
+
+
+
+
+
+
+
+
+
+
+
 
