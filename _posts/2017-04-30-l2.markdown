@@ -565,8 +565,8 @@ In \eqref{eq:z}, $$f_x$$ and the $$f_y$$'s are fixed constants
 To continue the error analysis, we make the following assumption:
 
 
-(\*) For every pair $$x,y$$ of distinct objects, $$\prob{h_i(y)
-  = h_i(x)} \le \tfrac{1}{b}$$.
+(\*) For every pair $$x,y$$ of distinct objects, $$\textbf{Pr}[h_i(y)
+  = h_i(x)] \le \tfrac{1}{b}$$.
 
 Assumption (\*) basically says that, after conditioning on the bucket
 to which $$h_i$$ assigns an object $$x$$, the bucket $$h_i$$ assigns to
