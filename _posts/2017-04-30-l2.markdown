@@ -396,7 +396,7 @@ the bloom filter's property that it only suffers from false positives.
 
 
 
-###  Count-Min Sketch: Heuristic Error Analysis
+###  Count-Min Sketch: Heuristic Error Analysis {#sec2-4}
 The goal of this section
 is to analyze how much a count-min sketch overestimates
 frequency counts, as a function of the parameters $$b$$ and $$\ell$$.  Once
@@ -738,8 +738,7 @@ $$\ell$$ in \eqref{eq:error3} and find that $$\ell \ge \ln
 
 * Assuming that each hash function $$h_1,\ldots,h_{\ell}$$ is chosen
   uniformly from a universal family, for every object $$x$$ with frequency count $$f_x$$, the probability that
- the estimate Count($$x$$) output by the count-min sketch is greater than
- $$f_x + \epsilon n$$ is at most $$\delta$$. One would expect comparable performance for fixed well-crafted hash
+ the estimate Count($$x$$) output by the count-min sketch is greater than  $$f_x + \epsilon n$$ is at most $$\delta$$. One would expect comparable performance for fixed well-crafted hash
  functions $$h_1,\ldots,h_{\ell}$$ on pretty much any data set that you
  might encounter.
 
@@ -776,7 +775,7 @@ time via Find-Min), we delete $$x$$ from the heap (via Extract-Min).
 After finishing the pass, we output all of the objects in the heap.
 
 Assume for simplicity that the count-min sketch makes no large errors,
-with $$Count(x) \in [f_x,f_x+\epsilon n]$$ for all $$x$$.
+with Count($$x) \in [f_x,f_x+\epsilon n]$$ for all $$x$$.
 Every object $$x$$ with $$f_x \ge \tfrac{n}{k}$$
 is in the heap at
 the end of the pass.  (To see this, consider what happens the last
