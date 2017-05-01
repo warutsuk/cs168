@@ -4,9 +4,9 @@ title: "Lecture 2 : Approximate Heavy Hitters and the Count-Min Sketch"
 ---
 
 
-## The Heavy Hitters Problem
+## 1 The Heavy Hitters Problem
 
-### Finding the Majority Element {#sec1-1}
+### 1.1 Finding the Majority Element {#sec1-1}
 
 Let's begin with a problem that many of you have seen before.
 It's a common question in technical interviews.  You're given as
@@ -68,7 +68,7 @@ But so what?  It's a cute algorithm, but isn't this just a toy
 problem?  It is, but modest generalizations of the problem are quite
 close to problems that people really want to solve in practice.
 
-### The Heavy Hitters Problem {#sec1-2}
+### 1.2 The Heavy Hitters Problem {#sec1-2}
 
 In the *heavy hitters* problem, the input is an array $$A$$ of
 length $$n$$, and also a parameter $$k$$.  You should think of $$n$$ as very
@@ -121,7 +121,7 @@ space?[^3]
 
 [^3]: Rather than thinking of the array $$A$$ as an input fully specified in advance, we can alternatively think of the elements of $$A$$ as a "data stream," which are fed to a "streaming algorithm" one element at a time. One-pass algorithms that use small auxiliary space translate to streaming algorithms that need only small working memory. One use case for streaming algorithms is when data arrives at such a fast rate that explicitly storing it is absurd. For example, this  is often the reality in the motivating example of data packets traveling through a network switch. A second use case is when, even though data can be stored in its entirety and fully analyzed (perhaps as an overnight job), it's still useful to perform lightweight analysis on the arriving data in real time. The first two applications (popular transactions or search queries) are examples of this.
 
-###  An Impossibility Result
+### 1.3 An Impossibility Result
 
 The following fact might surprise you.
 
@@ -160,7 +160,7 @@ hard to make this idea precise using the Pigeonhole Principle.[^5]
 
 [^5]: Somewhat more detail: if you always use sublinear space to store the set $$S$$, then you need to reuse exactly the same memory contents for two different sets $$S_1$$ and $$S_2$$. Your membership query answers will be the same in both cases, and in one of these cases some of your answers will be wrong.
 
-###  The Approximate Heavy Hitters Problem {#sec1-4}
+### 1.4 The Approximate Heavy Hitters Problem {#sec1-4}
 
 What should we make of [Fact 1.1](#fact1)?  Should we go home with our
 tail between our legs?  Of course not --- the applications that
@@ -198,9 +198,9 @@ Space usage $$O(\tfrac{1}{\epsilon}) = O(k)$$ is also totally palatable;
 after all, the output of the heavy hitters or $$\epsilon$$-HH problem
 already might be as large as $$k$$ elements.
 
-## The Count-Min Sketch
+## 2 The Count-Min Sketch
 
-### Discussion
+### 2.1 Discussion
 
 This section presents an elegant small-space data structure, the *count-min sketch* [\[5\]](#ref5), that can
 be used to solve the $$\epsilon$$-HH problem.  There are also several other
@@ -240,7 +240,7 @@ Another reason for its current popularity is that its computations
 parallelize easily --- as we discuss its implementation, you might
 want to think about this point.
 
-### A Role Model: The Bloom Filter
+### 2.2 A Role Model: The Bloom Filter
 
 This section briefly reviews the bloom filter data structure,
 which is a role model for the count-min sketch. No
@@ -294,7 +294,7 @@ use far less space.  Second, at a technical level, if you remember how
 bloom filters are implemented, you'll recognize the count-min sketch
 implementation as a bird of the same feather.
 
-### Count-Min Sketch: Implementation
+### 2.3 Count-Min Sketch: Implementation
 
 The count-min-sketch supports two operations: Inc($$x$$) and
 Count($$x$$).[^9]  The operation Count($$x$$) is supposed to
@@ -401,7 +401,7 @@ the bloom filter's property that it only suffers from false positives.
 
 
 
-###  Count-Min Sketch: Heuristic Error Analysis {#sec2-4}
+###  2.4 Count-Min Sketch: Heuristic Error Analysis {#sec2-4}
 The goal of this section
 is to analyze how much a count-min sketch overestimates
 frequency counts, as a function of the parameters $$b$$ and $$\ell$$.  Once
@@ -541,7 +541,7 @@ heuristic analysis in this section.
 
 
 
-### Count-Min Sketch: Rigorous Error Analysis {#sec2-5}
+### 2.5 Count-Min Sketch: Rigorous Error Analysis {#sec2-5}
 
 This section carries out a rigorous version of the heuristic error
 analysis in [Section 2.4](#sec2-4).
@@ -708,7 +708,7 @@ $$\ell$$ in \eqref{eq:error3} and find that $$\ell \ge \ln
 1%, $$\ell = 5$$ is good enough.
 
 
-### Count-Min Sketch: Final Report Card
+### 2.6 Count-Min Sketch: Final Report Card
 
 
 * The space required is that for $$\tfrac{e}{\epsilon} \ln
@@ -751,7 +751,7 @@ $$\ell$$ in \eqref{eq:error3} and find that $$\ell \ge \ln
 
 
 
-### Solving the $$\epsilon$$-Heavy Hitters Problem
+### 2.7 Solving the $$\epsilon$$-Heavy Hitters Problem
 
 The count-min sketch can be used
 to solve the $$\epsilon$$-HH problem from
@@ -799,7 +799,7 @@ $$O(\log k) = O(\log \tfrac{1}{\epsilon})$$ amount of work per array entry.
 
 
 
-## Lecture Take-Aways
+## 3 Lecture Take-Aways
 1. Hashing is even cooler and more useful than you had realized.
 
 2. The key ideas behind Bloom Filters extend to other lightweight
