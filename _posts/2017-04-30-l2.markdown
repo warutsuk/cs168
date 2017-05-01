@@ -21,12 +21,29 @@ left-to-right pass through the array?
 If you haven't seen it before, here's the solution:
 
 * Initialize counter := 0, current := NULL. [current stores the frontrunner for the majority element]
-* For $i=1$ to $n$:
+* For $$i=1$$ to $$n$$:
 
      * If counter == 0:
+     
        [In this case, there is no frontrunner.]
 
+          * current := A[i]
 
+          * counter++
+
+     * else if A[i]==current:
+
+       [In this case, our confidence in the current frontrunner goes up.]
+
+          * counter++
+
+     * else
+
+       [In this case, our confidence in the current frontrunner goes down.]
+
+          * counter--
+
+* Return current
 
 
 
