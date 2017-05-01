@@ -1,0 +1,157 @@
+-------------- CREATE A NEW POST -------------------
+
+Go into the folder "_posts" and create a file with name of the format "2017-04-27-l1.markdown", where the date and lecture number are modified accordingly. To see an example of a post, open the file "2017-04-27-l1.markdown" and click "Raw".
+
+The file should start with the following four lines of header, where the title is modified accordingly.
+
+---
+layout: post
+title: "Lecture 1 : Introduction and Consistent Hashing"
+---
+
+About 10-15 seconds after you save the file, you should be able to see the post at https://warutsuk.github.io/cs168/
+
+-------------------- LATEX preprocess ------------------------
+
+1. I just replaced all `` ‘’ with normal quotation marks “”.
+2. I replaced all macros (like \prob, \expect) with the appropriate latex command (like \textbf{Pr}, \textbf{E}).
+
+-------------------- SYNTAX ------------------------
+
+Some characters (e.g., ( ) [ ]) will sometimes need to be escaped by putting a backslash in front when they appear in the text, though I'm not sure which characters and when. Try it yourself.
+
+For a section, put two #'s at the front, like so:
+
+## Consistent Hashing
+
+For a subsection, put three #'s at the front, like so:
+
+### Meta-Discussion
+
+For italics text, put one * each at the front and back, like so:
+
+*conceptually simple*
+
+For bold text, put two *'s each at the front and back, like so:
+
+**Reducing the variance:**
+
+You should change the quotation marks from the LaTeX format (``...'') to the usual format ("..."), and delete all tildes (~).
+
+Also, the % sign doesn’t need \% as in latex.
+
+For an unnumbered list, put one * at the front of each element of the list, like so:
+
+* As you could guess by the word "hashing," ...
+
+* The topic is "modern," ...
+
+* Consistent hashing is a "tool" ...
+
+For a numbered list, simply number the list, like so:
+
+1. 1997: The implementation of consistent hashing ...
+
+2. 1998: Akamai is founded.
+
+3. March 31, 1999: A trailer for "Star Wars: The Phantom Menace" ...
+
+If an element of a list (either numbered or unnumbered) contains more than one paragraph, make sure that the following paragraphs are aligned with the first paragraph (i.e., have at least an equal amount of whitespace at the beginning); otherwise the program will interpret that the list has ended.
+
+For a footnote, place a footnote marker like [^3] (keep track of the number yourself) at the place you want the number to appear. Then, in a separate paragraph, write the footnote, like so:
+
+[^3]: Assuming that the number of buckets ...
+
+The footnote will automatically appear at the bottom of the page.
+
+--------------------- LINKS --------------------------
+
+For an external link, use the following syntax:
+
+[apple.com](http://www.apple.com)
+
+This shows the text "apple.com" and links to "http://www.apple.com".
+
+For a link within the page, you first create an ID for the place you want to link to. If it is a (sub)section, use the following format:
+
+### Some History (1997--2015) {#some-history}
+
+This creates an ID "#some-history" for this subsection.
+
+If the place you want to link to is a paragraph/reference/image, place the ID on the next line instead of on the same line. For example:
+
+![replication](/cs168/images/l1/replication.jpg){:height="40%" width="40%" style="display:block;margin:auto;"}
+{: #fig4}
+
+This creates an ID "#fig4" to this image.
+
+2. D. Karger, E. Lehman, T. Leighton, R. Panigrahy, M. Levine, and D. Lewin. Consistent hashing and random trees: Distributed caching protocols for relieving hot spots on the world wide web. In *Proceedings of the Twenty-ninth Annual ACM Symposium on Theory of Computing (STOC)*, pages 654–663, 1997.
+   {: #ref2}
+
+This creates an ID "#ref2" to this reference.
+
+For a (sub)section, an ID is automatically generated for you by the program. For example a (subsection) named "About CS168" will have an ID "#about-cs168". But if you're not sure, you can always create an ID for it yourself.
+
+To link to that place, use the following syntax:
+
+... consider the array shown in [Figure 2](#fig2)
+
+--------------------- IMAGES --------------------------
+
+For each image, I first convert the PDF to JPG using pdf2jpg.net with the highest image quality. Then, create a subfolder of the folder "images" for that lecture (e.g., for Lecture 1, create a subfolder "l1") and put the JPG files in there. Note that to create a folder, you need to instead create a file, and when you put the file name, put the folder name instead followed by a Backslash. The Ubuntu interface will realize that you want to create that folder. Then you create a dummy file, put your real files in there, and delete the dummy file.
+
+To insert an image, use the following syntax:
+
+![imagename](/cs168/images/l1/imagename.jpg){:height="20%" width="20%" style="display:block;margin:auto;"}
+{: #fig1}
+
+You should adjust the height/width to make the size appropriate. It seems that both numbers should be the same in order to keep the ratio between height and width.
+
+For an image caption, simply create a separate paragraph and put all the text in italics.
+
+----------------------- MATH ----------------------------
+
+All LaTeX needs to be put within double dollar signs: $$a+b=c$$
+
+You can create an equation:
+
+$$
+\begin{equation}\label{eq:simple}
+h(x) \bmod n. \tag{1}
+\end{equation}
+$$
+
+Unlike in LaTeX, the equation will not automatically be labeled. To label it, put in "\tag{1}", where 1 should be replaced by the label. Then you'll be able to reference it as "\eqref{eq:simple}".
+
+For the Probability sign Pr, I used \textbf{Pr}[] and for the expectation sign E, I just used E[].
+
+
+-------------------- REFERENCES -------------------------
+
+For references, I just do it manually. I put "---" before the references section to separate it from the remainder of the page. Then I put "Footnotes" as the last "subsection". Then below this, the footnotes that you create throughout the text will appear.
+
+---
+
+### References
+
+1. G. DeCandia, D. Hastorun, M. Jampani, G. Kakulapati, A. Lakshman, A. Pilchin, S. Sivasubramanian, P. Vosshall, and W. Vogels. Dynamo: Amazon’s highly available key-value store. *SIGOPS Operating Systems Review*, 41(6):205–220, 2007. 
+   {: #ref1}
+
+2. D. Karger, E. Lehman, T. Leighton, R. Panigrahy, M. Levine, and D. Lewin. Consistent hashing and random trees: Distributed caching protocols for relieving hot spots on the world wide web. In *Proceedings of the Twenty-ninth Annual ACM Symposium on Theory of Computing (STOC)*, pages 654–663, 1997.
+   {: #ref2}
+
+(other references go here)
+
+### Footnotes 
+
+
+
+
+
+
+
+
+
+
+
+
