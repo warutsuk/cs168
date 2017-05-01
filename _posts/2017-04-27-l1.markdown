@@ -7,7 +7,7 @@ title: "Lecture 1 : Introduction and Consistent Hashing"
 
 ### 1.1 Meta-Discussion
 
-We'll talk about the course in general in [About CS168](#about-cs168), but first let's discuss a representative technical topic: *consistent  hashing*.  This topic is representative in the following respects:
+We'll talk about the course in general in [Section 2](#about-cs168), but first let's discuss a representative technical topic: *consistent  hashing*.  This topic is representative in the following respects:
 
 * As you could guess by the word "hashing," the topic builds on central algorithmic ideas that you've already learned (e.g., in CS161) and adapts them to some very real-world applications.
 
@@ -69,7 +69,7 @@ $$
 
 Note that $$h(x)$$ is probably something like a 32-bit value, representing an integer that is way way bigger than $$n$$ --- this is the reason we apply the "$$\bmod n$$" operation to recover the name of one of the caches.
 
-The solution \eqref{eq:simple} of mapping URLs to caches is an excellent first cut, and it works great in many cases.  To motivate why we might need a different solution, suppose the number $$n$$ of caches is not static, but rather is changing over time.  For example, in Akamai's early days, they were focused on adding as many caches as possible all over the Internet, so $$n$$ was constantly increasing.  Web caches can also fail or lose connection to the network, which causes $$n$$ to decrease.  In a peer-to-peer context (see [Some History (1997-2015)](#some-history)), $$n$$ corresponds to the number of nodes of the network, which is constantly changing as nodes join and depart.
+The solution \eqref{eq:simple} of mapping URLs to caches is an excellent first cut, and it works great in many cases.  To motivate why we might need a different solution, suppose the number $$n$$ of caches is not static, but rather is changing over time.  For example, in Akamai's early days, they were focused on adding as many caches as possible all over the Internet, so $$n$$ was constantly increasing.  Web caches can also fail or lose connection to the network, which causes $$n$$ to decrease.  In a peer-to-peer context (see [Section 1.5](#some-history)), $$n$$ corresponds to the number of nodes of the network, which is constantly changing as nodes join and depart.
 
 Suppose we add a new cache and thereby bump up $$n$$ from 100 to 101. For an object $$x$$, it is very unlikely that $$h(x) \bmod 100$$ and $$h(x) \bmod 101$$ are the same number,  Thus, *changing $$n$$ forces almost all objects to relocate*.  This is a disaster for applications where $$n$$ is constantly changing.[^4]
 
@@ -149,7 +149,7 @@ Virtual copies are also useful for dealing with heterogeneous caches that have d
 
    This idea is now widely copied in modern lightweight alternatives to traditional databases (the latter of which tend to reside on disk).  Such alternatives generally support few operations (e.g., no secondary keys) and relax traditional consistency requirements in exchange for speed.  As you can imagine, this is a big win for lots of modern Internet companies.
    
-## 2 About CS168 
+## 2 About CS168 {#about-cs168} 
 
 For the nuts and bolts of coursework, grading, etc., see the course Web site.  Read on for an overview of the course and our overarching goals and philosophy.
 
