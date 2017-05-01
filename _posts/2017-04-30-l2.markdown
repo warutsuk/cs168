@@ -20,3 +20,14 @@ more ambitious: can we compute the majority element with a single
 left-to-right pass through the array?
 If you haven't seen it before, here's the solution:
 
+* Initialize counter := 0, current := NULL. [current stores the frontrunner for the majority element]
+* For $i=1$ to $n$:
+
+     * If counter == 0:
+       [In this case, there is no frontrunner.]
+
+
+
+
+
+
