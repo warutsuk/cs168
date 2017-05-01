@@ -500,7 +500,7 @@ The output of Count($$x$$) exceeds $$f_x$$ by
 more than $$\epsilon n$$ only if
 *every* row's estimate is too big.  
 Assuming that the hash functions $$h_i$$
-are independent,[^12] we have
+are independent,[^12] we have:
 
 $$
 \begin{equation}\label{eq:error_heur}
