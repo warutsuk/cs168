@@ -504,13 +504,11 @@ are independent,[^12] we have
 
 $$
 \begin{equation}\label{eq:error_heur}
-\textbf{Pr}\[\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
- > f_x + \frac{2n}{b}\]
-= \prod_{i=1}^{\ell} \textbf{Pr}[\text{CMS}[i][h_i(x)]
- > f_x + \frac{2n}{b}]
-  \le \left( \frac{1}{2} \right)^{\ell}.
+\text{CMS}[i][h_i(x)] = f_x + \frac{1}{b} \sum_{y \neq x} f_y \le \tag{3}
+f_x + \frac{n}{b},
 \end{equation}
 $$
+
 
 
 [^12]:Don't forget that probabilities factor only for independent events.  There are again two interpretations of this step: in the first, we assume that each $$h_i$$ is chosen independently and randomly from a universal family of hash functions; in the second, we assume that the $$h_i$$'s are sufficiently well crafted that they almost always behave as if they were independent on real data.
