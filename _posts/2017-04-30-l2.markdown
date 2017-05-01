@@ -676,7 +676,7 @@ $$\tfrac{\epsilon n}{e}$$.[^14] Since this overestimate is always nonnegative, w
 inequality ([Proposition 2.2](#prop2-2)) with $$E[X] =
 \tfrac{\epsilon n}{e}$$ and $$c = e$$ to obtain
 
-[^14]:Here $$e = 2.718\ldots$$, which gives slightly better constant factors than the choice of 2 in Section \ref{ss:error_heur}.
+[^14]:Here $$e = 2.718\ldots$$, which gives slightly better constant factors than the choice of 2 in [Section 2.4](#sec2-4).
 
 $$
 \textbf{Pr}[X > e \cdot \tfrac{\epsilon n}{e}] \le \frac{1}{e}
@@ -706,9 +706,116 @@ $$\ell$$ in \eqref{eq:error3} and find that $$\ell \ge \ln
 ### Count-Min Sketch: Final Report Card
 
 
+* The space required is that for $$\tfrac{e}{\epsilon} \ln
+  \tfrac{1}{\delta}$$ counters.  Recall from [Section 1.4](#sec1-4) that for the $$\epsilon$$-HH problem, $$\epsilon = \tfrac{1}{2k}$$ is
+  a sensible choice.  For $$k = 100$$ and $$\delta = .01$$ this is in the
+  low thousands.  For larger values of $$k$$, the number of counters
+  needed scales linearly.[^15] In any case, the number of counters is
+  totally independent of $$n$$ (which could be in billions)!  This is
+  the magic of the count-min sketch --- you can throw out almost all
+  of your data set and still maintain approximate frequency counts.
+  Contrast this with bloom filters, and pretty much every other data
+  structure that you've seen, where the space grows linearly with the
+  number of processed elements.[^16]
+  
+[^16]:How is this possible?  Intuitively,
+    with an error of $$\epsilon n$$ allowed, only the elements with with
+    large ($$> \epsilon n$$) frequency counts matter, and there can be at
+    most $$\tfrac{1}{\epsilon}$$ such elements (why?).  Thus it is plausible
+   that space proportional to $$\tfrac{1}{\epsilon}$$ might be enough.  Of
+   course, there's still the issue of not knowing in advance which
+   $$\approx \tfrac{1}{\epsilon}$$ elements are the important ones!  
+
+[^15]:Note that the challenging case, and the case that often occurs in our motivating applications, is an array $$A$$ that simultaneously has lots of different elements but also a few elements that occur many times. If there are few distinct elements, one can maintain the frequency counts exactly using one counter per distinct element.  If no elements occur frequently, then there's nothing to do.
+
+* Assuming the hash functions take constant time to evaluate, the
+   Inc and Count operations run in $$O(\ln \tfrac{1}{\delta})$$ time.
+
+* The count-min sketch guarantees 1-sided error: no matter how the
+  hash functions $$h_1,\ldots,h_{\ell}$$ are chosen, for every object
+  $$x$$ with frequency count $$f_x$$, the count-min sketch returns an
+  estimate Count($$x$$) that is at least $$f_x$$.
+
+* Assuming that each hash function $$h_1,\ldots,h_{\ell}$$ is chosen
+  uniformly from a universal family, for every object $$x$$ with frequency count $$f_x$$, the probability that
+ the estimate Count($$x$$) output by the count-min sketch is greater than
+ $$f_x + \epsilon n$$ is at most $$\delta$$. One would expect comparable performance for fixed well-crafted hash
+ functions $$h_1,\ldots,h_{\ell}$$ on pretty much any data set that you
+ might encounter.
+
+
+
+
+
 ### Solving the $$\epsilon$$-Heavy Hitters Problem
 
+The count-min sketch can be used
+to solve the $$\epsilon$$-HH problem from
+[Section 1.4](#sec1-4).  
+If the total number $$n$$ of array elements is known in advance, this is
+easy: set $$\epsilon = \tfrac{1}{2k}$$, process the array elements using a
+count-min sketch in a single pass, and remember an element once its
+estimated frequency (according
+to the count-min sketch) is at least $$\tfrac{n}{k}$$.
+
+When $$n$$ is not known a priori, 
+here is one way to solve the problem.
+Assume that $$\epsilon = \tfrac{1}{2k}$$ and so the number of counters is
+$$O(k \ln \tfrac{1}{\delta})$$.
+In a single left-to-right pass over the array $$A$$, maintain the number
+$$m$$ of array entries processed thus far.  We store potential heavy hitters
+in a heap data structure.
+When processing the next object $$x$$ of the array, we invoke Inc($$x$$)
+followed by Count($$x$$).  If Count($$x) \ge \tfrac{m}{k}$$, then we
+store $$x$$ in the heap, using the key Count($$x)$$.  (If $$x$$ was already
+in the heap, we delete it before re-inserting it with its new key
+value.)  This requires one insertion and at most one deletion from the
+heap.  Also, whenever $$m$$ grows to the point that some object $$x$$
+stored in the heap has a key less than $$m/k$$ (checkable in $$O(1)$$
+time via Find-Min), we delete $$x$$ from the heap (via Extract-Min).
+After finishing the pass, we output all of the objects in the heap.
+
+Assume for simplicity that the count-min sketch makes no large errors,
+with $$Count(x) \in [f_x,f_x+\epsilon n]$$ for all $$x$$.
+Every object $$x$$ with $$f_x \ge \tfrac{n}{k}$$
+is in the heap at
+the end of the pass.  (To see this, consider what happens the last
+time that $$x$$ occurs.)
+The "no large errors" assumption
+implies an approximate converse: every object $$x$$ in the heap has
+true frequency count at least $$\tfrac{n}{k} - \epsilon n =
+\tfrac{n}{2k}$$ (other objects would be deleted from the heap by the
+end of the pass).  These are exactly the two properties we ask of a
+solution to the $$\epsilon$$-HH problem.  If the
+count-min sketch makes large errors on a few objects, then these
+objects might erroneously appear in the final output as well.
+Ignoring the objects with large errors, the heap contains at most $$2k$$
+objects at all times (why?), so maintaining the heap requires an extra
+$$O(\log k) = O(\log \tfrac{1}{\epsilon})$$ amount of work per array entry.
+
+
+
 ## Lecture Take-Aways
+1. Hashing is even cooler and more useful than you had realized.
+
+2. The key ideas behind Bloom Filters extend to other lightweight
+  data structures that are useful for solving other problems (not just
+  the membership problem).
+
+3. The idea of lossy compression. If you only want to
+  approximately preserve certain properties, like frequency counts,
+  then sometimes you can get away with throwing away almost all of
+  your data.  We'll see another example next week: dimension
+  reduction, where the goal is to approximately preserve pairwise
+  measures (like similarity) between objects.
+
+4. (Approximate) frequency counts/heavy hitters are exactly what
+  you want in many applications --- traffic at a network
+  switch, click data at a major Web site, streaming data from a
+  telescope or satellite, etc.  It's worth knowing that this useful
+  primitive can be solved efficiently at a massive scale, with even
+  less computation and space than most of the linear-time algorithms that you studied
+  in CS161.
 
 ### References
 B. H. Bloom. Space/time trade-offs in hash coding with allowable errors. Communications
