@@ -20,7 +20,9 @@ more ambitious: can we compute the majority element with a single
 left-to-right pass through the array?
 If you haven't seen it before, here's the solution:
 
-* Initialize counter := 0, current := NULL. [current stores the frontrunner for the majority element]
+* Initialize counter := 0, current := NULL. 
+  [current stores the frontrunner for the majority element]
+
 * For $$i=1$$ to $$n$$:
 
      * If counter == 0:
@@ -41,10 +43,28 @@ If you haven't seen it before, here's the solution:
 
        [In this case, our confidence in the current frontrunner goes down.]
 
-          * counter--
+          * counter- -
 
 * Return current
 
+For example, suppose the input is the array $$\{2,1,1\}$$.  The first
+iteration of the algorithm makes "2" the current guess of the majority
+element, and sets the counter to 1.  The next element decreases the
+counter back to 0 (since $$1 \neq 2$$).  The final iteration resets the
+current guess to "1" (with counter value 1), which is indeed the
+majority element.
 
+More generally, the algorithm correctly computes the majority element
+of any array that possesses one.  We encourage you to formalize a
+proof of this statement (e.g., by induction on $$n$$).  The intuition is
+that each entry of $$A$$ that
+contains a non-majority-value can only "cancel out" one copy of the
+majority value.  Since more than $$n/2$$ of the entries of $$A$$
+contain the majority value, there is guaranteed to be a copy of it
+left standing at the end of the algorithm.
+
+But so what?  It's a cute algorithm, but isn't this just a toy
+problem?  It is, but modest generalizations of the problem are quite
+close to problems that people really want to solve in practice.
 
 
