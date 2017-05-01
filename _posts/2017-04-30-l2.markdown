@@ -5,7 +5,7 @@ title: "Lecture 2 : Approximate Heavy Hitters and the Count-Min Sketch"
 
 ## The Heavy Hitters Problem
 
-### Finding the Majority Element {#sec1.1}
+### Finding the Majority Element {#sec1-1}
 
 Let's begin with a problem that many of you have seen before.
 It's a common question in technical interviews.  You're given as
@@ -67,7 +67,7 @@ But so what?  It's a cute algorithm, but isn't this just a toy
 problem?  It is, but modest generalizations of the problem are quite
 close to problems that people really want to solve in practice.
 
-### The Heavy Hitters Problem {#sec1.2}
+### The Heavy Hitters Problem {#sec1-2}
 
 In the *heavy hitters* problem, the input is an array $$A$$ of
 length $$n$$, and also a parameter $$k$$.  You should think of $$n$$ as very
@@ -191,7 +191,7 @@ up (as is necessary, by [Fact 1.1](#fact1)).
 For example, suppose we take $$\epsilon = \tfrac{1}{2k}$$.  Then, the
 algorithm outputs every value with frequency count at least $$\tfrac{n}{k}$$,
 and only values with frequency count at least $$\tfrac{n}{2k}$$.  Thinking
-back to the motivating examples in [Section 1.2](#sec1.2) , such an
+back to the motivating examples in [Section 1.2](#sec1-2) , such an
 approximate solution is essentially as useful as an exact solution.
 Space usage $$O(\tfrac{1}{\epsilon}) = O(k)$$ is also totally palatable;
 after all, the output of the heavy hitters or $$\epsilon$$-HH problem
@@ -205,7 +205,7 @@ This section presents an elegant small-space data structure, the *count-min sket
 be used to solve the $$\epsilon$$-HH problem.  There are also several other
 good solutions to the problem, including some natural
 "counter-based" algorithms that extend the algorithm
-in [Section 1.1](#sec1.1) for computing a
+in [Section 1.1](#sec1-1) for computing a
 majority element [\[6\]](#ref6)[\[7\]](#ref7).
 We focus on the count-min sketch
 for a number of reasons.
@@ -213,15 +213,13 @@ for a number of reasons.
 
 1. It has been implemented in real systems.  For example, AT{\&}T has
   used it in network switches to perform analyses on network traffic using
-  limited memory~\cite{att}.\footnote{There is a long tradition in the
-    Internet
-    of designing routers that are "fast and dumb," and many of them
-    have far less memory than a typical smartphone.}
-   At Google, a precursor of the count-min sketch (called the "count
-  sketch"~\cite{CCF02}) has been implemented on top of their MapReduce
-  parallel processing infrastructure~\cite{googlecms}.  One of the original
+  limited memory[\[4\]](#ref4).[^7] At Google, a precursor of the count-min sketch (called the "count
+  sketch" [\[3\]](#ref3)) has been implemented on top of their MapReduce
+  parallel processing infrastructure [\[8\]](#ref8).  One of the original
  motivations for this primitive was log analysis (e.g., of source code
  check-ins), but presumably it is now used for lots of different analyses.
+[^7]:There is a long tradition in the Internet of designing routers that are "fast and dumb," and many of them have far less memory than a 
+typical smartphone.
 
 2. The data structure is based on hashing, and as such fits in well
   with the current course theme.
@@ -247,6 +245,22 @@ want to think about this point.
 
 
 ### References
+B. H. Bloom. Space/time trade-offs in hash coding with allowable errors. Communications
+of the ACM, 13(7):422–426, 1970.
+{: #ref1}
+
+A. Broder and M. Mitzenmacher. Network applications of. bloom filters: A survey.
+Internet Mathematics, 1(4):485–509, 2005.
+{: #ref2}
+
+M. Charikar, K. Chen, and M. Farach-Colton. Finding frequent items in data streams.
+Theoretical Computer Science, 312(1):3–15, 2004.
+{: #ref3}
+
+G. Cormode, T. Johnson, F. Korn, S. Muthukrishnan, O. Spatscheck, and D. Srivastava.
+Holistic UDAFs at streaming speeds. In Proceedings of the 2004 ACM SIGMOD
+International Conference on Management of Data, pages 35–46, 2004.
+{: #ref4}
 
 G. Cormode and S. Muthukrishnan. An improved data stream summary: The count-min
 sketch and its applications. Journal of Algorithms, 55(1):58–75, 2005.
@@ -259,5 +273,10 @@ Database Theory (ICDT), pages 398–412, 2005.
 
 J. Misra and D. Gries. Finding repeated elements. Science of Computer Programming,
 2:143–152, 1982.
-{: ref7}
+{: #ref7}
+
+R. Pike, S. Dorward an R. Griesemer, and S. Quinlan. Interpreting the data: Parallel
+analysis with Sawzall. Dynamic Grids and Worldwide Computing, 13(4):277–298, 2005.
+{: #ref8}
+
 
