@@ -264,7 +264,7 @@ but with some false positives (so there are "phantom elements"
 that the data structure claims are present, even though they were never
 inserted).  For instance, using 8 bits per stored element --- well
 less than the space required for a pointer, for example --- bloom
-filters can achieve a false positive probability less than 2\%.
+filters can achieve a false positive probability less than 2%.
 More generally, bloom filters offer a smooth trade-off between the
 space used and the false positive probability.
 Both the insertion and lookup operations are super-fast ($$O(1)$$ time)
@@ -469,7 +469,7 @@ So why aren't we done?  We'd like to say that, in addition to the
 expected overestimate of a frequency count being small, with
 very large probability the overestimate of a frequency count is small.
 (For a role model, recall that typical bloom filters guarantee a false
-positive probability of 1-2\%.)  This requires translating our
+positive probability of 1-2%.)  This requires translating our
 bound on an expectation to a bound on a probability.  
 
 Next, we observe that \eqref{eq:error_heur} implies that the
@@ -581,7 +581,7 @@ $$X_1,\ldots,X_m$$ defined on the same probability space,
 
 $$
 \begin{equation}\label{eq:linexp}
-E{\sum_{j=1}^m X_j} = \sum_{j=1}^m E{X_j}. \tag{5}
+E[\sum_{j=1}^m X_j] = \sum_{j=1}^m E[X_j]. \tag{5}
 \end{equation}
 $$
 
