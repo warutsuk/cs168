@@ -87,7 +87,7 @@ solution, but here are some high-level examples: [^2]
 [^2]: You wouldn't expect there to be a majority element in any of these applications, but you might expect a non-empty set of heavy hitters when $$k$$ is 100, 1000, or 10000.
 
 1. Computing popular products.  For example, $$A$$ could be all of
-  the page views of products on [amazon]{http://www.amazon.com} yesterday. The heavy
+  the page views of products on [amazon](http://www.amazon.com) yesterday. The heavy
   hitters are then the most frequently viewed products.
 
 2. Computing frequent search queries.  For example, $$A$$ could be
