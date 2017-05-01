@@ -452,7 +452,7 @@ See also [Section 2.5](#sec2-5) for a formal
 (non-heuristic) derivation of \eqref{eq:error_heur}.
 
 We should be pleased with \eqref{eq:error_heur}.  Recall the
-definition of the $$\epsilonilon$$-approximate heavy hitters problem
+definition of the $$\epsilon$$-approximate heavy hitters problem
 ([Section 1.4](#sec1-4)): the goal is to identify objects with
 frequency count at least $$\tfrac{n}{k}$$, without being fooled by any
 objects with frequency count less than $$\tfrac{n}{k} -\epsilon n$$.  This
@@ -506,10 +506,10 @@ are independent,[^12] we have
 
 
 $$
-\prob{\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
- > f_x + \frac{2n}{b}}
-= \prod_{i=1}^{\ell} \prob{\text{CMS}[i][h_i(x)]
- > f_x + \frac{2n}{b}}
+**Pr**\left{\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
+ > f_x + \frac{2n}{b}\right}
+= \prod_{i=1}^{\ell} **Pr**\left{\text{CMS}[i][h_i(x)]
+ > f_x + \frac{2n}{b}\right}
   \le \left( \frac{1}{2} \right)^{\ell}.
 $$
 
