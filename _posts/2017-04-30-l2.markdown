@@ -5,7 +5,7 @@ title: "Lecture 2 : Approximate Heavy Hitters and the Count-Min Sketch"
 
 ## The Heavy Hitters Problem
 
-### Finding the Majority Element
+### Finding the Majority Element {#sec1.1}
 
 Let's begin with a problem that many of you have seen before.
 It's a common question in technical interviews.  You're given as
@@ -197,10 +197,67 @@ Space usage $$O(\tfrac{1}{\epsilon}) = O(k)$$ is also totally palatable;
 after all, the output of the heavy hitters or $$\epsilon$$-HH problem
 already might be as large as $$k$$ elements.
 
+## The Count-Min Sketch
+
+### Discussion
+
+This section presents an elegant small-space data structure, the *count-min sketch* [\[5\]](#ref5), that can
+be used to solve the $$\epsilon$$-HH problem.  There are also several other
+good solutions to the problem, including some natural
+"counter-based" algorithms that extend the algorithm
+in [Section 1.1](#sec1.1) for computing a
+majority element [\[6\]](#ref6)[\[7\]](#ref7).
+We focus on the count-min sketch
+for a number of reasons.
+
+
+1. It has been implemented in real systems.  For example, AT{\&}T has
+  used it in network switches to perform analyses on network traffic using
+  limited memory~\cite{att}.\footnote{There is a long tradition in the
+    Internet
+    of designing routers that are "fast and dumb," and many of them
+    have far less memory than a typical smartphone.}
+   At Google, a precursor of the count-min sketch (called the "count
+  sketch"~\cite{CCF02}) has been implemented on top of their MapReduce
+  parallel processing infrastructure~\cite{googlecms}.  One of the original
+ motivations for this primitive was log analysis (e.g., of source code
+ check-ins), but presumably it is now used for lots of different analyses.
+
+2. The data structure is based on hashing, and as such fits in well
+  with the current course theme.
+
+3. The data structure introduces a new theme, present in many of
+  the next few lectures, of "lossy compression."  The goal here is
+  to throw out as much of your data as possible while still being able
+  to make accurate inferences about it.  What you want to keep depends
+  on the type of inference you want to support.  For approximately
+  preserving frequency counts, the count-min sketch shows that you can
+  throw out almost all of your data!
+
+
+We'll only discuss how to use the count-min sketch to solve the
+approximate heavy hitters problem, but it is also useful for other
+related tasks (see [\[5\]](#ref5) for a start).
+Another reason for its current popularity is that its computations
+parallelize easily --- as we discuss its implementation, you might
+want to think about this point.
 
 
 
 
 
+### References
 
+G. Cormode and S. Muthukrishnan. An improved data stream summary: The count-min
+sketch and its applications. Journal of Algorithms, 55(1):58–75, 2005.
+{: #ref5}
+
+A. Metwally, D. Agrawal, and A. El Abbadi. Efficient computation of frequent and
+top-k elements in data streams. In Proceedings of the 10th International Conference on
+Database Theory (ICDT), pages 398–412, 2005.
+{: #ref6}
+
+J. Misra and D. Gries. Finding repeated elements. Science of Computer Programming,
+2:143–152, 1982.
+{: ref7}
 
