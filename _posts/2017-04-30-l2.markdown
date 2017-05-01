@@ -137,9 +137,7 @@ occur at least twice in the input array $$A$$.[^4]
 
 Suppose $$A$$ has the form
 
-$$
-\underbrace{|x_1|x_2|x_3|\cdots|x_{n-1}|}_{\text{set $$S$$ of distinct elements}}y|,
-$$
+$$ \underbrace{|x_1|x_2|x_3|\cdots|x_{n-1}|}, $$
 
 [^4]:A simple modification of this argument extends the impossibility result to all interesting values of $$k$$ --- can you figure it out?
 
