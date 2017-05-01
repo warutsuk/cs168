@@ -581,7 +581,7 @@ $$X_1,\ldots,X_m$$ defined on the same probability space,
 
 $$
 \begin{equation}\label{eq:linexp}
-E[\sum_{j=1}^m X_j] = \sum_{j=1}^m E[X_j]. \tag{5}
+E\left[\sum_{j=1}^m X_j\right] = \sum_{j=1}^m E[X_j]. \tag{5}
 \end{equation}
 $$
 
@@ -606,7 +606,7 @@ or not $$y$$ collides with $$x$$ under $$h_i$$:
 
 $$
 \textbf{1}_y = \left\{ \begin{array}{cl}
-1 & \text{if} h_i(y) = h_i(x)\\
+1 & \text{if } h_i(y) = h_i(x)\\
 0 & \text{otherwise.}
 \end{array}\right.
 $$
@@ -621,15 +621,14 @@ E[Z_i] = f_x + \sum_{y \neq x} f_y \cdot E[\textbf{1}_y]. \tag{7}
 \end{equation}
 $$
 
-As indicator random variables, the $$\textbf{1}_y$$'s have very simple
-expectations:
+As indicator random variables, the $$\textbf{1}_y$$'s have very simple expectations:
 
 $$
 \begin{equation}\label{eq:error}
 E[\textbf{1}_y] =
-1 \cdot \underbrace{\textbf{Pr}{\textbf{1}_y = 1}}_{=\textbf{Pr}{h_i(y)=h_i(x)}} +
+1 \cdot \underbrace{\textbf{Pr}[\textbf{1}_y = 1]}_{=\textbf{Pr}[h_i(y)=h_i(x)]} +
 \underbrace{0 \cdot \textbf{Pr}[\textbf{1}_y = 0]}_{=0} \tag{8}
-= \textbf{Pr}{h_i(y)=h_i(x)} \stackrel{(\*)}{\le} \frac{1}{b}.
+= \textbf{Pr}[h_i(y)=h_i(x)] \stackrel{(*)}{\le} \frac{1}{b}.
 \end{equation}
 $$
 
@@ -637,7 +636,7 @@ Combining \eqref{eq:z3} and \eqref{eq:error} gives
 
 $$
 \begin{equation}\label{eq:error2}
-\E[Z_i] \le f_x + \frac{1}{b} \sum_{y \neq x} f_y \tag{9}
+E[Z_i] \le f_x + \frac{1}{b} \sum_{y \neq x} f_y \tag{9}
 \le f_x + \frac{n}{b}.
 \end{equation}
 $$
@@ -646,14 +645,13 @@ Next we translate this
 bound on an expectation to a bound on a probability.  A simple and
 standard way to do this is via *Markov's inequality*.
 
-**Proposition 2.2 (Markov's Inequality)** \label{prop:markov}
+**Proposition 2.2 (Markov's Inequality)**
 {: #prop2-2}
-If $$X$$ is a nonnegative random variable and $$c > 1$$ is a constant,
-then
+*If $$X$$ is a nonnegative random variable and $$c > 1$$ is a constant,
+then*
 $$
-\textbf{Pr}[X > c \cdot \E{X}] \le \frac{1}{c}.
+\textbf{Pr}[X > c \cdot E[X]] \le \frac{1}{c}.
 $$
-\end{prop}
 
 The proof of Markov's inequality is simple.  For example, suppose you
 have a nonnegative random variable $$X$$ with expected value 10.  How
