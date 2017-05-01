@@ -301,7 +301,7 @@ Count($$x$$).[^9]  The operation Count($$x$$) is supposed to
 return the *frequency count* of $$x$$, meaning the number of times
 that Inc($$x$$) has been invoked in the past.
 
-[^9]:The same data structure supports weighted increments, of the form \inc($$x$$,$$\Delta$$) for $$\Delta \ge 0$$, in exactly the same way.  With minor modifications, the data structure can even support deletions. We focus on the special case of incrementing by 1 for simplicity, and because it is sufficient for many of the motivating applications.
+[^9]:The same data structure supports weighted increments, of the form Inc($$x$$,$$\Delta$$) for $$\Delta \ge 0$$, in exactly the same way.  With minor modifications, the data structure can even support deletions. We focus on the special case of incrementing by 1 for simplicity, and because it is sufficient for many of the motivating applications.
 
 ![cms](/cs168/images/l2/cms.jpg){:height="60%" width="60%" style="display:block;margin:auto;"}
 {: #fig1}
