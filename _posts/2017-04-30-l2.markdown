@@ -502,18 +502,18 @@ more than $$\epsilon n$$ only if
 Assuming that the hash functions $$h_i$$
 are independent,[^12] we have
 
-[^12]:Don't forget that probabilities factor only for independent events.  There are again two interpretations of this step: in the first, we assume that each $$h_i$$ is chosen independently and randomly from a universal family of hash functions; in the second, we assume that the $$h_i$$'s are sufficiently well crafted that they almost always behave as if they were independent on real data.
-
-
 $$
-\begin{equation}
-\textbf{Pr} [\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
+\begin{equation}\label{eq:error_heur}
+\textbf{Pr}\[\min_{i=1}^{\ell} \text{CMS}[i][h_i(x)]
+ > f_x + \frac{2n}{b}\]
+= \prod_{i=1}^{\ell} \textbf{Pr}[\text{CMS}[i][h_i(x)]
  > f_x + \frac{2n}{b}]
-= \prod_{i=1}^{\ell} \textbf{Pr}\left{\text{CMS}[i][h_i(x)]
- > f_x + \frac{2n}{b}\right}
   \le \left( \frac{1}{2} \right)^{\ell}.
 \end{equation}
 $$
+
+
+[^12]:Don't forget that probabilities factor only for independent events.  There are again two interpretations of this step: in the first, we assume that each $$h_i$$ is chosen independently and randomly from a universal family of hash functions; in the second, we assume that the $$h_i$$'s are sufficiently well crafted that they almost always behave as if they were independent on real data.
 
 To get an overestimate threshold of $$\epsilon n$$, we can set
 $$b=\tfrac{2}{\epsilon}$$ (so e.g., 200 when $$\epsilon = .01$$).
