@@ -248,7 +248,7 @@ worries if you haven't seen bloom filters before; our treatment of the
 count-min sketch below is self-contained.  There are also review
 videos covering the details of bloom filters on the course Web site.
 
-The raison d'\^{e}tre of a bloom filter is to solve the *membership problem*. The client can insert elements into the bloom filter and
+The raison d'etre of a bloom filter is to solve the *membership problem*. The client can insert elements into the bloom filter and
 the data structure is responsible for remembering what's been
 inserted.  The bloom filter doesn't do much, but what it does it does
 very well.
