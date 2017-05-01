@@ -2,6 +2,7 @@
 layout: post
 title: "Lecture 2 : Approximate Heavy Hitters and the Count-Min Sketch"
 ---
+\newcommand{\prob}[2][]{\text{\bf Pr}\ifthenelse{\not\equal{}{#1}}{_{#1}}{}\!\left[#2\right]}
 
 ## The Heavy Hitters Problem
 
@@ -439,7 +440,7 @@ Thus we expect
 
 $$
 \begin{equation}\label{eq:error_heur}
-\text{CMS}[i][h_i(x)]} = f_x + \frac{1}{b} \sum_{y \neq x} f_y \le \tag{3}
+\text{CMS}[i][h_i(x)] = f_x + \frac{1}{b} \sum_{y \neq x} f_y \le \tag{3}
 f_x + \frac{n}{b},
 \end{equation}
 $$
@@ -454,9 +455,9 @@ We should be pleased with \eqref{eq:error_heur}.  Recall the
 definition of the $$\epsilonilon$$-approximate heavy hitters problem
 ([Section 1.4](#sec1-4)): the goal is to identify objects with
 frequency count at least $$\tfrac{n}{k}$$, without being fooled by any
-objects with frequency count less than $$\tfrac{n}{k} -\epsilonilon n$$.  This
+objects with frequency count less than $$\tfrac{n}{k} -\epsilon n$$.  This
 means we just need to estimate the frequency count of an object up to
-additive one-sided error $$\epsilonilon n$$.  If we take the number of buckets
+additive one-sided error $$\epsilon n$$.  If we take the number of buckets
 $$b$$ in the count-min sketch to be equal to $$\tfrac{1}{\epsilon}$$,
 then \eqref{eq:error_heur} says the expected overestimate of a given
 object is at most $$\epsilon n$$.  Note that the value of $$b$$, and hence the
