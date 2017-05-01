@@ -138,9 +138,7 @@ occur at least twice in the input array $$A$$.[^4]
 Suppose $$A$$ has the form
 
 $$
-\begin{equation}\label{eq:simple}
 \underbrace{|x_1|x_2|x_3|\cdots|x_{n-1}|}_{\text{set $$S$$ of distinct elements}}y|,
-\end{equation}
 $$
 
 [^4]:A simple modification of this argument extends the impossibility result to all interesting values of $$k$$ --- can you figure it out?
@@ -153,8 +151,7 @@ That is, *answering membership queries reduces
 to solving the Heavy Hitters problem.*
 
 By the "membership problem", we mean the task of preprocessing a set
-$$S$$ to answer queries of the form "is $$y \in S$$"?  
-(A hash table is the most common solution to this problem.)
+$$S$$ to answer queries of the form "is $$y \in S$$"? (A hash table is the most common solution to this problem.)
 It is intuitive that you cannot correctly answer all membership queries for a set $$S$$
 without storing $$S$$ (thereby using linear, rather than constant, space)
 --- if you throw some of $$S$$ out, you might get a query asking about
