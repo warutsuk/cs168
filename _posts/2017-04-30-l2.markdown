@@ -118,19 +118,18 @@ mean is: can we solve the Heavy Hitters problem with a single pass
 over the array, using only a small amount of auxiliary
 space?[^3]
 
-[^3]: Rather than thinking of the array $$A$$ as an input fully specified in advance, we can alternatively think of the elements of
-  $$A$$ as a "data stream," which are fed to a "streaming
-  algorithm" one element at a time.  One-pass
-  algorithms that use small auxiliary space translate to streaming
-  algorithms that need only small working
-  memory.  One use case for streaming algorithms is
-  when data arrives at such a fast rate that explicitly storing it is
-  absurd.  For example, this  is often the reality in the motivating
-  example of data packets traveling through a network switch. A second use case is when, even though data can be stored in its
-  entirety and fully analyzed (perhaps as an overnight job), it's still
-useful to perform lightweight analysis on the arriving data in real
-time.  The first two applications (popular transactions or search
-queries) are examples of this.
+[^3]: Rather than thinking of the array $$A$$ as an input fully specified in advance, we can alternatively think of the elements of $$A$$ as a "data stream," which are fed to a "streaming algorithm" one element at a time. One-pass algorithms that use small auxiliary space translate to streaming algorithms that need only small working memory. One use case for streaming algorithms is when data arrives at such a fast rate that explicitly storing it is absurd. For example, this  is often the reality in the motivating example of data packets traveling through a network switch. A second use case is when, even though data can be stored in its entirety and fully analyzed (perhaps as an overnight job), it's still useful to perform lightweight analysis on the arriving data in real time. The first two applications (popular transactions or search queries) are examples of this.
+
+###  An Impossibility Result
+
+The following fact might surprise you.
+**Fact 1.1** \label{fact:hh}
+*There is *no* algorithm that solves the Heavy Hitters problems in one pass
+while using a sublinear amount of auxiliary space.*
+
+We next explain the intuition behind Fact \ref{fact:hh}.  We encourage
+you to devise a formal proof, which follows the same lines as the
+intuition.
 
 
 
