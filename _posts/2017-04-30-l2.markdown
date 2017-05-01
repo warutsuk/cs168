@@ -159,6 +159,44 @@ hard to make this idea precise using the Pigeonhole Principle.[^5]
 
 [^5]: Somewhat more detail: if you always use sublinear space to store the set $$S$$, then you need to reuse exactly the same memory contents for two different sets $$S_1$$ and $$S_2$$. Your membership query answers will be the same in both cases, and in one of these cases some of your answers will be wrong.
 
+###  The Approximate Heavy Hitters Problem
+
+What should we make of [Fact 1.1](#fact1)?  Should we go home with our
+tail between our legs?  Of course not --- the applications that
+motivate the heavy hitters problem are not going away, and we
+still want to come up with non-trivial algorithms for them.
+In light of [Fact 1.1](#fact1), the best-case scenario would be to
+find a relaxation of the problem that remains relevant for the
+motivating applications and also admits a good
+solution.[^6]
+
+[^6]: This impossibility result ([Fact 1.1](#fact1)) and our response to it (the $$\eps$$-HH problem) serve as reminders that the skilled  algorithm designer is respectful of but undaunted by impossibility results that limit what algorithms can do. For another example, recall your study in CS161 of methods for coping with $$NP$$-complete problems.
+
+In the *$$\eps$$-approximate heavy hitters ($$\eps$$-HH) problem}*,
+the input is an array $$A$$ of length $$n$$ and user-defined parameters $$k$$ and $$\eps$$. The responsibility of an algorithm is to output a list of values such that:
+\begin{enumerate}
+
+1. Every value that occurs at least $$\frac{n}{k}$$ times in
+   $$A$$ is in the list.
+
+2. Every value in the list occurs at least $$\frac{n}{k} -\eps n$$
+   times in $$A$$.
+
+
+What prevents us from taking $$\eps = 0$$ and solving the exact version
+of the problem? We allow the space used by a solution to grow
+as $$\tfrac{1}{\eps}$$, so as $$\eps \downarrow 0$$ the space blows
+up (as is necessary, by [Fact 1.1](#fact1)).
+
+For example, suppose we take $$\eps = \tfrac{1}{2k}$$.  Then, the
+algorithm outputs every value with frequency count at least $$\tfrac{n}{k}$$,
+and only values with frequency count at least $$\tfrac{n}{2k}$$.  Thinking
+back to the motivating examples in Section~\ref{ss:hh}, such an
+approximate solution is essentially as useful as an exact solution.
+Space usage $$O(\tfrac{1}{\eps}) = O(k)$$ is also totally palatable;
+after all, the output of the heavy hitters or $$\eps$$-HH problem
+already might be as large as $$k$$ elements.
+
 
 
 
