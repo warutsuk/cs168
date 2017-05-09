@@ -1,0 +1,234 @@
+---
+layout: post
+title: Lecture 2
+author: Tim
+---
+{% raw %}
+<h1 id="introduction">Introduction</h1>
+<p>Last lecture introduced the idea of principal components analysis (PCA). The definition of the method is, for a given data set and parameter <span class="math inline">\(k\)</span>, to compute the <span class="math inline">\(k\)</span>-dimensional subspace (through the origin) that minimizes the average squared distance between the points and the subspace, or equivalently that maximizes the variance of the projections of the data points onto the subspace. We talked about a couple of common use cases. The first is data visualization, where one uses the top few principal components as a new coordinate axis and plot the projections of all of the data points in this new coordinate system. We saw a remarkable example using European genomic data, where such a plot showed that geographic information is embedded in the participants’ DNA. The second use case discussed was data compression, with the “Eigenfaces” project being a canonical example, where taking <span class="math inline">\(k\)</span> in the range of 100 or 150 is large enough to closely approximate a bunch of images (65,000-dimensional data). Finally, we mentioned some of the primary weaknesses of PCA: it can get tricked by high-variance noise, it fails to discover nonlinear structure, and the orthogonality constraints on the principal components mean that principal components after the first few can be difficult to interpret.</p>
+<p>Today’s lecture is about how PCA actually works — that is, how to actually compute the top <span class="math inline">\(k\)</span> principal components of a data set. Along the way, we’ll develop your internal mapping between the linear algebra used to describe the method and the simple geometry that explains what’s really going on. Ideally, after understanding this lecture, PCA should seem almost obvious in hindsight.</p>
+<h1 id="characterizing-principal-components">Characterizing Principal Components</h1>
+<h2 id="the-setup">The Setup</h2>
+<p>Recall that the input to the PCA method is <span class="math inline">\(m\)</span> <span class="math inline">\(n\)</span>-dimensional data points <span class="math inline">\(\x_1,\ldots,\x_m \in \RR^n\)</span> and a parameter <span class="math inline">\(k \in
+\{1,2,\ldots,n\}\)</span>. We assume that the data is centered, meaning that <span class="math inline">\(\sum_{i=1}^m \x_i\)</span> is the all-zero vector. (This can be enforced by subtracting out the sample mean <span class="math inline">\(\bar{\x} = \tfrac1m \sum_{i=1}^m
+\x_i\)</span> in a preprocessing step.) The output of the method is defined as <span class="math inline">\(k\)</span> orthonormal vectors <span class="math inline">\(\v_1,\ldots,\v_k\)</span> — the “top <span class="math inline">\(k\)</span> principal components” — that maximize the objective function <span class="math display">\[\label{eq:largek}
+\frac{1}{m} \sum_{i=1}^m \underbrace{\sum_{j=1}^k
+  {
+{\langle {\x_i} , {\v_j} \rangle}
+}^2}_{\text{squared projection length}}.\]</span></p>
+<p>But how would one actually solve this optimization problem and compute the <span class="math inline">\(\v_j\)</span>’s? Even with <span class="math inline">\(k=1\)</span>, there is an infinite number of unit vectors to try. A big reason for the popularity of PCA is that this optimization problem is easily solved using sophomore-level linear algebra. After we review the necessary preliminaries and build up your geometric intuition, the solution should seem straightforward in hindsight.</p>
+<h2 id="rewriting-the-optimization-problem">Rewriting the Optimization Problem</h2>
+<p>To develop the solution, we first consider only the <span class="math inline">\(k=1\)</span> case. We’ll see that the case of general <span class="math inline">\(k\)</span> reduces to this case (Section [ss:largek]). With <span class="math inline">\(k=1\)</span>, the objective function is <span class="math display">\[\label{eq:max}
+{\operatornamewithlimits{argmax}}_{\v \,:\, {
+{\| {\v} \|}
+} = 1} \frac{1}{m} \sum_{i=1}^m 
+{
+{\langle {\x_i} , {\v} \rangle}
+}^2.\]</span></p>
+<p>Let’s see how to rewrite variance-maximization  using linear algebra. First, we take the data points <span class="math inline">\(\x_1,\ldots,\x_m\)</span> — remember these are in <span class="math inline">\(n\)</span>-dimensional space — and write them as the rows of an <span class="math inline">\(m \times n\)</span> matrix <span class="math inline">\(\X\)</span>: <span class="math display">\[\X =
+\left[
+  \begin{array}{ccc}
+    {\rule[.5ex]{2.5ex}{0.5pt}}&amp; \x_1 &amp; {\rule[.5ex]{2.5ex}{0.5pt}}\\
+    {\rule[.5ex]{2.5ex}{0.5pt}}&amp; \x_2 &amp; {\rule[.5ex]{2.5ex}{0.5pt}}\\
+    &amp; \vdots &amp; \\
+    {\rule[.5ex]{2.5ex}{0.5pt}}&amp; \x_m &amp; {\rule[.5ex]{2.5ex}{0.5pt}}\end{array}
+\right].\]</span> Thus, for a unit vector <span class="math inline">\(\v \in \RR^n\)</span>, we have <span class="math display">\[\Xv = 
+\left[
+\begin{array}{c}
+{
+{\langle {\x_1} , {\v} \rangle}
+}\\
+{
+{\langle {\x_2} , {\v} \rangle}
+}\\
+\vdots\\
+{
+{\langle {\x_m} , {\v} \rangle}
+}
+\end{array}
+\right],\]</span> so <span class="math inline">\(\Xv\)</span> is just a column vector populated with all the projection lengths of the <span class="math inline">\(\x_i\)</span>’s onto the line spanned by <span class="math inline">\(\v\)</span>. We care about the sum of the squares of these (recall ), which motivates taking the inner product of <span class="math inline">\(\Xv\)</span> with itself: <span class="math display">\[\v^{\top}\X^{\top}\Xv = (\Xv)^{\top}(\Xv) = \sum_{i=1}^m {
+{\langle {\x_i} , {\v} \rangle}
+}^2.\]</span> Summarizing, our variance-maximization problem can be rephrased as <span class="math display">\[\label{eq:qf}
+{\operatornamewithlimits{argmax}}_{\v \,:\, {
+{\| {\v} \|}
+} = 1} \qf,\]</span> where <span class="math inline">\(\A\)</span> is an <span class="math inline">\(n \times n\)</span> matrix of the form <span class="math inline">\(\XX\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> This problem is called “maximizing a quadratic form.”</p>
+<p>The matrix <span class="math inline">\(\XX\)</span> has a natural interpretation.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> The <span class="math inline">\((i,j)\)</span> entry of this matrix is the inner product of the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\X^{\top}\)</span> and the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\X\)</span> — i.e., of the <span class="math inline">\(i\)</span>th and <span class="math inline">\(j\)</span>th columns of <span class="math inline">\(\X\)</span>. So <span class="math inline">\(\XX\)</span> just collects the inner products of columns of <span class="math inline">\(\X\)</span>, and is a symmetric matrix. For example, suppose the <span class="math inline">\(\x_i\)</span>’s represent documents, with dimensions (i.e., columns of <span class="math inline">\(\X\)</span>) corresponding to words. Then the inner product of two columns of <span class="math inline">\(\X\)</span> measures how frequently the corresponding pair of words co-occur in a document.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> The matrix <span class="math inline">\(\XX\)</span> is called the <span><em>covariance</em></span> or <span><em>correlation matrix</em></span> of the <span class="math inline">\(\x_i\)</span>’s, depending on whether or not each of the coordinates was normalized in a preprocessing step (as discussed in Lecture #7).</p>
+<h2 id="ss:diag">Solving : The Diagonal Case</h2>
+<p>To gain some understanding for the optimization problem  that PCA solves, let’s begin with a very special case: where <span class="math inline">\(\A\)</span> is a diagonal matrix <span class="math display">\[\label{eq:diag}
+    \begin{pmatrix}
+      \lambda_1 &amp;
+      \multicolumn{4}{c}{\text{\kern0.5em\smash{\raisebox{-1ex}{\Large
+              0}}}} \\
+      &amp; \lambda_2 &amp; &amp; &amp;  \\
+      &amp; &amp; \ddots &amp; &amp; \\
+      \multicolumn{3}{c}{\text{\kern-0.5em\smash{\raisebox{0.75ex}{\Large
+              0}}}} &amp; \lambda_n
+    \end{pmatrix}\]</span> with sorted nonnegative entries <span class="math inline">\(\lambda_1 \ge \lambda_2 \ge \cdots
+\ge \lambda_n \ge 0\)</span> on the diagonal.</p>
+<p>There is a simple geometric way to think about diagonal matrices. An <span class="math inline">\(n \times n\)</span> matrix maps points in <span class="math inline">\(\RR^n\)</span> back to points in <span class="math inline">\(\RR^n\)</span> — the matrix “moves <span class="math inline">\(\RR^n\)</span> around,” in effect. For example, the matrix <span class="math display">\[\begin{pmatrix}
+2 &amp; 0\\
+0 &amp; 1
+\end{pmatrix}\]</span> moves each point <span class="math inline">\((x,y)\)</span> of the plane to the point <span class="math inline">\((2x,y)\)</span> with double the <span class="math inline">\(x\)</span>-coordinate and the same <span class="math inline">\(y\)</span>-coordinate. For example, the points of the circle <span class="math inline">\(\{ (x,y) \,:\, x^2 + y^2 = 1 \}\)</span> are mapped to the points <span class="math inline">\(\{ \tfrac{x^2}{2^2} + y^2 = 1\}\)</span> of the ellipse shown in Figure [f:squashed]. More generally, a diagonal matrix of the form  can be thought of as “stretching” <span class="math inline">\(\RR^n\)</span>, with the <span class="math inline">\(i\)</span>th axis getting stretched by the factor <span class="math inline">\(\lambda_i\)</span>, and the unit circle being mapped to the corresponding “ellipsoid” (i.e., the analog of an ellipse in more than 2 dimensions).</p>
+<div class="figure">
+<img src="squashed" alt="The point (x,y) on the unit circle is mapped to (2x,y)." />
+<p class="caption">The point <span class="math inline">\((x,y)\)</span> on the unit circle is mapped to <span class="math inline">\((2x,y)\)</span>.<span data-label="f:squashed"></span></p>
+</div>
+<p>A natural guess for the direction <span class="math inline">\(\v\)</span> that maximizes <span class="math inline">\(\qf\)</span> with <span class="math inline">\(\A\)</span> diagonal is the “direction of maximum stretch,” namely <span class="math inline">\(\v = \e_1\)</span>, where <span class="math inline">\(\e_1 = (1,0,\ldots,0)\)</span> denotes the first standard basis vector. (Recall <span class="math inline">\(\lambda_1 \ge \lambda_2 \ge \cdots \lambda_n\)</span>.) To verify the guess, let <span class="math inline">\(\v\)</span> be an arbitrary unit vector, and write <span class="math display">\[\label{eq:avg}
+\v^{\top}(\Av) = 
+\begin{pmatrix}
+v_1 &amp; v_2 &amp; \cdots &amp; v_n
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+\lambda_1v_1\\
+\lambda_2v_2\\
+\vdots\\
+\lambda_nv_n
+\end{pmatrix}
+= \sum_{i=1}^n v_i^2\lambda_i.\]</span> Since <span class="math inline">\(\v\)</span> is a unit vector, the <span class="math inline">\(v_i^2\)</span>’s sum to 1. Thus <span class="math inline">\(\qf\)</span> is always an average of the <span class="math inline">\(\lambda_i\)</span>’s, with the averaging weights given by the <span class="math inline">\(v_i^2\)</span>’s. Since <span class="math inline">\(\lambda_1\)</span> is the biggest <span class="math inline">\(\lambda_i\)</span>, the way to make this average as large as possible is to set <span class="math inline">\(v_1 = 1\)</span> and <span class="math inline">\(v_i = 0\)</span> for <span class="math inline">\(i &gt; 1\)</span>. That is, <span class="math inline">\(\v = \e_1\)</span> maximizes <span class="math inline">\(\qf\)</span>, as per our guess.</p>
+<h2 id="diagonals-in-disguise">Diagonals in Disguise</h2>
+<div class="figure">
+<img src="rsquashed" alt="The same scaling as Figure [f:squashed], but now rotated 45 degrees." />
+<p class="caption">The same scaling as Figure [f:squashed], but now rotated 45 degrees.<span data-label="f:rsquashed"></span></p>
+</div>
+<p>Let’s generalize our solution in Section [ss:diag] by considering matrices <span class="math inline">\(\A\)</span> that, while not diagonal, are really just “diagonals in disguise.” Geometrically, what we mean is that <span class="math inline">\(\A\)</span> still does nothing other than stretch out different orthogonal axes, possibly with these axes being a “rotated version” of the original ones. See Figure [f:rsquashed] for a rotated version of the previous example, which corresponds to the matrix <span class="math display">\[\label{eq:disguise}
+\begin{pmatrix}
+\tfrac{3}{2} &amp; \tfrac{1}{2}\\
+\tfrac{1}{2} &amp; \tfrac{3}{2}
+\end{pmatrix}
+= 
+\underbrace{
+\begin{pmatrix}
+\tfrac{1}{\sqrt{2}} &amp; -\tfrac{1}{\sqrt{2}}\\
+\tfrac{1}{\sqrt{2}} &amp; \tfrac{1}{\sqrt{2}}
+\end{pmatrix}
+}_{\text{rotate back $45^{\circ}$}}
+\cdot
+\underbrace{
+\begin{pmatrix}
+2 &amp; 0\\
+0 &amp; 1
+\end{pmatrix}
+}_{\text{stretch}}
+\cdot
+\underbrace{
+\begin{pmatrix}
+\tfrac{1}{\sqrt{2}} &amp; \tfrac{1}{\sqrt{2}}\\
+-\tfrac{1}{\sqrt{2}} &amp; \tfrac{1}{\sqrt{2}}
+\end{pmatrix}
+}_{\text{rotate clockwise $45^{\circ}$}}.\]</span></p>
+<p>So what’s a “rotated diagonal” in higher dimensions? The appropriate generalization of a rotation is an <span><em>orthogonal matrix</em></span>.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> Recall that an orthogonal matrix <span class="math inline">\(\Q\)</span> is a square matrix where the columns are a set of orthonormal vectors — that is, each column has unit length, and the inner product of two different columns is 0. A key property of orthogonal matrices is that they preserve length — that is, <span class="math inline">\({
+{\| {\Qv} \|}
+} = {
+{\| {\v} \|}
+}\)</span> for every vector <span class="math inline">\(\v\)</span>. We review briefly why this is: since the columns of <span class="math inline">\(\Q\)</span> are orthonormal vectors, we have <span class="math display">\[\Q^{\top}\Q = \I,\]</span> since the <span class="math inline">\((i,j)\)</span> entry of <span class="math inline">\(\Q^{\top}\Q\)</span> is just the inner product of the <span class="math inline">\(i\)</span>th and <span class="math inline">\(j\)</span>th columns of <span class="math inline">\(\Q\)</span>. (It also follows that <span class="math inline">\(\Q\Q^{\top} = \I\)</span>. This shows that <span class="math inline">\(\Q^{\top}\)</span> is also an orthogonal matrix, or equivalently that the rows of an orthogonal matrix are orthonormal vectors.) This means that the inverse of an orthogonal matrix is simply its transpose. (For example, see the two inverse rotation matrices in .) Then, we have <span class="math display">\[{
+{\| {\Qv} \|}
+}^2 = (\Qv)^{\top}(\Qv) = \v^{\top}\Q^{\top}\Qv = \v^{\top}\v = {
+{\| {\v} \|}
+}^2,\]</span> showing that <span class="math inline">\(\Qv\)</span> and <span class="math inline">\(\v\)</span> have same norm.</p>
+<p>Now consider a matrix <span class="math inline">\(\A\)</span> that can be written <span class="math inline">\(\A = \Q\D\Q^{\top}\)</span> for an orthogonal matrix <span class="math inline">\(\Q\)</span> and diagonal matrix <span class="math inline">\(\D\)</span> as in  — this is what we mean by a “diagonal in disguise.” Such a matrix <span class="math inline">\(\A\)</span> has a “direction of maximum stretch” — the (rotated) axis that gets stretched the most (i.e., by <span class="math inline">\(\lambda_1\)</span>). Since the direction of maximum stretch under <span class="math inline">\(\D\)</span> is <span class="math inline">\(\e_1\)</span>, the direction of maximum stretch under <span class="math inline">\(\A\)</span> is the direction that gets mapped to <span class="math inline">\(\e_1\)</span> under <span class="math inline">\(\Q^{\top}\)</span> — which is <span class="math inline">\((\Q^{-1})^{\top}\e_1\)</span> or, equivalently, <span class="math inline">\(\Q\e_1\)</span>. Notice that <span class="math inline">\(\Q\e_1\)</span> is simply the first column of <span class="math inline">\(\Q\)</span> — the first row of <span class="math inline">\(\Q^{\top}\)</span>.</p>
+<p>This direction of maximum stretch is again the solution to the variance-maximization problem . To see this, first plug in this choice <span class="math inline">\(\v_1 = \Q\e_1\)</span> to obtain <span class="math display">\[\v_1^{\top}\A\v_1 = \v_1^{\top}\Q\D\Q^{\top}\v_1 = 
+\e_1^{\top}\Q^{\top}\Q\D\Q^{\top}\Q\e_1 =
+\e_1^{\top}\D\e_1 = \lambda_1.\]</span> Second, for every unit vector <span class="math inline">\(\v\)</span>, <span class="math inline">\(\Q^{\top}\v\)</span> is also a unit vector (since <span class="math inline">\(\Q\)</span> is orthogonal), so <span class="math inline">\(\v^{\top}\Q\D\Q^{\top}\v\)</span> is an average of the <span class="math inline">\(\lambda_i\)</span>’s, just as in  (with averaging weights given by the squared coordinates of <span class="math inline">\(\Q^{\top}\v\)</span>, rather than those of <span class="math inline">\(\v\)</span>). Thus <span class="math inline">\(\qf \le \lambda_1\)</span> for every unit vector <span class="math inline">\(\v\)</span>, implying that <span class="math inline">\(\v_1 = \Q\e_1\)</span> maximizes <span class="math inline">\(\qf\)</span>.</p>
+<h2 id="general-covariance-matrices">General Covariance Matrices</h2>
+<p>We’ve seen that when the matrix <span class="math inline">\(\A\)</span> can be written as <span class="math inline">\(\Q\D\Q^{\top}\)</span> for an orthogonal matrix <span class="math inline">\(\Q\)</span> and diagonal matrix <span class="math inline">\(\D\)</span>, it’s easy to understand how to maximize the variance : the optimal solution is to set <span class="math inline">\(\v\)</span> equal to the first row of <span class="math inline">\(\Q^{\top}\)</span>, and geometrically this is just the direction of maximum stretch when we view <span class="math inline">\(\A\)</span> as a map from <span class="math inline">\(\RR^n\)</span> to itself. But we don’t want to solve the problem  only for diagonals in disguise — we want to solve it for an arbitrary covariance matrix <span class="math inline">\(\A = \X^{\top}\X\)</span>. Happily, we’ve already done this: recall from linear algebra that <span><em>every matrix <span class="math inline">\(\A\)</span> of the form <span class="math inline">\(\X^{\top}\X\)</span> can be written as <span class="math inline">\(\A = \Q\D\Q^{\top}\)</span> for an orthogonal matrix <span class="math inline">\(\Q\)</span> and diagonal matrix <span class="math inline">\(\D\)</span> as in .</em></span><a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></p>
+<p>Summarizing, we’ve shown the following:</p>
+<ul>
+<li><p>when <span class="math inline">\(k=1\)</span>, the solution to  is the first row of <span class="math inline">\(\Q^{\top}\)</span>, where <span class="math inline">\(\XX^{\top} = \Q\D\Q^{\top}\)</span> with <span class="math inline">\(\Q\)</span> orthonormal and <span class="math inline">\(\D\)</span> diagonal with sorted diagonal entries.</p></li>
+</ul>
+<h2 id="ss:largek">Larger Values of <span class="math inline">\(k\)</span></h2>
+<p>The solution to the variance-maximization problem  is analogous, namely to pick the <span class="math inline">\(k\)</span> orthogonal axes that are stretched the most by <span class="math inline">\(\A\)</span>. Extending the derivation above gives:</p>
+<ul>
+<li><p>for general <span class="math inline">\(k\)</span>, the solution to  is the first <span class="math inline">\(k\)</span> rows of <span class="math inline">\(\Q^{\top}\)</span>, where <span class="math inline">\(\XX = \Q\D\Q^{\top}\)</span> with <span class="math inline">\(\Q\)</span> orthonormal and <span class="math inline">\(\D\)</span> diagonal with sorted diagonal entries.</p></li>
+</ul>
+<p>Note that since <span class="math inline">\(\Q\)</span> is orthonormal, the first <span class="math inline">\(k\)</span> rows of <span class="math inline">\(\Q^{\top}\)</span> are indeed a set of <span class="math inline">\(k\)</span> orthonormal vectors, as required in .<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a> For a matrix <span class="math inline">\(\A = \XX\)</span>, these are called the <span><em>top <span class="math inline">\(k\)</span> principal components of <span class="math inline">\(\X\)</span></em></span>.</p>
+<h2 id="eigenvectors-and-eigenvalues">Eigenvectors and Eigenvalues</h2>
+<p>Now that we’ve characterized the top <span class="math inline">\(k\)</span> principal components as the first <span class="math inline">\(k\)</span> rows of <span class="math inline">\(\Q^{\top}\)</span> in the decomposition <span class="math inline">\(\XX = \Q\D\Q^{\top}\)</span>, how can we actually compute them? The answer follows from a reinterpretation of these vectors as eigenvectors of the covariance matrix <span class="math inline">\(\XX\)</span>.</p>
+<p>Recall that an <span><em>eigenvector</em></span> of a matrix <span class="math inline">\(\A\)</span> is a vector <span class="math inline">\(\v\)</span> that is stretched in the same direction by <span class="math inline">\(\A\)</span>, meaning <span class="math inline">\(\Av =
+\lambda\v\)</span> for some <span class="math inline">\(\lambda \in \RR\)</span>. The value <span class="math inline">\(\lambda\)</span> is the corresponding <span><em>eigenvalue</em></span>. Eigenvectors are just the “axes of stretch” of the geometric discussions above, with eigenvalues giving the stretch factors.<a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a></p>
+<p>When we write <span class="math inline">\(\A = \X^{\top}\X\)</span> as <span class="math inline">\(\A = \Q\D\Q^{\top}\)</span>, we’re actually writing the matrix in terms of its eigenvectors and eigenvalues — the rows of <span class="math inline">\(\Q^{\top}\)</span> are the eigenvectors of <span class="math inline">\(\A\)</span>, and the diagonal entries in <span class="math inline">\(\D\)</span> are the corresponding eigenvalues. To see this, consider the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\Q^{\top}\)</span>, which can be written <span class="math inline">\(\Q\e_i\)</span>. Since <span class="math inline">\(\Q^{\top}\Q = \Q\Q^{\top} = \I\)</span> we have, <span class="math inline">\(\A\Q\e_i = \Q\D\e_i = \lambda_i \Q\e_i\)</span>. Hence the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\Q^{\top}\)</span> is the eigenvector of <span class="math inline">\(\A\)</span> with eigenvalue <span class="math inline">\(\lambda_i\)</span>. Thus:</p>
+<ul>
+<li><p><span><em>PCA boils down to computing the <span class="math inline">\(k\)</span> eigenvectors of the covariance matrix <span class="math inline">\(\XX\)</span> that have the largest eigenvalues.</em></span></p></li>
+</ul>
+<p>You will often see the sentence above given as the definition of the PCA method; after this lecture there should be no mystery as to where the definition comes from.</p>
+<p>Are the top <span class="math inline">\(k\)</span> principal components of <span class="math inline">\(\X\)</span> — the <span class="math inline">\(k\)</span> eigenvectors of <span class="math inline">\(\XX\)</span> that have the largest eigenvalues — uniquely defined? More or less, but there is some fine print. First, the set of diagonal entries in the matrix <span class="math inline">\(\D\)</span> — the set of eigenvalues of <span class="math inline">\(\XX\)</span> — is uniquely defined. Recall that we’re ordering the coordinates so that these entries are in sorted order. If these eigenvalues are all distinct, then the matrix <span class="math inline">\(\Q\)</span> is also unique (up to a sign flip in each column).<a href="#fn8" class="footnoteRef" id="fnref8"><sup>8</sup></a> If an eigenvalue occurs with multiplicity <span class="math inline">\(d\)</span>, then there is a <span class="math inline">\(d\)</span>-dimensional subspace of corresponding eigenvectors. Any orthonormal basis of this subspace can be chosen as the corresponding principal components.</p>
+<h1 id="the-power-iteration-method">The Power Iteration Method</h1>
+<h2 id="methods-for-computing-principal-components">Methods for Computing Principal Components</h2>
+<p>How does one compute the top <span class="math inline">\(k\)</span> principal components? One method uses the “singular value decomposition (SVD);” we’ll talk about this in detail next lecture. (The SVD can be computed in roughly cubic time, which is fine for medium-size but not for large-scale problems.) We conclude this lecture with a description of a second method, <span><em>power iteration</em></span>. This method is popular in practice, especially in settings where one only wants the top few eigenvectors (as is often the case in PCA applications). In Matlab there are optimized and ready-to-use implementations of both the SVD and power iteration methods.</p>
+<h2 id="the-algorithm">The Algorithm</h2>
+<p>We first describe how to use the power iteration method to compute the first eigenvector (the one with largest eigenvalue), and then explain how to use it to find the rest of them. To understand the geometric intuition behind the method, recall that if one views the matrix <span class="math inline">\(\A=\XX\)</span> as a function that maps the unit sphere to an ellipsoid, then the longest axis of the ellipsoid corresponds to the top eigenvector of <span class="math inline">\(\A\)</span> (Figures [f:squashed] and [f:rsquashed]). Given that the top eigenvector corresponds to the direction in which multiplication by <span class="math inline">\(\A\)</span> stretches the vector the most, it is natural to hope that if we start with a random vector <span class="math inline">\(\v\)</span>, and keep applying <span class="math inline">\(\A\)</span> over and over, then we will end up having stretched <span class="math inline">\(\v\)</span> so much in the direction of <span class="math inline">\(\A\)</span>’s top eigenvector that the image of <span class="math inline">\(\v\)</span> will lie almost entirely in this same direction. For example, in Figure [f:rsquashed], applying <span class="math inline">\(\A\)</span> twice (rotate/stretch/rotate-back/rotate/stretch/rotate-back) will stretch the ellipsoid twice as far along the southwest-northeast direction (i.e., along the first eigenvector). Further applications of <span class="math inline">\(\A\)</span> will make this axis of stretch even more pronounced. Eventually, almost all of the points on the original unit circle get mapped to points that are very close to this axis.</p>
+<p>Here is the formal statement of the power iteration method:</p>
+<p><span> </span></p>
+<p>Often, rather than computing <span class="math inline">\(\A\u_0, \A^2 \u_0, \A^3 \u_0,
+\A^4 \u_0, \A^5 \u_0, \ldots\)</span> one instead uses repeated squaring and computes <span class="math inline">\(\A \u_0, \A^2 \u_0, \A^4 \u_0, \A^8 \u_0,\ldots.\)</span> (This replaces a larger number of matrix-vector multiplications with a smaller number of matrix-matrix multiplications.)</p>
+<h2 id="the-analysis">The Analysis</h2>
+<p>To show that the power iteration algorithm works, we first establish that if <span class="math inline">\(\A = \Q \D \Q^{\top},\)</span> then <span class="math inline">\(\A^i = \Q \D^i \Q^{\top}\)</span> — that is, <span class="math inline">\(\A^i\)</span> has the same orientation (i.e. eigenvectors) as <span class="math inline">\(\A\)</span>, but all of the eigenvalues are raised to the <span class="math inline">\(i\)</span>th power (and are hence exaggerated—e.g. if <span class="math inline">\(\lambda_1 &gt; 2 \lambda_2\)</span>, then <span class="math inline">\(\lambda_1^{10} &gt; 1000 \lambda_2^{10}\)</span>).</p>
+<p>If <span class="math inline">\(\A = \Q \D \Q^{\top},\)</span> then <span class="math inline">\(\A^i = \Q \D^i \Q^{\top}\)</span>.</p>
+<p>We prove this via induction on <span class="math inline">\(i\)</span>. The base case, <span class="math inline">\(i=1\)</span> is immediate. Assuming that the statement holds for some specific <span class="math inline">\(i
+\ge 1\)</span>, consider the following: <span class="math display">\[\A^{i+1} = \A^i \cdot \A = \Q \D^i
+\underbrace{\Q^{\top} \Q}_{=\I} \D \Q^{\top} = \Q \D^i \D \Q^{\top} = \Q \D^{i+1}
+\Q^{\top},\]</span> where we used our induction hypothesis to get the second equality, and the third equality follows from the orthogonality of <span class="math inline">\(\Q\)</span>.</p>
+<p>We can now quantify the performance of the power iteration algorithm:</p>
+<p>[t:pi] With probability at least <span class="math inline">\(1/2\)</span> over the choice of <span class="math inline">\(\u_0\)</span>, for and <span class="math inline">\(t
+\ge 1,\)</span> <span class="math display">\[|\langle \A^t \u_0, \v_1 \rangle | \ge 1 -
+2\sqrt{n}\left(\frac{\lambda_2}{\lambda_1} \right)^t,\]</span> where <span class="math inline">\(\v_1\)</span> is the top eigenvector of <span class="math inline">\(\A\)</span>, with eigenvalue <span class="math inline">\(\lambda_1,\)</span> and <span class="math inline">\(\lambda_2\)</span> is the second-largest eigenvalue of <span class="math inline">\(\A\)</span>.</p>
+<p>This result shows that the number of iterations required scales as <span class="math inline">\(\frac{\log n}{\log (\lambda_1/\lambda_2)}.\)</span> The ratio <span class="math inline">\(\lambda_1/\lambda_2\)</span> is an important parameter called the <span> <em>spectral gap</em></span> of the matrix <span class="math inline">\(\A\)</span>. The bigger the spectral gap, the more pronounced is the direction of maximum stretch (compared to other axes of stretch). If the spectral gap is large, then we are in excellent shape. If <span class="math inline">\(\lambda_1\approx \lambda_2\)</span>, then the algorithm might take a long time (or might never) find <span class="math inline">\(\v_1\)</span>.<a href="#fn9" class="footnoteRef" id="fnref9"><sup>9</sup></a></p>
+<p>For example, if <span class="math inline">\(t &gt; 10 \frac{\log n}{\log
+  (\lambda_1/\lambda_2)}\)</span> then <span class="math inline">\(|\langle \u_t , \v_1 \rangle| &gt;
+1 - 2  e^{-20} &gt; 0.99999,\)</span> and so <span class="math inline">\(\u_t\)</span> is essentially pointing in the same direction as <span class="math inline">\(\v_1\)</span>.</p>
+<p>The “with probability 1/2” statement in Theorem [t:pi] can be strengthened to “with probability at least <span class="math inline">\(1-1/2^{100}\)</span>” by repeating the above algorithm <span class="math inline">\(100\)</span> times (for independent choices of <span class="math inline">\(\u_0\)</span>), and outputting the recovered vector <span class="math inline">\(\u\)</span> that maximizes <span class="math inline">\({
+{\| {\A\u} \|}
+}\)</span>.</p>
+<p><span>Theorem</span><span>t:pi</span> Let <span class="math inline">\(\v_1,\v_2,\ldots,\v_n\)</span> denote the eigenvectors of <span class="math inline">\(\A\)</span>, with associated eigenvalues <span class="math inline">\(\lambda_1 \ge \lambda_2 \ge \cdots\)</span>. These vectors form an orthonormal basis for <span class="math inline">\(\RR^n\)</span>. Write the random initial vector <span class="math inline">\(\u_0 = \sum_{j=1}^n c_j\v_j\)</span> in terms of this basis. We claim that, with probability at least <span class="math inline">\(1/2\)</span>, <span class="math inline">\(|c_1| &gt; 1/2 \sqrt{n}.\)</span> This follows straightforwardly from a computation, using the fact that we can choose a random unit vector by selecting each coordinate independently from a Gaussian of variance <span class="math inline">\(1/n\)</span>, and then normalizing (by a factor that will be very close to 1).</p>
+<p>Given that <span class="math inline">\(|c_1| &gt; 1/2\sqrt{n},\)</span> <span class="math display">\[|\langle \A^t \u_0, \v_1\rangle| = \frac{ c_1
+    \lambda_1^t}{\sqrt{\sum_{i=1}^n (\lambda_i^t c_i)^2}} \ge
+  \frac{c_1 \lambda_1^t}{\sqrt{c_1^2 \lambda_1^{2t} + n
+      \lambda_2^{2t}}} \ge \frac{c_1 \lambda_1^t}{c_1 \lambda_1^{t} +
+    \lambda_2^t \sqrt{n}} \ge 1 -
+  2\sqrt{n}\left(\frac{\lambda_2}{\lambda_1} \right)^t .\]</span></p>
+<h2 id="computing-further-principal-components">Computing Further Principal Components</h2>
+<p>Applying the power iteration algorithm to the covariance matrix <span class="math inline">\(\XX\)</span> of a data matrix <span class="math inline">\(\X\)</span> finds (a close approximation to) the top principal component of <span class="math inline">\(\X\)</span>. We can reuse the same method to compute subsequent principal components one-by-one, up to the desired number <span class="math inline">\(k\)</span>. Specifically, to find the top <span class="math inline">\(k\)</span> principal components:</p>
+<ol>
+<li><p>Find the top component, <span class="math inline">\(\v_1\)</span>, using power iteration.</p></li>
+<li><p>Project the data matrix orthogonally to <span class="math inline">\(\v_1\)</span>: <span class="math display">\[\left[
+  \begin{array}{ccc}
+    {\rule[.5ex]{2.5ex}{0.5pt}}&amp; \x_1 &amp; {\rule[.5ex]{2.5ex}{0.5pt}}\\
+    {\rule[.5ex]{2.5ex}{0.5pt}}&amp; \x_2 &amp; {\rule[.5ex]{2.5ex}{0.5pt}}\\
+    &amp; \vdots &amp; \\
+    {\rule[.5ex]{2.5ex}{0.5pt}}&amp; \x_m &amp; {\rule[.5ex]{2.5ex}{0.5pt}}\end{array}
+\right]
+\mapsto
+\left[
+  \begin{array}{ccc}
+    {\rule[.5ex]{2.5ex}{0.5pt}}&amp; (\x_1 - {
+{\langle {\x_1} , {\v_1} \rangle}
+}\v_1) &amp; {\rule[.5ex]{2.5ex}{0.5pt}}\\
+    {\rule[.5ex]{2.5ex}{0.5pt}}&amp; (\x_2 - {
+{\langle {\x_2} , {\v_1} \rangle}
+}\v_1) &amp; {\rule[.5ex]{2.5ex}{0.5pt}}\\
+    &amp; \vdots &amp; \\
+    {\rule[.5ex]{2.5ex}{0.5pt}}&amp; (\x_m - {
+{\langle {\x_m} , {\v_1} \rangle}
+}\v_1) &amp; {\rule[.5ex]{2.5ex}{0.5pt}}\end{array}
+\right].\]</span> This corresponds to subtracting out the variance of the data that is already explained by the first principal component <span class="math inline">\(\v_1\)</span>.</p></li>
+<li><p>Recurse by finding the top <span class="math inline">\(k-1\)</span> principal components of the new data matrix.</p></li>
+</ol>
+<p>The correctness of this greedy algorithm follows from the fact that the <span class="math inline">\(k\)</span>-dimensional subspace that maximizes the norms of the projections of a data matrix <span class="math inline">\(X\)</span> contains the <span class="math inline">\((k-1)\)</span>-dimensional subspace that maximizes the norms of the projections.</p>
+<h2 id="how-to-choose-k">How to Choose <span class="math inline">\(k\)</span>?</h2>
+<p>How do you know how many principal components are “enough”? For data visualization, often you just want the first few. In other applications, like compression, the simple answer is that you don’t. In general, it is worth computing a lot of them and plotting their eigenvalues. Often the eigenvalues become small after a certain point — e.g., your data might have 200 dimensions, but after the first 50 eigenvalues, the rest are all tiny. Looking at this plot might give you some heuristic sense of how to choose the number of components so as to maximize the signal of your data, while preserving the low-dimensionality.</p>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>We are ignoring the <span class="math inline">\(\tfrac{1}{m}\)</span> scaling factor in , because the optimal solution <span class="math inline">\(\v\)</span> is the same with or without it.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Recall that this matrix also appeared in the normal equations, the closed-form solution to the ordinary least squares problem (Lecture #6).<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>So after centering such an <span class="math inline">\(\X\)</span>, frequently co-occurring pairs of words correspond to positive entries of <span class="math inline">\(\XX\)</span> and pairs of words that almost never appear together are negative entries.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>In addition to rotations, orthogonal matrices capture operations like reflections and permutations of the coordinates.<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>If you look back at your notes from your linear algebra class, the most likely relevant statement is that every symmetric matrix can be diagonalized by orthogonal matrices. (The proof is not obvious, but it is covered in standard linear algebra courses.) For some symmetric matrices <span class="math inline">\(\A\)</span>, the corresponding diagonal matrix <span class="math inline">\(\D\)</span> will have some negative entries. For symmetric matrices of the form <span class="math inline">\(\A = \XX\)</span>, however, all of the diagonal entries are nonnegative. Such matrices are called “positive semindefinite.” To see this fact, note that (i) if <span class="math inline">\(\A = \XX\)</span>, then <span class="math inline">\(\qf = (\Xv)^{\top}\Xv\ge 0\)</span> for every <span class="math inline">\(\v\)</span>; and (ii) if <span class="math inline">\(\A = \Q\D\Q^T\)</span> with the <span class="math inline">\(i\)</span>th diagonal entry of <span class="math inline">\(\D\)</span> negative, then taking <span class="math inline">\(\v = \Q\e_i\)</span> provides a vector with <span class="math inline">\(\v^{\top}\A\v &lt; 0\)</span> (why?).<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>An alternative way to arrive at the same <span class="math inline">\(k\)</span> vectors is: choose <span class="math inline">\(\v_1\)</span> as the variance-maximizing direction (as in ); choose <span class="math inline">\(\v_2\)</span> as the variance-maximizing direction orthogonal to <span class="math inline">\(\v_1\)</span>; choose <span class="math inline">\(\v_3\)</span> as the variance-maximizing direction orthogonal to both <span class="math inline">\(\v_1\)</span> and <span class="math inline">\(\v_2\)</span>; and so on.<a href="#fnref6">↩</a></p></li>
+<li id="fn7"><p>Eigenvectors and eigenvalues will reappear in Lectures #11–12 on spectral graph theory, where they are unreasonably effective at illuminating network structure. They also play an important role in the analysis of Markov chains (Lecture #14).<a href="#fnref7">↩</a></p></li>
+<li id="fn8"><p>If <span class="math inline">\(\A = \Q\D\Q^{\top}\)</span> and <span class="math inline">\(\hat{\Q}\)</span> is <span class="math inline">\(\Q\)</span> with all signs flipped in some column, then <span class="math inline">\(\A =
+  \hat{\Q}\D\hat{\Q}^{\top}\)</span> as well.<a href="#fnref8">↩</a></p></li>
+<li id="fn9"><p>If <span class="math inline">\(\lambda_1 = \lambda_2\)</span>, then <span class="math inline">\(\v_1\)</span> and <span class="math inline">\(\v_2\)</span> are not uniquely defined — there is a two-dimensional subspace of eigenvectors with this eigenvalue. In this case, the power iteration algorithm will simply return a vector that lies in this subspace, which is the correct thing to do.<a href="#fnref9">↩</a></p></li>
+</ol>
+</div>
+{% endraw %}
