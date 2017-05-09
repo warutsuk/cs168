@@ -3,7 +3,7 @@ layout: post
 title: Lecture 8
 author: Tim
 ---
-
+<body>
 <h1 id="introduction">Introduction</h1>
 <p>Last lecture introduced the idea of principal components analysis (PCA). The definition of the method is, for a given data set and parameter <span class="math inline">\(k\)</span>, to compute the <span class="math inline">\(k\)</span>-dimensional subspace (through the origin) that minimizes the average squared distance between the points and the subspace, or equivalently that maximizes the variance of the projections of the data points onto the subspace. We talked about a couple of common use cases. The first is data visualization, where one uses the top few principal components as a new coordinate axis and plot the projections of all of the data points in this new coordinate system. We saw a remarkable example using European genomic data, where such a plot showed that geographic information is embedded in the participants’ DNA. The second use case discussed was data compression, with the “Eigenfaces” project being a canonical example, where taking <span class="math inline">\(k\)</span> in the range of 100 or 150 is large enough to closely approximate a bunch of images (65,000-dimensional data). Finally, we mentioned some of the primary weaknesses of PCA: it can get tricked by high-variance noise, it fails to discover nonlinear structure, and the orthogonality constraints on the principal components mean that principal components after the first few can be difficult to interpret.</p>
 <p>Today’s lecture is about how PCA actually works — that is, how to actually compute the top <span class="math inline">\(k\)</span> principal components of a data set. Along the way, we’ll develop your internal mapping between the linear algebra used to describe the method and the simple geometry that explains what’s really going on. Ideally, after understanding this lecture, PCA should seem almost obvious in hindsight.</p>
@@ -231,4 +231,4 @@ v_1 &amp; v_2 &amp; \cdots &amp; v_n
 <li id="fn9"><p>If <span class="math inline">\(\lambda_1 = \lambda_2\)</span>, then <span class="math inline">\(\v_1\)</span> and <span class="math inline">\(\v_2\)</span> are not uniquely defined — there is a two-dimensional subspace of eigenvectors with this eigenvalue. In this case, the power iteration algorithm will simply return a vector that lies in this subspace, which is the correct thing to do.<a href="#fnref9">↩</a></p></li>
 </ol>
 </div>
-
+</body>
