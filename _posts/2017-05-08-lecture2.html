@@ -3,6 +3,7 @@ layout: post
 title: Lecture 2
 author: Tim
 ---
+{% raw %}
 <h1 id="the-heavy-hitters-problem">The Heavy Hitters Problem</h1>
 <h2 id="ss:majority">Finding the Majority Element</h2>
 <p>Let’s begin with a problem that many of you have seen before. It’s a common question in technical interviews. You’re given as input an array <span class="math inline">\(A\)</span> of length <span class="math inline">\(n\)</span>, with the promise that it has a <span> <em>majority element</em></span> — a value that is repeated in strictly more than <span class="math inline">\(n/2\)</span> of the array’s entries. Your task is to find the majority element.</p>
@@ -196,3 +197,4 @@ Z_i = f_x + \sum_{y \neq x} f_y\one_y,\]</span> where <span class="math inline">
 <li id="fn16"><p>How is this possible? Intuitively, with an error of <span class="math inline">\(\eps n\)</span> allowed, only the elements with with large (<span class="math inline">\(&gt; \eps n\)</span>) frequency counts matter, and there can be at most <span class="math inline">\(\tfrac{1}{\eps}\)</span> such elements (why?). Thus it is plausible that space proportional to <span class="math inline">\(\tfrac{1}{\eps}\)</span> might be enough. Of course, there’s still the issue of not knowing in advance which <span class="math inline">\(\approx \tfrac{1}{\eps}\)</span> elements are the important ones!<a href="#fnref16">↩</a></p></li>
 </ol>
 </div>
+{% endraw %}
