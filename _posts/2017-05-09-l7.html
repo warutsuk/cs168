@@ -51,7 +51,7 @@ author: Tim
 </table>
 <p>So in our usual notation, <span class="math inline">\(m\)</span> (the number of data points) is 4, and <span class="math inline">\(n\)</span> (the number of dimensions) is also 4. Note that, in contrast to the linear regression problem discussed last week, the data points do not have “labels” of any sort. Can we usefully visualize this data set in fewer than 4 dimensions? Can we understand the forces at work behind the differences in opinion of the various foods?</p>
 <p>The key observation is that each row (data point) can be approximately expressed as <span class="math display">\[\label{eq:toy1}
-\bar{{\bf x}} + a_1\v_1 + a_2\v_2,\]</span> where <span class="math display">\[\bar{{\bf x}} = (5.5,4.5,5,5.5)\]</span> is the average of the data points, <span class="math display">\[\v_1 = (3,-3,-3,3),\]</span> <span class="math display">\[\v_2 = (1,-1,1,-1),\]</span> and <span class="math inline">\((a_1,a_2)\)</span> is (1,1) for Alice, (1,-1) for Bob, (-1,-1) for Carolyn, and (-1,1) for Dave (Figure [f:plot]). For example, <span class="math inline">\({\bf x} + \v_1 + \v_2 = (9.5,0.5,3,7.5)\)</span>, which is approximately equal to Alice’s scores. Similarly, <span class="math inline">\({\bf x} - \v_1 - \v_2 =
+\bar{{\bf x}} + a_1{\bf v}_1 + a_2{\bf v}_2,\]</span> where <span class="math display">\[\bar{{\bf x}} = (5.5,4.5,5,5.5)\]</span> is the average of the data points, <span class="math display">\[{\bf v}_1 = (3,-3,-3,3),\]</span> <span class="math display">\[{\bf v}_2 = (1,-1,1,-1),\]</span> and <span class="math inline">\((a_1,a_2)\)</span> is (1,1) for Alice, (1,-1) for Bob, (-1,-1) for Carolyn, and (-1,1) for Dave (Figure [f:plot]). For example, <span class="math inline">\({\bf x} + {\bf v}_1 + {\bf v}_2 = (9.5,0.5,3,7.5)\)</span>, which is approximately equal to Alice’s scores. Similarly, <span class="math inline">\({\bf x} - {\bf v}_1 - {\bf v}_2 =
 (1.5,8.5,7,3.5)\)</span>, which is approximately equal to Carolyn’s scores.</p>
 <div class="figure">
 <img src="plot" alt="Visualizing 4-dimensional data in the plane." />
@@ -61,17 +61,17 @@ author: Tim
 <p>A second answer is that it helps interpret the data. We think of each data point as having a “<span class="math inline">\(v_1\)</span>-coordinate” (i.e., <span class="math inline">\(a_1\)</span>) and a “<span class="math inline">\(v_2\)</span>-coordinate” (<span class="math inline">\(a_2\)</span>). What does the vector <span class="math inline">\(v_1\)</span> “mean?” The first and fourth coordinates both have a large positive value (and so are positively correlated) while the second and third coordinates have a large negative value (and so are positively correlated with each other and negatively correlated with the first and fourth coordinates). Noting that kale salad and pop tarts are vegetarian<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> while Taco Bell and sashimi are not, we can interpret the <span class="math inline">\(v_1\)</span> coordinate as indicating the extent to which someone has vegetarian preferences.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> By similar reasoning, we can interpret the second vector <span class="math inline">\(v_2\)</span> as indicating the extent to which someone is health-conscious. The fact that <span class="math inline">\(v_1\)</span> has larger coordinates than <span class="math inline">\(v_2\)</span> indicates that it is the stronger of the two effects.</p>
 <p>We’ll see that the vectors <span class="math inline">\(v_1\)</span> and <span class="math inline">\(v_2\)</span>, once normalized, correspond to the “top two principal components” of the data. The point of PCA is to compute approximations of the type  automatically, including for large data sets.</p>
 <h2 id="goal-of-pca">Goal of PCA</h2>
-<p>The goal of PCA is to approximately express each of <span class="math inline">\(m\)</span> <span class="math inline">\(n\)</span>-dimensional vectors<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> <span class="math inline">\(\x_1,\ldots,\x_m \in
-\RR^n\)</span> as linear combinations of <span class="math inline">\(k\)</span> <span class="math inline">\(n\)</span>-dimensional vectors <span class="math inline">\(\v_1,\ldots,\v_k \in \RR^n\)</span>, so that <span class="math display">\[\x_i \approx \sum_{j=1}^k a_{ij}\v_j\]</span> for each <span class="math inline">\(i=1,2,\ldots,m\)</span>. (In the toy example, <span class="math inline">\(m=n=4\)</span> and <span class="math inline">\(k=2\)</span>.) PCA offers a formal definition of which <span class="math inline">\(k\)</span> vectors are the “best” ones for this purpose. Next lecture, we’ll see that there are also good algorithms for computing these vectors.</p>
+<p>The goal of PCA is to approximately express each of <span class="math inline">\(m\)</span> <span class="math inline">\(n\)</span>-dimensional vectors<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> <span class="math inline">\({\bf x}_1,\ldots,{\bf x}_m \in
+\mathbb{R}^n\)</span> as linear combinations of <span class="math inline">\(k\)</span> <span class="math inline">\(n\)</span>-dimensional vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k \in \mathbb{R}^n\)</span>, so that <span class="math display">\[{\bf x}_i \approx \sum_{j=1}^k a_{ij}{\bf v}_j\]</span> for each <span class="math inline">\(i=1,2,\ldots,m\)</span>. (In the toy example, <span class="math inline">\(m=n=4\)</span> and <span class="math inline">\(k=2\)</span>.) PCA offers a formal definition of which <span class="math inline">\(k\)</span> vectors are the “best” ones for this purpose. Next lecture, we’ll see that there are also good algorithms for computing these vectors.</p>
 <h2 id="relation-to-dimensionality-reduction">Relation to Dimensionality Reduction</h2>
-<p>The high-level goal of PCA should remind you of a couple of topics studied in previous lectures. First, recall Johnson-Lindenstrauss (JL) dimensionality reduction (Lecture #4), where the goal is also to re-express a bunch of high-dimensional points as low-dimensional points. Recall that this method maps a point <span class="math inline">\(\x\)</span> to a point <span class="math inline">\(({
-{\langle {\x} , {\r_1} \rangle}
+<p>The high-level goal of PCA should remind you of a couple of topics studied in previous lectures. First, recall Johnson-Lindenstrauss (JL) dimensionality reduction (Lecture #4), where the goal is also to re-express a bunch of high-dimensional points as low-dimensional points. Recall that this method maps a point <span class="math inline">\({\bf x}\)</span> to a point <span class="math inline">\(({
+{\langle {{\bf x}} , {\r_1} \rangle}
 },\ldots,{
-{\langle {\x} , {\r_k} \rangle}
+{\langle {{\bf x}} , {\r_k} \rangle}
 })\)</span>, where each <span class="math inline">\(\r_j\)</span> is a random unit vector (independent standard Gaussians in each coordinate, then normalized).<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> The same <span class="math inline">\(\r_j\)</span>’s are used for all data points. PCA and JL dimensionality reduction are different in the following respects.</p>
 <ol>
 <li><p>JL dimensionality reduction assumes that you care about the Euclidean distance between each pair of points — it is designed to approximately preserve these distances. PCA offers no guarantees about preserving pairwise distances.</p></li>
-<li><p>JL dimensionality reduction is data-oblivious, in the sense that the random vectors <span class="math inline">\(\r_1,\ldots,\r_k\)</span> are chosen without looking at the data points. PCA, by contrast, is deterministic, and the whole point is to compute vectors <span class="math inline">\(\v_1,\ldots,\v_k\)</span> that “explain the data.”</p></li>
+<li><p>JL dimensionality reduction is data-oblivious, in the sense that the random vectors <span class="math inline">\(\r_1,\ldots,\r_k\)</span> are chosen without looking at the data points. PCA, by contrast, is deterministic, and the whole point is to compute vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k\)</span> that “explain the data.”</p></li>
 <li><p>For the above reason, the <span class="math inline">\(k\)</span> coordinates used in JL dimensionality reduction have no intrinsic meaning, while those used in PCA are often meaningful (recall the toy example).</p></li>
 <li><p>JL dimensionality reduction generally only gives good results when <span class="math inline">\(k\)</span> is at least in the low hundreds. On the other hand, this value of <span class="math inline">\(k\)</span> works for every data set of a given size. PCA can give meaningful results even when <span class="math inline">\(k\)</span> is 1 or 2, but there are also data sets where it provides little interesting information (for any <span class="math inline">\(k\)</span>).</p></li>
 </ol>
@@ -80,34 +80,34 @@ author: Tim
 <p>Second, PCA and linear regression use different definitions of “best fit.” Recall that in linear regression the goal is to minimize the total squared error, where the error on a data point is the difference between the linear function’s prediction and the actual label of the data point. With one-dimensional data (together with labels), this corresponds to computing the line that minimizes the sum of the squared vertical distances between the line and the data points (Figure [f:perp](a)). This reflects the assumption that the coordinate corresponding to labels is the important one. We define the PCA objective function formally below; for two-dimensional data, the goal is to compute the line that minimizes the sum of the squared <span><em>perpendicular</em></span> distances between the line and the data points (Figure [f:perp](b)). This reflects the assumption that all coordinates play a symmetric role and so the usual Euclidean distance is most appropriate (e.g., rotating the point set just results in the “best-fit” line being rotated accordingly). On Mini-Project #4 you will learn more about which situations call for PCA and which call for linear regression.</p>
 <h1 id="defining-the-problem">Defining the Problem</h1>
 <h2 id="ss:pp">Preprocessing</h2>
-<p>Before using PCA, it’s important to preprocess the data. First, the points <span class="math inline">\(\x_1,\ldots,\x_m\)</span> should be centered around the origin, in the sense that <span class="math inline">\(\sum_{i=1}^m \x_i\)</span> is the all-zero vector. This is easy to enforce by subtracting (i.e., shifting) each point by the “sample mean” <span class="math inline">\(\bar{\x} = \tfrac{1}{m} \sum_{i=1}^m \x_i\)</span>. (In the toy example, we had <span class="math inline">\(\bar{\x} = (5.5,4.5,5,5.5)\)</span>.) After finding the best-fit line for the shifted point set, one simply shifts the line back by the original sample mean to get the best-fit line for the original uncentered data set. This shifting trick makes the necessary linear algebra simpler and clearer.</p>
-<p>Second, in many applications it is important to scale each coordinate appropriately. The most common approach to this is: if <span class="math inline">\(\x_1,\ldots,\x_m\)</span> is a point set centered at the origin, then for each coordinate <span class="math inline">\(j=1,2,\ldots,n\)</span>, divide the <span class="math inline">\(j\)</span>th coordinate of every point by the “sample deviation” in that coordinate, <span class="math inline">\(\sqrt{\sum_{i=1}^m x_{ij}^2}\)</span>. The motivation for this coordinate scaling is the fact that, without it, the result of PCA would be highly sensitive to the units in which each coordinate is measured. For example, changing units from miles to kilometers in some coordinate yields the “same” data set in some sense, and yet this change would scale up all values in this coordinate, which in turn would cause a different “best-fit” line to be computed.<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> In some applications, like with images — where all coordinates are in the same units, namely pixel intensities — there is no need to do such coordinate scaling. (The same goes for the toy example in Section [s:toy].)</p>
+<p>Before using PCA, it’s important to preprocess the data. First, the points <span class="math inline">\({\bf x}_1,\ldots,{\bf x}_m\)</span> should be centered around the origin, in the sense that <span class="math inline">\(\sum_{i=1}^m {\bf x}_i\)</span> is the all-zero vector. This is easy to enforce by subtracting (i.e., shifting) each point by the “sample mean” <span class="math inline">\(\bar{{\bf x}} = \tfrac{1}{m} \sum_{i=1}^m {\bf x}_i\)</span>. (In the toy example, we had <span class="math inline">\(\bar{{\bf x}} = (5.5,4.5,5,5.5)\)</span>.) After finding the best-fit line for the shifted point set, one simply shifts the line back by the original sample mean to get the best-fit line for the original uncentered data set. This shifting trick makes the necessary linear algebra simpler and clearer.</p>
+<p>Second, in many applications it is important to scale each coordinate appropriately. The most common approach to this is: if <span class="math inline">\({\bf x}_1,\ldots,{\bf x}_m\)</span> is a point set centered at the origin, then for each coordinate <span class="math inline">\(j=1,2,\ldots,n\)</span>, divide the <span class="math inline">\(j\)</span>th coordinate of every point by the “sample deviation” in that coordinate, <span class="math inline">\(\sqrt{\sum_{i=1}^m x_{ij}^2}\)</span>. The motivation for this coordinate scaling is the fact that, without it, the result of PCA would be highly sensitive to the units in which each coordinate is measured. For example, changing units from miles to kilometers in some coordinate yields the “same” data set in some sense, and yet this change would scale up all values in this coordinate, which in turn would cause a different “best-fit” line to be computed.<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> In some applications, like with images — where all coordinates are in the same units, namely pixel intensities — there is no need to do such coordinate scaling. (The same goes for the toy example in Section [s:toy].)</p>
 <h2 id="the-objective-function">The Objective Function</h2>
 <p>For clarity, we first discuss the special case of <span class="math inline">\(k=1\)</span>, where the goal is to fit the “best” line to a data set. Everything in this section generalizes easily to the case of general <span class="math inline">\(k\)</span> (Section [ss:largek]).</p>
 <p>As foreshadowed above, PCA defines the “best-fit line” as the one that minimizes the average squared Euclidean distance between the line and the data points: <span class="math display">\[\label{eq:min}
-{\operatornamewithlimits{argmin}}_{\v \,:\, {
-{\| {\v} \|}
+{\operatornamewithlimits{argmin}}_{{\bf v} \,:\, {
+{\| {{\bf v}} \|}
 } = 1} \frac{1}{m} \sum_{i=1}^m \left( 
-(\text{distance between $\x_i$ and line spanned by $\v$})^2 \right).\]</span> Note that we’re identifying a line (through the origin) with a unit vector <span class="math inline">\(\v\)</span> in the same direction. Minimizing the Euclidean distances between the points and the chosen line should seem natural enough; the one thing you might be wondering about is why we square these distances before adding them up. One reason is that it ensures that the best-fit line passes through the origin. Another is a tight connection to variance maximization, discussed next.</p>
+(\text{distance between ${\bf x}_i$ and line spanned by ${\bf v}$})^2 \right).\]</span> Note that we’re identifying a line (through the origin) with a unit vector <span class="math inline">\({\bf v}\)</span> in the same direction. Minimizing the Euclidean distances between the points and the chosen line should seem natural enough; the one thing you might be wondering about is why we square these distances before adding them up. One reason is that it ensures that the best-fit line passes through the origin. Another is a tight connection to variance maximization, discussed next.</p>
 <div class="figure">
 <img src="ip" alt="The geometry of the inner product." />
 <p class="caption">The geometry of the inner product.<span data-label="f:ip"></span></p>
 </div>
 <p>Recall the geometry of projections and the inner product (Figure [f:ip]). In particular, <span><em><span class="math inline">\({
-{\langle {\x_i} , {\v} \rangle}
-}\)</span> is the (signed) length of the projection of <span class="math inline">\(\x_i\)</span> onto the line spanned by <span class="math inline">\(\v\)</span>.</em></span> Recall the Pythagorean Theorem: for a right triangle with sides <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> and hypotenuse <span class="math inline">\(c\)</span>, <span class="math inline">\(a^2 + b^2 =
+{\langle {{\bf x}_i} , {{\bf v}} \rangle}
+}\)</span> is the (signed) length of the projection of <span class="math inline">\({\bf x}_i\)</span> onto the line spanned by <span class="math inline">\({\bf v}\)</span>.</em></span> Recall the Pythagorean Theorem: for a right triangle with sides <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> and hypotenuse <span class="math inline">\(c\)</span>, <span class="math inline">\(a^2 + b^2 =
 c^2\)</span>. Instantiating this for the right triangle shown in Figure [f:ip], we have <span class="math display">\[\label{eq:pythag}
-(\text{dist($\x_i \leftrightarrow$ line)})^2
+(\text{dist(${\bf x}_i \leftrightarrow$ line)})^2
 + {
-{\langle {\x_i} , {\v} \rangle}
+{\langle {{\bf x}_i} , {{\bf v}} \rangle}
 }^2 = {
-{\| {\x_i} \|}
-}^2.\]</span> The right-hand side of  is a constant, independent of the choice of line <span class="math inline">\(\v\)</span>. Thus, there is a zero-sum game between the squared distance between a point <span class="math inline">\(\x_i\)</span> and the line spanned by <span class="math inline">\(\v\)</span> and the squared length of the projection of <span class="math inline">\(\x_i\)</span> on this line — making one of these quantities bigger makes the other one smaller. This implies that the objective function of maximizing the squared projections — the <span><em>variance</em></span> of the projection of the point set — is equivalent to the original objective in : <span class="math display">\[\label{eq:max}
-{\operatornamewithlimits{argmax}}_{\v \,:\, {
-{\| {\v} \|}
+{\| {{\bf x}_i} \|}
+}^2.\]</span> The right-hand side of  is a constant, independent of the choice of line <span class="math inline">\({\bf v}\)</span>. Thus, there is a zero-sum game between the squared distance between a point <span class="math inline">\({\bf x}_i\)</span> and the line spanned by <span class="math inline">\({\bf v}\)</span> and the squared length of the projection of <span class="math inline">\({\bf x}_i\)</span> on this line — making one of these quantities bigger makes the other one smaller. This implies that the objective function of maximizing the squared projections — the <span><em>variance</em></span> of the projection of the point set — is equivalent to the original objective in : <span class="math display">\[\label{eq:max}
+{\operatornamewithlimits{argmax}}_{{\bf v} \,:\, {
+{\| {{\bf v}} \|}
 } = 1} \frac{1}{m} \sum_{i=1}^m 
 {
-{\langle {\x_i} , {\v} \rangle}
+{\langle {{\bf x}_i} , {{\bf v}} \rangle}
 }^2 .\]</span></p>
 <div class="figure">
 <img src="cluster" alt="For the good line, the projection of the points onto the line keeps the two clusters separated, while the projection onto the bad line merges the two clusters." />
@@ -118,69 +118,69 @@ c^2\)</span>. Instantiating this for the right triangle shown in Figure [f:ip],
 <h2 id="ss:largek">Larger Values of <span class="math inline">\(k\)</span></h2>
 <p>The discussion so far focused on the <span class="math inline">\(k=1\)</span> case (fitting a line to the data), but the case of larger <span class="math inline">\(k\)</span> is almost the same. For general <span class="math inline">\(k\)</span>, the objective functions of minimizing the squares of distances to a <span class="math inline">\(k\)</span>-dimensional subspace and of maximizing the variance of the projections onto a <span class="math inline">\(k\)</span>-dimensional subspace are again equivalent. So the PCA objective is now <span class="math display">\[\label{eq:maxk}
 {\operatornamewithlimits{argmax}}_{\text{$k$-dimensional subspaces~$S$}} \frac{1}{m} \sum_{i=1}^m 
-(\text{length of $\x_i$&#39;s projection on $S$})^2.\]</span></p>
-<p>To rephrase this objective in a more convenient form, recall the following basic linear algebra. First, vectors <span class="math inline">\(\v_1,\ldots,\v_k\)</span> are <span><em>orthonormal</em></span> if they all have unit length (<span class="math inline">\({
-{\| {\v_i} \|}
+(\text{length of ${\bf x}_i$&#39;s projection on $S$})^2.\]</span></p>
+<p>To rephrase this objective in a more convenient form, recall the following basic linear algebra. First, vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k\)</span> are <span><em>orthonormal</em></span> if they all have unit length (<span class="math inline">\({
+{\| {{\bf v}_i} \|}
 }_2 = 1\)</span> for all <span class="math inline">\(i\)</span>) and are orthogonal (<span class="math inline">\({
-{\langle {\v_i} , {\v_j} \rangle}
+{\langle {{\bf v}_i} , {{\bf v}_j} \rangle}
 } =
 0\)</span> for all <span class="math inline">\(i \neq j\)</span>). For example, the standard basis vectors (of the form <span class="math inline">\((0,0,\ldots,0,1,0,\ldots,0)\)</span>) are orthonormal. Rotating these vectors gives more set of orthonormal vectors.</p>
-<p>The <span><em>span</em></span> of a collection <span class="math inline">\(\v_1,\ldots,\v_k \in
-\RR^n\)</span> of vectors is all of their linear combinations: <span class="math inline">\(\{ \sum_{j=1}^k
-\lambda_j \v_j \,:\, \lambda_1,\ldots,\lambda_k \in \RR \}\)</span>. If <span class="math inline">\(k=1\)</span>, then this span is a line through the origin; if <span class="math inline">\(k=2\)</span> and <span class="math inline">\(\v_1,\v_2\)</span> are linearly independent (i.e., not multiples of each other) then the span is a plane (through the origin); and so on.</p>
-<p>One nice fact about orthonormal vectors <span class="math inline">\(\v_1,\ldots,\v_k\)</span> is that the squared projection length of a point onto the subspace spanned by the vectors is just the sum of the squares of its projections onto each of the vectors: <span class="math display">\[\label{eq:project}
-(\text{length of $\x_i$&#39;s projection on
-  $\mbox{span}(\v_1,\ldots,\v_k)$})^2
+<p>The <span><em>span</em></span> of a collection <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k \in
+\mathbb{R}^n\)</span> of vectors is all of their linear combinations: <span class="math inline">\(\{ \sum_{j=1}^k
+\lambda_j {\bf v}_j \,:\, \lambda_1,\ldots,\lambda_k \in \mathbb{R} \}\)</span>. If <span class="math inline">\(k=1\)</span>, then this span is a line through the origin; if <span class="math inline">\(k=2\)</span> and <span class="math inline">\({\bf v}_1,{\bf v}_2\)</span> are linearly independent (i.e., not multiples of each other) then the span is a plane (through the origin); and so on.</p>
+<p>One nice fact about orthonormal vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k\)</span> is that the squared projection length of a point onto the subspace spanned by the vectors is just the sum of the squares of its projections onto each of the vectors: <span class="math display">\[\label{eq:project}
+(\text{length of ${\bf x}_i$&#39;s projection on
+  $\mbox{span}({\bf v}_1,\ldots,{\bf v}_k)$})^2
 =
 \sum_{j=1}^k {
-{\langle {\x_i} , {\v_j} \rangle}
-}^2.\]</span> (For intuition, consider first the case where <span class="math inline">\(\v_1,\ldots,\v_k\)</span> are all standard basis vectors, so <span class="math inline">\({
-{\langle {\x_i} , {\v_j} \rangle}
-}\)</span> just picks out one coordinate of <span class="math inline">\(\x_i\)</span>). This identity is <span><em>not</em></span> true if the <span class="math inline">\(\v_j\)</span>’s are not orthonormal (e.g., imagine if <span class="math inline">\(k=2\)</span> and <span class="math inline">\(\v_1,\v_2\)</span> are linearly independent but nearly the same vector).</p>
-<p>Combining  and , we can state the objective of PCA for general <span class="math inline">\(k\)</span> in its standard form: compute orthonormal vectors <span class="math inline">\(\v_1,\ldots,\v_k\)</span> to maximize <span class="math display">\[\label{eq:largek}
+{\langle {{\bf x}_i} , {{\bf v}_j} \rangle}
+}^2.\]</span> (For intuition, consider first the case where <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k\)</span> are all standard basis vectors, so <span class="math inline">\({
+{\langle {{\bf x}_i} , {{\bf v}_j} \rangle}
+}\)</span> just picks out one coordinate of <span class="math inline">\({\bf x}_i\)</span>). This identity is <span><em>not</em></span> true if the <span class="math inline">\({\bf v}_j\)</span>’s are not orthonormal (e.g., imagine if <span class="math inline">\(k=2\)</span> and <span class="math inline">\({\bf v}_1,{\bf v}_2\)</span> are linearly independent but nearly the same vector).</p>
+<p>Combining  and , we can state the objective of PCA for general <span class="math inline">\(k\)</span> in its standard form: compute orthonormal vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k\)</span> to maximize <span class="math display">\[\label{eq:largek}
 \frac{1}{m} \sum_{i=1}^m \underbrace{\sum_{j=1}^k
   {
-{\langle {\x_i} , {\v_j} \rangle}
+{\langle {{\bf x}_i} , {{\bf v}_j} \rangle}
 }^2}_{\text{squared projection length}}.\]</span> The resulting <span class="math inline">\(k\)</span> orthonormal vectors are called the <span><em>top <span class="math inline">\(k\)</span> principal components</em></span> of the data.<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a></p>
 <p>To recap, the formal definition of the problem solved by PCA is:</p>
 <ul>
-<li><p><span><em>given <span class="math inline">\(\x^1,\ldots,\x^m \in \RR^n\)</span> and a parameter <span class="math inline">\(k \geq 1\)</span>, compute orthonormal vectors <span class="math inline">\(\v_1,\ldots,\v_k \in \RR^n\)</span> to maximize .</em></span></p></li>
+<li><p><span><em>given <span class="math inline">\({\bf x}^1,\ldots,{\bf x}^m \in \mathbb{R}^n\)</span> and a parameter <span class="math inline">\(k \geq 1\)</span>, compute orthonormal vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k \in \mathbb{R}^n\)</span> to maximize .</em></span></p></li>
 </ul>
 <p>Next lecture we discuss computational methods for finding the top <span class="math inline">\(k\)</span> principal components. We conclude this lecture with use cases and “non-use cases” (i.e., failure modes) of PCA. Given a black-box that computes principal components, what would you do with it?</p>
 <h1 id="use-cases">Use Cases</h1>
 <h2 id="data-visualization">Data Visualization</h2>
 <h3 id="sss:recipe">A General Recipe</h3>
-<p>PCA is commonly used to visualize data. In this use case, one typically takes <span class="math inline">\(k\)</span> to be 1, 2, or 3. Given data points <span class="math inline">\(\x_1,\ldots,\x_m \in \RR^n\)</span>, here is the approach:</p>
+<p>PCA is commonly used to visualize data. In this use case, one typically takes <span class="math inline">\(k\)</span> to be 1, 2, or 3. Given data points <span class="math inline">\({\bf x}_1,\ldots,{\bf x}_m \in \mathbb{R}^n\)</span>, here is the approach:</p>
 <ol>
-<li><p>Perform PCA to get the top <span class="math inline">\(k\)</span> principal components <span class="math inline">\(\v_1,\ldots,\v_k \in \RR^n\)</span>.</p></li>
-<li><p>For each data point <span class="math inline">\(\x_i\)</span>, define its “<span class="math inline">\(\v_1\)</span>-coordinate” as <span class="math inline">\({
-{\langle {\x_i} , {\v_1} \rangle}
-}\)</span>, its “<span class="math inline">\(\v_2\)</span>-coordinate” as <span class="math inline">\({
-{\langle {\x_i} , {\v_2} \rangle}
-}\)</span>, and so on. This associates <span class="math inline">\(k\)</span> coordinates with each data point <span class="math inline">\(\x_i\)</span>, according to the extent to which it points in the same direction as each of the top <span class="math inline">\(k\)</span> principal components. (So a large positive coordinate means that <span class="math inline">\(\x_i\)</span> is close to the same direction as <span class="math inline">\(\v_j\)</span>, while a large negative coordinate means that <span class="math inline">\(\x_i\)</span> points in the opposite direction.)</p></li>
-<li><p>Plot the point <span class="math inline">\(\x_i\)</span> in <span class="math inline">\(\RR^k\)</span> as the point <span class="math inline">\(({
-{\langle {\x_i} , {\v_1} \rangle}
+<li><p>Perform PCA to get the top <span class="math inline">\(k\)</span> principal components <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k \in \mathbb{R}^n\)</span>.</p></li>
+<li><p>For each data point <span class="math inline">\({\bf x}_i\)</span>, define its “<span class="math inline">\({\bf v}_1\)</span>-coordinate” as <span class="math inline">\({
+{\langle {{\bf x}_i} , {{\bf v}_1} \rangle}
+}\)</span>, its “<span class="math inline">\({\bf v}_2\)</span>-coordinate” as <span class="math inline">\({
+{\langle {{\bf x}_i} , {{\bf v}_2} \rangle}
+}\)</span>, and so on. This associates <span class="math inline">\(k\)</span> coordinates with each data point <span class="math inline">\({\bf x}_i\)</span>, according to the extent to which it points in the same direction as each of the top <span class="math inline">\(k\)</span> principal components. (So a large positive coordinate means that <span class="math inline">\({\bf x}_i\)</span> is close to the same direction as <span class="math inline">\({\bf v}_j\)</span>, while a large negative coordinate means that <span class="math inline">\({\bf x}_i\)</span> points in the opposite direction.)</p></li>
+<li><p>Plot the point <span class="math inline">\({\bf x}_i\)</span> in <span class="math inline">\(\mathbb{R}^k\)</span> as the point <span class="math inline">\(({
+{\langle {{\bf x}_i} , {{\bf v}_1} \rangle}
 },\ldots,{
-{\langle {\x_i} , {\v_k} \rangle}
+{\langle {{\bf x}_i} , {{\bf v}_k} \rangle}
 })\)</span>.<a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a></p></li>
 </ol>
-<p>This is more or less what we did with our toy example in Figure [f:plot], although the scaling was different because our vectors <span class="math inline">\(\v_1\)</span> and <span class="math inline">\(\v_2\)</span> were not unit vectors.</p>
+<p>This is more or less what we did with our toy example in Figure [f:plot], although the scaling was different because our vectors <span class="math inline">\({\bf v}_1\)</span> and <span class="math inline">\({\bf v}_2\)</span> were not unit vectors.</p>
 <p>What is the “meaning” of the point <span class="math inline">\(({
-{\langle {\x_i} , {\v_1} \rangle}
+{\langle {{\bf x}_i} , {{\bf v}_1} \rangle}
 },\ldots,{
-{\langle {\x_i} , {\v_k} \rangle}
-})\)</span>? Recall that one way to think about PCA is as a method for approximating a bunch of data points as linear combinations of the same <span class="math inline">\(k\)</span> vectors. PCA uses the vectors <span class="math inline">\(\v_1,\ldots,\v_k\)</span> for this purpose, and the coordinates <span class="math inline">\(({
-{\langle {\x_i} , {\v_1} \rangle}
+{\langle {{\bf x}_i} , {{\bf v}_k} \rangle}
+})\)</span>? Recall that one way to think about PCA is as a method for approximating a bunch of data points as linear combinations of the same <span class="math inline">\(k\)</span> vectors. PCA uses the vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k\)</span> for this purpose, and the coordinates <span class="math inline">\(({
+{\langle {{\bf x}_i} , {{\bf v}_1} \rangle}
 },\ldots,{
-{\langle {\x_i} , {\v_k} \rangle}
-})\)</span> specify the linear combination of these vectors that most closely approximate <span class="math inline">\(\x_i\)</span> (with respect to Euclidean distance). That is, PCA approximates each <span class="math inline">\(\x_i\)</span> as <span class="math display">\[\x_i \approx \sum_{j=1}^k {
-{\langle {\x_i} , {\v_j} \rangle}
-}\v_j.\]</span></p>
+{\langle {{\bf x}_i} , {{\bf v}_k} \rangle}
+})\)</span> specify the linear combination of these vectors that most closely approximate <span class="math inline">\({\bf x}_i\)</span> (with respect to Euclidean distance). That is, PCA approximates each <span class="math inline">\({\bf x}_i\)</span> as <span class="math display">\[{\bf x}_i \approx \sum_{j=1}^k {
+{\langle {{\bf x}_i} , {{\bf v}_j} \rangle}
+}{\bf v}_j.\]</span></p>
 <h3 id="interpreting-the-results">Interpreting the Results</h3>
-<p>Both the <span class="math inline">\(\v_j\)</span>’s and the projections of the <span class="math inline">\(\x_i\)</span>’s onto them can be interesting. Here are some things to look at:</p>
+<p>Both the <span class="math inline">\({\bf v}_j\)</span>’s and the projections of the <span class="math inline">\({\bf x}_i\)</span>’s onto them can be interesting. Here are some things to look at:</p>
 <ol>
 <li><p>Look at the data points with the largest (most positive) and smallest (most negative) projections <span class="math inline">\({
-{\langle {\x_i} , {\v_1} \rangle}
+{\langle {{\bf x}_i} , {{\bf v}_1} \rangle}
 }\)</span> on the first principal component. Does this suggest a potential “meaning” for the component? Are there data points clustered together at either of the two ends, and if so, what do these have in common?</p></li>
 <li><p>Plot all points according to their <span class="math inline">\(k\)</span> coordinate values (i.e., projection lengths onto the top <span class="math inline">\(k\)</span> principal components). Do any interesting clusters pop out (e.g., with <span class="math inline">\(k=2\)</span>, in any of the four corners)? For example, by looking at pairs that have similar second coordinates — both pairs with similar first coordinates, and pairs with very different first coordinates — it is often possible to obtain a rough interpretation of the second principal component.</p></li>
 <li><p>Looking at the coordinates of a principal component — the linear combination of the original data point attributes that it uses — can also be helpful. (E.g., see the Eigenfaces application below.)</p></li>
@@ -188,8 +188,8 @@ c^2\)</span>. Instantiating this for the right triangle shown in Figure [f:ip],
 <h3 id="sss:europe">Do Genomes Encode Geography?</h3>
 <p>Can you infer where someone grew up from their DNA? In a remarkable study, Novembre et al. <span class="citation"></span> used PCA to show that in some cases the answer is “yes.” This is a case study in how PCA can reveal that the data “knows” things that you wouldn’t expect.</p>
 <p>Novembre et al. <span class="citation"></span> considered a data set comprising 1387 Europeans (the rows). Each person’s genome was examined in the same 200,000 “SNPs” (the columns) — positions that tend to exhibit gene mutation.<a href="#fn8" class="footnoteRef" id="fnref8"><sup>8</sup></a> So in one of these positions, maybe 90% of all people have a “C,” while 10% have an “A.” In a nutshell, Novembre et al. <span class="citation"></span> apply PCA to this data set (with <span class="math inline">\(m \approx 1400\)</span>, <span class="math inline">\(n
-\approx 200,000\)</span>, and <span class="math inline">\(k=2\)</span>) and plot the data according to the top two principal components <span class="math inline">\(\v_1\)</span> and <span class="math inline">\(\v_2\)</span> (using the exact same recipe as in Section [sss:recipe], with the <span class="math inline">\(x\)</span>- and <span class="math inline">\(y\)</span>-axes corresponding to <span class="math inline">\(\v_1\)</span> and <span class="math inline">\(\v_2\)</span>).<a href="#fn9" class="footnoteRef" id="fnref9"><sup>9</sup></a></p>
-<p>We emphasize that this plot depends on genomic data <span><em>only</em></span>. To interpret it, the authors then color-coded each plotted point according to the country of origin of the corresponding person (this information was available in the meta-data). Check out the resulting plot in <span class="citation"></span>, available from the course Web page — it’s essentially a map of Europe! The first principal component <span class="math inline">\(\v_1\)</span> corresponds roughly to the latitude of where someone’s from, and <span class="math inline">\(\v_2\)</span> to the longitude (rotated <span class="math inline">\(16^{\circ}\)</span> counter-clockwise). That is, <span><em>their genome “knows” where they’re from!</em></span> This suggests that many Europeans have bred locally for long enough for geographic information to be reflected in their DNA.</p>
+\approx 200,000\)</span>, and <span class="math inline">\(k=2\)</span>) and plot the data according to the top two principal components <span class="math inline">\({\bf v}_1\)</span> and <span class="math inline">\({\bf v}_2\)</span> (using the exact same recipe as in Section [sss:recipe], with the <span class="math inline">\(x\)</span>- and <span class="math inline">\(y\)</span>-axes corresponding to <span class="math inline">\({\bf v}_1\)</span> and <span class="math inline">\({\bf v}_2\)</span>).<a href="#fn9" class="footnoteRef" id="fnref9"><sup>9</sup></a></p>
+<p>We emphasize that this plot depends on genomic data <span><em>only</em></span>. To interpret it, the authors then color-coded each plotted point according to the country of origin of the corresponding person (this information was available in the meta-data). Check out the resulting plot in <span class="citation"></span>, available from the course Web page — it’s essentially a map of Europe! The first principal component <span class="math inline">\({\bf v}_1\)</span> corresponds roughly to the latitude of where someone’s from, and <span class="math inline">\({\bf v}_2\)</span> to the longitude (rotated <span class="math inline">\(16^{\circ}\)</span> counter-clockwise). That is, <span><em>their genome “knows” where they’re from!</em></span> This suggests that many Europeans have bred locally for long enough for geographic information to be reflected in their DNA.</p>
 <p>Is this conclusion obvious in hindsight? Not really. For example, if you repeat the experiment using U.S. data, the top principal components correspond more to waves of immigration than to anything geographic. So in this case the top principal components reflect temporal rather than spatial effects.</p>
 <p>There are competing mathematical models for genetic variation. Some of these involve spatial decay, while others are based on multiple discrete and well-differentiated groups. The study of Novembre et al. <span class="citation"></span> suggests that the former models are much more appropriate for Europeans.</p>
 <h2 id="data-compression">Data Compression</h2>
@@ -212,7 +212,7 @@ c^2\)</span>. Instantiating this for the right triangle shown in Figure [f:ip],
 <li id="fn2"><p>Conversely, if we knew which friends were vegetarian and which were not, we could deduce which foods are most likely to be vegetarian.<a href="#fnref2">↩</a></p></li>
 <li id="fn3"><p>Representing, for example: images (dimensions = pixels); measurements (dimensions = sensors); documents (dimensions = words); and so on.<a href="#fnref3">↩</a></p></li>
 <li id="fn4"><p>The notation <span class="math inline">\({
-{\langle {\x} , {\y} \rangle}
+{\langle {{\bf x}} , {\y} \rangle}
 }\)</span> indicates the inner (or dot) product <span class="math inline">\(\sum_{i=1}^n x_iy_i\)</span> of the two vectors.<a href="#fnref4">↩</a></p></li>
 <li id="fn5"><p>It should be geometrically clear, already in two dimensions, that stretching out one coordinate affects the best line through the points. See also Figure [f:line].<a href="#fnref5">↩</a></p></li>
 <li id="fn6"><p>In the toy example, the two vectors <span class="math inline">\((3,-3,-3,3)\)</span> and <span class="math inline">\((1,-1,1,-1)\)</span>, once normalized to be unit vectors, are close to the top two principal components. The actual principal components have messier numbers so we don’t report them here. Try computing them with one line of Matlab code!<a href="#fnref6">↩</a></p></li>
