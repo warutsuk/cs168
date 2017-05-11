@@ -103,9 +103,9 @@ c^2\)</span>. Instantiating this for the right triangle shown in Figure [f:ip],
 }^2 = {
 {\| {{\bf x}_i} \|}
 }^2.\]</span> The right-hand side of  is a constant, independent of the choice of line <span class="math inline">\({\bf v}\)</span>. Thus, there is a zero-sum game between the squared distance between a point <span class="math inline">\({\bf x}_i\)</span> and the line spanned by <span class="math inline">\({\bf v}\)</span> and the squared length of the projection of <span class="math inline">\({\bf x}_i\)</span> on this line — making one of these quantities bigger makes the other one smaller. This implies that the objective function of maximizing the squared projections — the <span><em>variance</em></span> of the projection of the point set — is equivalent to the original objective in : <span class="math display">\[\label{eq:max}
-{\operatornamewithlimits{argmax}}_{{\bf v} \,:\, {
+\underset{{{\bf v} \,:\, {
 {\| {{\bf v}} \|}
-} = 1} \frac{1}{m} \sum_{i=1}^m 
+} = 1}}{\operatorname{argmax}} \frac{1}{m} \sum_{i=1}^m 
 {
 {\langle {{\bf x}_i} , {{\bf v}} \rangle}
 }^2 .\]</span></p>
@@ -117,7 +117,7 @@ c^2\)</span>. Instantiating this for the right triangle shown in Figure [f:ip],
 <p>PCA effectively assumes that variance in the data corresponds to interesting information. One can imagine scenarios where such variance corresponds to noise rather than signal, in which case PCA may not produce illuminating results. (See Section [s:fail] for more on PCA failure cases.)</p>
 <h2 id="ss:largek">Larger Values of <span class="math inline">\(k\)</span></h2>
 <p>The discussion so far focused on the <span class="math inline">\(k=1\)</span> case (fitting a line to the data), but the case of larger <span class="math inline">\(k\)</span> is almost the same. For general <span class="math inline">\(k\)</span>, the objective functions of minimizing the squares of distances to a <span class="math inline">\(k\)</span>-dimensional subspace and of maximizing the variance of the projections onto a <span class="math inline">\(k\)</span>-dimensional subspace are again equivalent. So the PCA objective is now <span class="math display">\[\label{eq:maxk}
-{\operatornamewithlimits{argmax}}_{\text{$k$-dimensional subspaces~$S$}} \frac{1}{m} \sum_{i=1}^m 
+\underset{{\text{$k$-dimensional subspaces $S$}}}{\operatorname{argmax}} \frac{1}{m} \sum_{i=1}^m 
 (\text{length of ${\bf x}_i$&#39;s projection on $S$})^2.\]</span></p>
 <p>To rephrase this objective in a more convenient form, recall the following basic linear algebra. First, vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k\)</span> are <span><em>orthonormal</em></span> if they all have unit length (<span class="math inline">\({
 {\| {{\bf v}_i} \|}
