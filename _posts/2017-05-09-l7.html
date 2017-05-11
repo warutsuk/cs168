@@ -65,13 +65,13 @@ author: Tim
 \mathbb{R}^n\)</span> as linear combinations of <span class="math inline">\(k\)</span> <span class="math inline">\(n\)</span>-dimensional vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k \in \mathbb{R}^n\)</span>, so that <span class="math display">\[{\bf x}_i \approx \sum_{j=1}^k a_{ij}{\bf v}_j\]</span> for each <span class="math inline">\(i=1,2,\ldots,m\)</span>. (In the toy example, <span class="math inline">\(m=n=4\)</span> and <span class="math inline">\(k=2\)</span>.) PCA offers a formal definition of which <span class="math inline">\(k\)</span> vectors are the “best” ones for this purpose. Next lecture, we’ll see that there are also good algorithms for computing these vectors.</p>
 <h2 id="relation-to-dimensionality-reduction">Relation to Dimensionality Reduction</h2>
 <p>The high-level goal of PCA should remind you of a couple of topics studied in previous lectures. First, recall Johnson-Lindenstrauss (JL) dimensionality reduction (Lecture #4), where the goal is also to re-express a bunch of high-dimensional points as low-dimensional points. Recall that this method maps a point <span class="math inline">\({\bf x}\)</span> to a point <span class="math inline">\(({
-{\langle {{\bf x}} , {\r_1} \rangle}
+{\langle {{\bf x}} , {{\bf r}_1} \rangle}
 },\ldots,{
-{\langle {{\bf x}} , {\r_k} \rangle}
-})\)</span>, where each <span class="math inline">\(\r_j\)</span> is a random unit vector (independent standard Gaussians in each coordinate, then normalized).<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> The same <span class="math inline">\(\r_j\)</span>’s are used for all data points. PCA and JL dimensionality reduction are different in the following respects.</p>
+{\langle {{\bf x}} , {{\bf r}_k} \rangle}
+})\)</span>, where each <span class="math inline">\({\bf r}_j\)</span> is a random unit vector (independent standard Gaussians in each coordinate, then normalized).<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> The same <span class="math inline">\({\bf r}_j\)</span>’s are used for all data points. PCA and JL dimensionality reduction are different in the following respects.</p>
 <ol>
 <li><p>JL dimensionality reduction assumes that you care about the Euclidean distance between each pair of points — it is designed to approximately preserve these distances. PCA offers no guarantees about preserving pairwise distances.</p></li>
-<li><p>JL dimensionality reduction is data-oblivious, in the sense that the random vectors <span class="math inline">\(\r_1,\ldots,\r_k\)</span> are chosen without looking at the data points. PCA, by contrast, is deterministic, and the whole point is to compute vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k\)</span> that “explain the data.”</p></li>
+<li><p>JL dimensionality reduction is data-oblivious, in the sense that the random vectors <span class="math inline">\({\bf r}_1,\ldots,{\bf r}_k\)</span> are chosen without looking at the data points. PCA, by contrast, is deterministic, and the whole point is to compute vectors <span class="math inline">\({\bf v}_1,\ldots,{\bf v}_k\)</span> that “explain the data.”</p></li>
 <li><p>For the above reason, the <span class="math inline">\(k\)</span> coordinates used in JL dimensionality reduction have no intrinsic meaning, while those used in PCA are often meaningful (recall the toy example).</p></li>
 <li><p>JL dimensionality reduction generally only gives good results when <span class="math inline">\(k\)</span> is at least in the low hundreds. On the other hand, this value of <span class="math inline">\(k\)</span> works for every data set of a given size. PCA can give meaningful results even when <span class="math inline">\(k\)</span> is 1 or 2, but there are also data sets where it provides little interesting information (for any <span class="math inline">\(k\)</span>).</p></li>
 </ol>
@@ -85,9 +85,9 @@ author: Tim
 <h2 id="the-objective-function">The Objective Function</h2>
 <p>For clarity, we first discuss the special case of <span class="math inline">\(k=1\)</span>, where the goal is to fit the “best” line to a data set. Everything in this section generalizes easily to the case of general <span class="math inline">\(k\)</span> (Section [ss:largek]).</p>
 <p>As foreshadowed above, PCA defines the “best-fit line” as the one that minimizes the average squared Euclidean distance between the line and the data points: <span class="math display">\[\label{eq:min}
-{\operatornamewithlimits{argmin}}_{{\bf v} \,:\, {
+\underset{{{\bf v} \,:\, {
 {\| {{\bf v}} \|}
-} = 1} \frac{1}{m} \sum_{i=1}^m \left( 
+} = 1}}{\operatorname{argmin}} \frac{1}{m} \sum_{i=1}^m \left( 
 (\text{distance between ${\bf x}_i$ and line spanned by ${\bf v}$})^2 \right).\]</span> Note that we’re identifying a line (through the origin) with a unit vector <span class="math inline">\({\bf v}\)</span> in the same direction. Minimizing the Euclidean distances between the points and the chosen line should seem natural enough; the one thing you might be wondering about is why we square these distances before adding them up. One reason is that it ensures that the best-fit line passes through the origin. Another is a tight connection to variance maximization, discussed next.</p>
 <div class="figure">
 <img src="ip" alt="The geometry of the inner product." />
@@ -212,7 +212,7 @@ c^2\)</span>. Instantiating this for the right triangle shown in Figure [f:ip],
 <li id="fn2"><p>Conversely, if we knew which friends were vegetarian and which were not, we could deduce which foods are most likely to be vegetarian.<a href="#fnref2">↩</a></p></li>
 <li id="fn3"><p>Representing, for example: images (dimensions = pixels); measurements (dimensions = sensors); documents (dimensions = words); and so on.<a href="#fnref3">↩</a></p></li>
 <li id="fn4"><p>The notation <span class="math inline">\({
-{\langle {{\bf x}} , {\y} \rangle}
+{\langle {{\bf x}} , {{\bf y}} \rangle}
 }\)</span> indicates the inner (or dot) product <span class="math inline">\(\sum_{i=1}^n x_iy_i\)</span> of the two vectors.<a href="#fnref4">↩</a></p></li>
 <li id="fn5"><p>It should be geometrically clear, already in two dimensions, that stretching out one coordinate affects the best line through the points. See also Figure [f:line].<a href="#fnref5">↩</a></p></li>
 <li id="fn6"><p>In the toy example, the two vectors <span class="math inline">\((3,-3,-3,3)\)</span> and <span class="math inline">\((1,-1,1,-1)\)</span>, once normalized to be unit vectors, are close to the top two principal components. The actual principal components have messier numbers so we don’t report them here. Try computing them with one line of Matlab code!<a href="#fnref6">↩</a></p></li>
